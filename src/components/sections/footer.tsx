@@ -58,7 +58,7 @@ const Footer = () => {
             </h3>
             <ul className="space-y-3">
               <li><a href="#" className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors">Minha Conta</a></li>
-              <li><a href="#" className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors">Administrador do Site</a></li>
+                <li><a href="/admin" className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors">Administrador do Site</a></li>
             </ul>
           </div>
 
