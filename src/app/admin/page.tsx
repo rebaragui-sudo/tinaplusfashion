@@ -136,7 +136,6 @@ export default function AdminPage() {
   }
 
   async function handleDelete(id: string) {
-    if (!confirm('Tem certeza que deseja excluir este produto?')) return;
     try {
       const { error } = await supabase
         .from('products')
@@ -144,6 +143,7 @@ export default function AdminPage() {
         .eq('id', id);
       if (error) throw error;
       toast.success('Produto excluído!');
+      setDeleteConfirm(null);
       fetchProducts();
     } catch (error: any) {
       toast.error('Erro ao excluir: ' + error.message);
