@@ -10,12 +10,12 @@ const Header = () => {
   return (
     <header className="w-full bg-[#3d0021] text-white z-50 relative">
       {/* Top Utility Information Bar */}
-      <div className="hidden lg:block border-b border-[#9c848d]/30">
-        <div className="container mx-auto px-4 py-2 flex justify-between items-center text-[10px] uppercase tracking-widest font-condensed text-[#9c848d]">
-          <div className="flex gap-6">
-            <span>(11) 93730-8369</span>
-            <span>contato.sheilamodasplussize@gmail.com</span>
-          </div>
+        <div className="hidden lg:block border-b border-[#9c848d]/30">
+          <div className="container mx-auto px-4 py-2 flex justify-between items-center text-[10px] uppercase tracking-widest font-condensed text-[#9c848d]">
+            <div className="flex gap-6">
+              <span>(11) 93730-8369</span>
+              <span>contato.tinaplus@gmail.com</span>
+            </div>
           <div className="flex gap-4">
             <a href="/account/register" className="hover:text-white transition-colors">Cadastre-se</a>
             <span className="text-[#9c848d]/50">|</span>
