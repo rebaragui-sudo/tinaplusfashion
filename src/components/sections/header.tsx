@@ -1,118 +1,150 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
-import { Search, ShoppingCart, User, Menu } from 'lucide-react';
+import { Search, ShoppingCart, User, Menu, X, Phone, Mail } from 'lucide-react';
 
 /**
- * Header component for Sheila Modas Plus Size.
- * Includes the top utility bar and main navigation.
+ * Header component for Tina Plus.
+ * Redesigned for a cleaner, professional layout with a focus on brand identity.
  */
 const Header = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const navLinks = [
+    { name: 'Início', href: '/' },
+    { name: 'Produtos', href: '/produtos' },
+    { name: 'Quem Somos', href: '/quem-somos' },
+    { name: 'Contato', href: '/contato' },
+  ];
+
   return (
-    <header className="w-full bg-background text-foreground z-50 relative border-b border-border">
-      {/* Top Utility Information Bar */}
-        <div className="hidden lg:block border-b border-border/30">
-          <div className="container mx-auto px-4 py-2 flex justify-between items-center text-[10px] uppercase tracking-widest font-condensed text-muted-foreground">
-            <div className="flex gap-6">
-              <span>(11) 93730-8369</span>
-              <span>contato.tinaplus@gmail.com</span>
-            </div>
-          <div className="flex gap-4">
-            <a href="/account/register" className="hover:text-primary transition-colors">Cadastre-se</a>
-            <span className="text-muted-foreground/50">|</span>
-            <a href="/account/login" className="hover:text-primary transition-colors">Login</a>
+    <header className="w-full bg-background z-50 relative border-b border-border shadow-sm">
+      {/* Top Utility Bar - Professional contact info */}
+      <div className="bg-secondary/30 border-b border-border/50 hidden md:block">
+        <div className="container mx-auto px-6 py-2 flex justify-between items-center text-[11px] font-medium text-muted-foreground uppercase tracking-wider">
+          <div className="flex items-center gap-6">
+            <span className="flex items-center gap-2">
+              <Phone className="w-3 h-3 text-primary" />
+              (11) 93730-8369
+            </span>
+            <span className="flex items-center gap-2">
+              <Mail className="w-3 h-3 text-primary" />
+              contato.tinaplus@gmail.com
+            </span>
+          </div>
+          <div className="flex items-center gap-6">
+            <a href="/account/login" className="hover:text-primary transition-colors">Minha Conta</a>
+            <a href="/account/register" className="hover:text-primary transition-colors">Cadastrar</a>
           </div>
         </div>
       </div>
 
-      {/* Mobile Header (Visible on small screens) */}
-      <div className="lg:hidden flex items-center justify-between px-4 py-3 bg-background">
-        <button className="text-foreground" aria-label="Menu">
-          <Menu className="w-6 h-6" />
-        </button>
-        <div className="text-sm font-display font-bold uppercase tracking-widest">Início</div>
-        <button className="text-foreground" aria-label="Pesquisar">
-          <Search className="w-6 h-6" />
-        </button>
-      </div>
+      {/* Main Header Row */}
+      <div className="container mx-auto px-4 md:px-6 py-4">
+        <div className="flex items-center justify-between">
+          
+          {/* Mobile Menu Toggle */}
+          <button 
+            className="lg:hidden text-foreground p-2 hover:bg-secondary rounded-full transition-colors" 
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Toggle Menu"
+          >
+            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
 
-      {/* Main Navigation Row */}
-      <div className="container mx-auto px-4 py-6 md:py-8 lg:py-6 flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-0">
-        {/* Logo */}
-        <div className="flex-shrink-0 w-[120px] md:w-[150px] lg:w-[180px]">
+          {/* Logo - Centered on mobile, Left on desktop */}
+          <div className="flex-shrink-0 w-[100px] md:w-[140px] lg:w-[160px] absolute left-1/2 -translate-x-1/2 lg:static lg:translate-x-0">
             <a href="/" className="block">
               <Image 
-                src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/274740645_329754545882127_7954351337395034502_n-1767801263809.jpg?width=8000&height=8000&resize=contain"
+                src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/274740645_329754545882127_7954351337395034502_n-1767801263809.jpg?width=800&height=800&resize=contain"
                 alt="Tina Plus"
-                width={180}
-                height={80}
+                width={160}
+                height={60}
                 priority
                 className="w-full h-auto object-contain"
               />
             </a>
-        </div>
-
-        {/* Desktop Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-8 text-[14px] font-display font-bold uppercase tracking-[0.15em]">
-          <a href="/" className="text-foreground border-b border-transparent hover:border-primary">Início</a>
-          <a href="/produtos" className="text-foreground border-b border-transparent hover:border-primary">Produtos</a>
-          <a href="/contato" className="text-foreground border-b border-transparent hover:border-primary">Contato</a>
-          <a href="/quem-somos" className="text-foreground border-b border-transparent hover:border-primary">Quem Somos</a>
-        </nav>
-
-        {/* Search and Action Icons */}
-        <div className="flex items-center gap-4 md:gap-6 w-full lg:w-auto justify-center lg:justify-end">
-          {/* Search Bar Desktop */}
-          <div className="hidden md:flex relative group">
-            <input 
-              type="text" 
-              placeholder="BUSCAR" 
-              className="bg-transparent border border-border px-4 py-2 pr-10 text-[11px] uppercase tracking-widest w-[160px] lg:w-[220px] focus:outline-none focus:ring-0 focus:border-primary transition-all"
-            />
-            <button className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground group-hover:text-primary transition-colors">
-              <Search className="w-4 h-4" />
-            </button>
           </div>
 
-          {/* Account and Cart */}
-          <div className="flex items-center gap-5">
-            <a href="/account/login" className="hidden lg:flex items-center text-muted-foreground hover:text-primary transition-colors">
+          {/* Desktop Navigation - Centered */}
+          <nav className="hidden lg:flex items-center gap-8 text-[13px] font-semibold uppercase tracking-[0.1em]">
+            {navLinks.map((link) => (
+              <a 
+                key={link.name} 
+                href={link.href} 
+                className="text-foreground/80 hover:text-primary transition-all relative group py-2"
+              >
+                {link.name}
+                <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-primary transition-all duration-300 group-hover:w-full"></span>
+              </a>
+            ))}
+          </nav>
+
+          {/* Action Icons & Search */}
+          <div className="flex items-center gap-2 md:gap-4">
+            {/* Search - Icon only on mobile/tablet, subtle bar on desktop */}
+            <div className="relative hidden xl:block mr-2">
+              <input 
+                type="text" 
+                placeholder="O que você procura?" 
+                className="bg-secondary/50 border-none rounded-full px-5 py-2 text-[12px] w-[200px] focus:ring-1 focus:ring-primary/30 transition-all"
+              />
+              <Search className="w-4 h-4 absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
+            </div>
+            
+            <button className="xl:hidden p-2 hover:bg-secondary rounded-full transition-colors text-muted-foreground">
+              <Search className="w-5 h-5" />
+            </button>
+
+            <a href="/account/login" className="hidden md:flex p-2 hover:bg-secondary rounded-full transition-colors text-muted-foreground">
               <User className="w-5 h-5" />
             </a>
             
-            <a href="/cart" className="flex items-center gap-2 group">
+            <a href="/cart" className="flex items-center gap-2 p-2 hover:bg-secondary rounded-full transition-colors group">
               <div className="relative">
-                <ShoppingCart className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors" />
-                <span className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-[9px] font-bold w-4 h-4 flex items-center justify-center rounded-full">
+                <ShoppingCart className="w-6 h-6 text-foreground group-hover:text-primary transition-colors" />
+                <span className="absolute -top-1.5 -right-1.5 bg-primary text-primary-foreground text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full border-2 border-background">
                   0
                 </span>
               </div>
-              <div className="hidden md:flex flex-col leading-none">
-                <span className="text-[10px] text-muted-foreground font-condensed uppercase tracking-tighter">Carrinho</span>
-                <span className="text-[12px] text-foreground font-condensed font-bold">R$0,00</span>
+              <div className="hidden lg:flex flex-col leading-none">
+                <span className="text-[12px] text-foreground font-bold tracking-tight">R$ 0,00</span>
               </div>
             </a>
           </div>
         </div>
       </div>
 
-      {/* Mobile Shopping/Products Tab Bar (Floating feel but docked) */}
-      <div className="lg:hidden grid grid-cols-3 border-t border-border bg-secondary">
-        <a href="/" className="flex flex-col items-center py-2 gap-1 border-r border-border">
-          <Menu className="w-5 h-5 text-foreground" />
-          <span className="text-[10px] uppercase font-display font-bold">Início</span>
-        </a>
-        <button className="flex flex-col items-center py-2 gap-1 border-r border-border">
-          <div className="w-5 h-5 border-2 border-foreground rounded-[1px] flex items-center justify-center">
-            <div className="w-3 h-[1px] bg-foreground"></div>
-          </div>
-          <span className="text-[10px] uppercase font-display font-bold">Produtos</span>
-        </button>
-        <a href="/cart" className="flex flex-col items-center py-2 gap-1 relative">
-          <ShoppingCart className="w-5 h-5 text-foreground" />
-          <span className="absolute top-1 right-1/3 bg-primary text-primary-foreground text-[8px] font-bold px-1 min-w-[14px] text-center">0</span>
-          <span className="text-[10px] uppercase font-display font-bold">Carrinho</span>
-        </a>
-      </div>
+      {/* Mobile Menu Drawer */}
+      {isMenuOpen && (
+        <div className="lg:hidden absolute top-full left-0 w-full bg-background border-b border-border shadow-xl animate-in slide-in-from-top duration-300 z-40">
+          <nav className="flex flex-col p-6 gap-4">
+            {navLinks.map((link) => (
+              <a 
+                key={link.name} 
+                href={link.href} 
+                className="text-lg font-medium text-foreground py-2 border-b border-border/50 last:border-0"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {link.name}
+              </a>
+            ))}
+            <div className="mt-4 flex flex-col gap-4">
+              <div className="relative">
+                <input 
+                  type="text" 
+                  placeholder="Buscar produtos..." 
+                  className="w-full bg-secondary/50 border-none rounded-lg px-4 py-3 text-sm"
+                />
+                <Search className="w-5 h-5 absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              </div>
+              <a href="/cart" className="flex items-center justify-between bg-primary text-primary-foreground px-4 py-3 rounded-lg font-bold">
+                <span className="flex items-center gap-2"><ShoppingCart className="w-5 h-5" /> Carrinho</span>
+                <span>R$ 0,00</span>
+              </a>
+            </div>
+          </nav>
+        </div>
+      )}
     </header>
   );
 };
