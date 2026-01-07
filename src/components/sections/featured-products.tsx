@@ -107,7 +107,7 @@ export default function FeaturedProductsGrid() {
                   {product.badges.map((badge, idx) => (
                     <span 
                       key={idx} 
-                      className={`${badge.includes('Novidade') ? 'bg-black' : 'bg-primary'} text-white text-[10px] font-bold uppercase px-2 py-1 rounded-sm`}
+                      className={`${badge.includes('Novidade') ? 'bg-black' : 'bg-[#800020]'} text-white text-[10px] font-bold uppercase px-2 py-1 rounded-sm`}
                     >
                       {badge}
                     </span>
@@ -115,13 +115,13 @@ export default function FeaturedProductsGrid() {
                 </div>
 
                 {/* Wishlist Button */}
-                <button className="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-sm rounded-full text-muted-foreground hover:text-primary hover:bg-white transition-all shadow-sm">
+                <button className="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-sm rounded-full text-muted-foreground hover:text-[#800020] hover:bg-white transition-all shadow-sm">
                   <Heart className="h-5 w-5" />
                 </button>
 
                 {/* Hover Add to Cart Action */}
                 <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent transition-all duration-300 opacity-0 group-hover:opacity-100 flex gap-2">
-                  <button className="flex-1 flex items-center justify-center gap-2 bg-white text-black text-sm font-semibold h-10 rounded-md hover:bg-primary hover:text-white transition-colors">
+                  <button className="flex-1 flex items-center justify-center gap-2 bg-white text-black text-sm font-semibold h-10 rounded-md hover:bg-[#800020] hover:text-white transition-colors">
                     <ShoppingBag className="h-4 w-4" />
                     Adicionar
                   </button>
@@ -136,7 +136,7 @@ export default function FeaturedProductsGrid() {
                 <span className="text-[10px] text-muted-foreground uppercase tracking-widest mb-1">
                   {product.category}
                 </span>
-                <a href={`/produto/${product.id}`} className="group-hover:text-primary transition-colors">
+                <a href={`/produto/${product.id}`} className="group-hover:text-[#800020] transition-colors">
                   <h3 className="text-sm font-medium text-foreground line-clamp-2 mb-2 leading-tight h-10">
                     {product.name}
                   </h3>
@@ -145,7 +145,7 @@ export default function FeaturedProductsGrid() {
                 <div className="flex items-baseline gap-2 flex-wrap mt-auto">
                   <span className="text-lg font-bold text-foreground">{product.price}</span>
                   <span className="text-xs text-muted-foreground line-through">{product.originalPrice}</span>
-                  <span className="text-xs text-primary font-bold">{product.discount}</span>
+                  <span className="text-xs text-[#800020] font-bold">{product.discount}</span>
                 </div>
                 
                 <p className="text-[11px] text-muted-foreground mt-1">
