@@ -5,33 +5,33 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --color-background: #3d0021;
-  --color-foreground: #ffffff;
+  --color-background: #ffffff;
+  --color-foreground: #3d0021;
 
-  --color-card: #541d3b;
-  --color-card-foreground: #ffffff;
+  --color-card: #ffffff;
+  --color-card-foreground: #3d0021;
 
-  --color-popover: #3d0021;
-  --color-popover-foreground: #ffffff;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #3d0021;
 
-  --color-primary: #9c848d;
-  --color-primary-foreground: #3d0021;
+  --color-primary: #C5A059;
+  --color-primary-foreground: #ffffff;
 
-  --color-secondary: #541d3b;
-  --color-secondary-foreground: #ffffff;
+  --color-secondary: #fdfcfb;
+  --color-secondary-foreground: #3d0021;
 
-  --color-muted: #541d3b;
+  --color-muted: #f4f4f4;
   --color-muted-foreground: #9c848d;
 
-  --color-accent: #9c848d;
-  --color-accent-foreground: #3d0021;
+  --color-accent: #C5A059;
+  --color-accent-foreground: #ffffff;
 
   --color-destructive: #ef4444;
   --color-destructive-foreground: #fafafa;
 
-  --color-border: #9c848d;
-  --color-input: #9c848d;
-  --color-ring: #9c848d;
+  --color-border: #e5e7eb;
+  --color-input: #e5e7eb;
+  --color-ring: #C5A059;
 
   --color-chart-1: #e67e22;
   --color-chart-2: #2d8659;
@@ -39,19 +39,20 @@
   --color-chart-4: #f1c40f;
   --color-chart-5: #e74c3c;
 
-  --color-sidebar: #3d0021;
-  --color-sidebar-foreground: #ffffff;
-  --color-sidebar-primary: #9c848d;
-  --color-sidebar-primary-foreground: #3d0021;
-  --color-sidebar-accent: #541d3b;
-  --color-sidebar-accent-foreground: #ffffff;
-  --color-sidebar-border: #9c848d;
-  --color-sidebar-ring: #9c848d;
+  --color-sidebar: #ffffff;
+  --color-sidebar-foreground: #3d0021;
+  --color-sidebar-primary: #C5A059;
+  --color-sidebar-primary-foreground: #ffffff;
+  --color-sidebar-accent: #fdfcfb;
+  --sidebar-accent-foreground: #3d0021;
+  --color-sidebar-border: #e5e7eb;
+  --color-sidebar-ring: #C5A059;
 
   --color-whatsapp: #25d366;
   --color-burgundy-dark: #3d0021;
   --color-burgundy-light: #541d3b;
   --color-taupe: #9c848d;
+  --color-gold: #C5A059;
 
   --font-sans: "Roboto", sans-serif;
   --font-display: "Roboto Condensed", sans-serif;
