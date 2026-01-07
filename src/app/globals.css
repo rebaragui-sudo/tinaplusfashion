@@ -93,34 +93,34 @@
 
 @layer base {
   :root {
-    --background: #3d0021;
-    --foreground: #ffffff;
-    --card: #541d3b;
-    --card-foreground: #ffffff;
-    --popover: #3d0021;
-    --popover-foreground: #ffffff;
-    --primary: #9c848d;
-    --primary-foreground: #3d0021;
-    --secondary: #541d3b;
-    --secondary-foreground: #ffffff;
-    --muted: #541d3b;
+    --background: #ffffff;
+    --foreground: #3d0021;
+    --card: #ffffff;
+    --card-foreground: #3d0021;
+    --popover: #ffffff;
+    --popover-foreground: #3d0021;
+    --primary: #C5A059;
+    --primary-foreground: #ffffff;
+    --secondary: #fdfcfb;
+    --secondary-foreground: #3d0021;
+    --muted: #f4f4f4;
     --muted-foreground: #9c848d;
-    --accent: #9c848d;
-    --accent-foreground: #3d0021;
+    --accent: #C5A059;
+    --accent-foreground: #ffffff;
     --destructive: #ef4444;
     --destructive-foreground: #fafafa;
-    --border: #9c848d;
-    --input: #9c848d;
-    --ring: #9c848d;
+    --border: #e5e7eb;
+    --input: #e5e7eb;
+    --ring: #C5A059;
     --radius: 0px;
-    --sidebar-background: #3d0021;
-    --sidebar-foreground: #ffffff;
-    --sidebar-primary: #9c848d;
-    --sidebar-primary-foreground: #3d0021;
-    --sidebar-accent: #541d3b;
-    --sidebar-accent-foreground: #ffffff;
-    --sidebar-border: #9c848d;
-    --sidebar-ring: #9c848d;
+    --sidebar-background: #ffffff;
+    --sidebar-foreground: #3d0021;
+    --sidebar-primary: #C5A059;
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: #fdfcfb;
+    --sidebar-accent-foreground: #3d0021;
+    --sidebar-border: #e5e7eb;
+    --sidebar-ring: #C5A059;
   }
 }
 
