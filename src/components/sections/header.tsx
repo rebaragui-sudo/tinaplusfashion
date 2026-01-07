@@ -22,12 +22,17 @@ const Header = () => {
             <Menu className="h-6 w-6 text-[#121812]" />
           </button>
 
-          {/* Logo Section */}
-          <a className="flex items-center gap-2 group" href="/">
-            <h1 className="font-serif text-2xl md:text-[32px] font-bold text-[#121812] flex">
-              Tina<span className="text-[#D4AF37]"> Plus</span>
-            </h1>
-          </a>
+            {/* Logo Section */}
+            <a className="flex items-center gap-3 group" href="/">
+              <img 
+                src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/274740645_329754545882127_7954351337395034502_n-1767805261577.jpg?width=8000&height=8000&resize=contain" 
+                alt="Tina Plus Logo" 
+                className="h-10 w-10 md:h-12 md:w-12 rounded-full object-cover border border-[#D4AF37]"
+              />
+              <h1 className="font-serif text-2xl md:text-[32px] font-bold text-[#121812] flex">
+                Tina<span className="text-[#D4AF37]"> Plus</span>
+              </h1>
+            </a>
 
           {/* Navigation Menu */}
           <nav className="hidden md:flex items-center gap-8">
