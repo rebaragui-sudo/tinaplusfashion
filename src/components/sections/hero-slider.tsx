@@ -95,7 +95,7 @@ export default function HeroSlider() {
                 </p>
                 <a
                   href={slide.link}
-                  className="inline-flex items-center justify-center gap-3 bg-[#e11d48] text-white px-8 md:px-10 py-3.5 md:py-4 rounded-md font-medium text-lg transition-transform hover:scale-105 active:scale-95 shadow-lg group"
+                  className="inline-flex items-center justify-center gap-3 bg-[#800020] text-white px-8 md:px-10 py-3.5 md:py-4 rounded-md font-medium text-lg transition-transform hover:scale-105 active:scale-95 shadow-lg group"
                 >
                   {slide.cta}
                   <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
