@@ -62,43 +62,43 @@ export default function HeroSection() {
     return () => clearInterval(timer);
   }, [nextSlide]);
 
-  return (
-      <section className="relative w-full overflow-hidden bg-[#3d0021]">
-          <div className="relative group w-full">
-            {/* Carousel Container */}
-            <div className="relative aspect-[4/5] sm:aspect-[16/9] md:aspect-[2/1] lg:aspect-[2.4/1] w-full">
-            {slides.map((slide, index) => (
-              <div
-                key={slide.id}
-                className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-                  index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
-                }`}
-              >
-                <Image
-                  src={slide.url}
-                  alt={slide.alt}
-                  fill
-                  priority={index === 0}
-                  className="object-contain"
-                  sizes="100vw"
-                />
-              </div>
-            ))}
-          </div>
+    return (
+        <section className="relative w-full overflow-hidden bg-background">
+            <div className="relative group w-full">
+              {/* Carousel Container */}
+              <div className="relative aspect-[4/5] sm:aspect-[16/9] md:aspect-[2/1] lg:aspect-[2.4/1] w-full">
+              {slides.map((slide, index) => (
+                <div
+                  key={slide.id}
+                  className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+                    index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
+                  }`}
+                >
+                  <Image
+                    src={slide.url}
+                    alt={slide.alt}
+                    fill
+                    priority={index === 0}
+                    className="object-contain"
+                    sizes="100vw"
+                  />
+                </div>
+              ))}
+            </div>
 
         {/* Navigation Arrows - Only show if more than one slide */}
         {slides.length > 1 && (
           <>
             <button
               onClick={prevSlide}
-              className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-2 text-white/70 hover:text-white transition-colors"
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-2 text-foreground/70 hover:text-primary transition-colors"
               aria-label="Previous slide"
             >
               <ChevronLeft className="w-8 h-8 md:w-10 md:h-10" />
             </button>
             <button
               onClick={nextSlide}
-              className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-2 text-white/70 hover:text-white transition-colors"
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-2 text-foreground/70 hover:text-primary transition-colors"
               aria-label="Next slide"
             >
               <ChevronRight className="w-8 h-8 md:w-10 md:h-10" />
@@ -113,7 +113,7 @@ export default function HeroSection() {
               key={index}
               onClick={() => setCurrentSlide(index)}
               className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                index === currentSlide ? "bg-white scale-125" : "bg-white/40"
+                index === currentSlide ? "bg-primary scale-125" : "bg-primary/40"
               }`}
               aria-label={`Go to slide ${index + 1}`}
             />
@@ -122,14 +122,14 @@ export default function HeroSection() {
       </div>
 
       {/* Trust/Info Bar Divider */}
-      <div className="w-full bg-[#3d0021] border-t border-[#9c848d]/20 py-8">
+      <div className="w-full bg-secondary border-t border-border py-8">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
             {/* Shipping Info */}
             <div className="flex flex-col items-center gap-2">
-              <div className="flex items-center gap-2 text-[#ffffff] font-display font-bold text-[11px] tracking-[0.15em] uppercase">
+              <div className="flex items-center gap-2 text-foreground font-display font-bold text-[11px] tracking-[0.15em] uppercase">
                 <svg
-                  className="w-4 h-4"
+                  className="w-4 h-4 text-primary"
                   fill="currentColor"
                   viewBox="0 0 640 512"
                 >
@@ -137,16 +137,16 @@ export default function HeroSection() {
                 </svg>
                 ENVIAMOS SUAS COMPRAS
               </div>
-              <p className="text-[#9c848d] text-[10px] tracking-wider uppercase">
+              <p className="text-muted-foreground text-[10px] tracking-wider uppercase">
                 Entrega em todo o país
               </p>
             </div>
 
             {/* Payment Info */}
             <div className="flex flex-col items-center gap-2">
-              <div className="flex items-center gap-2 text-[#ffffff] font-display font-bold text-[11px] tracking-[0.15em] uppercase">
+              <div className="flex items-center gap-2 text-foreground font-display font-bold text-[11px] tracking-[0.15em] uppercase">
                 <svg
-                  className="w-4 h-4"
+                  className="w-4 h-4 text-primary"
                   fill="currentColor"
                   viewBox="0 0 576 512"
                 >
@@ -154,16 +154,16 @@ export default function HeroSection() {
                 </svg>
                 PAGUE COMO QUISER
               </div>
-              <p className="text-[#9c848d] text-[10px] tracking-wider uppercase">
+              <p className="text-muted-foreground text-[10px] tracking-wider uppercase">
                 Cartões de crédito ou à vista
               </p>
             </div>
 
             {/* Security Info */}
             <div className="flex flex-col items-center gap-2">
-              <div className="flex items-center gap-2 text-[#ffffff] font-display font-bold text-[11px] tracking-[0.15em] uppercase">
+              <div className="flex items-center gap-2 text-foreground font-display font-bold text-[11px] tracking-[0.15em] uppercase">
                 <svg
-                  className="w-3.5 h-3.5"
+                  className="w-3.5 h-3.5 text-primary"
                   fill="currentColor"
                   viewBox="0 0 448 512"
                 >
@@ -171,7 +171,7 @@ export default function HeroSection() {
                 </svg>
                 COMPRE COM SEGURANÇA
               </div>
-              <p className="text-[#9c848d] text-[10px] tracking-wider uppercase">
+              <p className="text-muted-foreground text-[10px] tracking-wider uppercase">
                 Seus dados sempre protegidos
               </p>
             </div>
