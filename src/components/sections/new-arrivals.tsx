@@ -117,20 +117,20 @@ const ProductCard = ({ product }: { product: Product }) => (
           </span>
         )}
         {product.hasPromo && product.oldPrice && (
-          <span className="bg-[#e11d48] text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
+          <span className="bg-[#800020] text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
             -{Math.round((1 - product.price / product.oldPrice) * 100)}% OFF
           </span>
         )}
       </div>
 
-      <button className="absolute top-3 right-3 w-10 h-10 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center text-[#71717a] hover:bg-white hover:text-[#e11d48] transition-all shadow-sm">
+      <button className="absolute top-3 right-3 w-10 h-10 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center text-[#71717a] hover:bg-white hover:text-[#800020] transition-all shadow-sm">
         <Heart size={20} />
       </button>
 
       {/* Hover Actions */}
       <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent transition-all duration-300 opacity-0 group-hover:opacity-100 hidden md:block">
         <div className="flex gap-2">
-          <button className="flex-1 bg-white text-black text-sm font-medium py-2.5 rounded-md flex items-center justify-center gap-2 hover:bg-[#e11d48] hover:text-white transition-colors">
+          <button className="flex-1 bg-white text-black text-sm font-medium py-2.5 rounded-md flex items-center justify-center gap-2 hover:bg-[#800020] hover:text-white transition-colors">
             <ShoppingBag size={18} />
             Adicionar
           </button>
@@ -143,7 +143,7 @@ const ProductCard = ({ product }: { product: Product }) => (
 
     <div className="py-4 flex flex-col flex-grow">
       <p className="text-[11px] text-[#71717a] uppercase tracking-widest mb-1 font-semibold">{product.category}</p>
-      <h3 className="text-sm font-medium text-black line-clamp-2 mb-2 group-hover:text-[#e11d48] transition-colors">
+      <h3 className="text-sm font-medium text-black line-clamp-2 mb-2 group-hover:text-[#800020] transition-colors">
         {product.title}
       </h3>
       
@@ -186,7 +186,7 @@ const NewArrivals = () => {
           </div>
           <a 
             href="/novidades" 
-            className="text-[#e11d48] text-sm font-bold flex items-center gap-1 hover:underline transition-all"
+            className="text-[#800020] text-sm font-bold flex items-center gap-1 hover:underline transition-all"
           >
             Ver todos <ArrowRight size={16} />
           </a>
