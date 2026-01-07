@@ -125,7 +125,7 @@ const Footer = () => {
               </li>
               <li className="flex items-center space-x-3">
                 <Mail size={14} className="text-[#9c848d]" />
-                <span>contato.sheilamodasplussize@gmail.com</span>
+                <span>contato.tinaplus@gmail.com</span>
               </li>
               <li className="flex items-start space-x-3">
                 <MapPin size={14} className="mt-0.5 text-[#9c848d]" />
@@ -139,7 +139,7 @@ const Footer = () => {
       {/* Bottom Bar */}
       <div className="border-t border-[#9c848d]/20 py-6">
         <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center text-[10px] text-[#9c848d] tracking-wider uppercase">
-          <p>Copyright Sheila Modas Plus Size - 2026. Todos os direitos reservados.</p>
+          <p>Copyright Tina Plus - 2026. Todos os direitos reservados.</p>
           <div className="mt-4 md:mt-0 flex items-center space-x-4">
             <span>Criado com</span>
             <div className="opacity-70 grayscale hover:grayscale-0 transition-all">
