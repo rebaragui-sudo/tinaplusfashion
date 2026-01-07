@@ -10,13 +10,18 @@ const Footer = () => {
         {/* Main Footer Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-16">
           
-          {/* Brand Column */}
-          <div className="lg:col-span-3">
-            <div className="flex items-center gap-2 mb-6">
-              <h2 className="font-serif text-3xl font-bold text-[#000000]">
-                Tina<span className="text-[#D4AF37]"> Plus</span>
-              </h2>
-            </div>
+            {/* Brand Column */}
+            <div className="lg:col-span-3">
+              <div className="flex items-center gap-3 mb-6">
+                <img 
+                  src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/274740645_329754545882127_7954351337395034502_n-1767805261577.jpg?width=8000&height=8000&resize=contain" 
+                  alt="Tina Plus Logo" 
+                  className="h-12 w-12 rounded-full object-cover border border-[#D4AF37]"
+                />
+                <h2 className="font-serif text-3xl font-bold text-[#000000]">
+                  Tina<span className="text-[#D4AF37]"> Plus</span>
+                </h2>
+              </div>
             <p className="text-sm leading-relaxed text-[#71717a] mb-6">
               Moda plus size com elegância, conforto e caimento perfeito para todas as mulheres.
             </p>
