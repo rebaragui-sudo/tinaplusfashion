@@ -12,11 +12,11 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
  */
 
 const slides = [
-  {
-    id: 1,
-    url: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/ea02e2c1-3719-4f3c-b449-729e57b40008-sheilamodasplussize-com/assets/images/2-slide-1762514985209-8803278792-b741101ff1578b85b-3.webp",
-    alt: "Sheila Modas Plus Size Fashion Banner",
-  },
+    {
+      id: 1,
+      url: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/ea02e2c1-3719-4f3c-b449-729e57b40008-sheilamodasplussize-com/assets/images/2-slide-1762514985209-8803278792-b741101ff1578b85b-3.webp",
+      alt: "Tina Plus Fashion Banner",
+    },
   // Add more slides here if they were available, for now we replicate the single one seen in screenshots
 ];
 
