@@ -11,9 +11,12 @@ import {
   Image as ImageIcon, 
   Loader2,
   Save,
-  X
+  X,
+  ExternalLink,
+  ChevronLeft
 } from 'lucide-react';
 import { toast } from 'sonner';
+import Link from 'next/link';
 
 interface Product {
   id: string;
