@@ -1,76 +1,52 @@
-import React from 'react';
-import { ArrowRight, ShoppingBag, Eye, Heart } from 'lucide-react';
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import { ArrowRight, ShoppingBag, Eye, Heart, Loader2 } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
 
 interface Product {
-  id: number;
+  id: string;
   category: string;
   name: string;
-  price: string;
-  originalPrice: string;
-  discount: string;
-  installments: string;
-  image: string;
-  badges: string[];
-  sizes: string[];
-  colors?: string[];
+  price: number;
+  image_url: string;
+  is_featured: boolean;
+  is_new_arrival: boolean;
 }
 
-const products: Product[] = [
-  {
-    id: 1,
-    category: 'conjuntos',
-    name: 'Conjunto Verão Rosa Candy',
-    price: 'R$\u00A0179,90',
-    originalPrice: 'R$\u00A0259,90',
-    discount: '-30%',
-    installments: 'ou 10x de R$\u00A017,99 sem juros',
-    image: 'https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/IMG-20250915-WA0452-resized-1767804397259.jpg?width=8000&height=8000&resize=contain',
-    badges: ['Oferta'],
-    sizes: ['44', '46', '48', '50', '52', '+2'],
-    colors: ['bg-pink-200']
-  },
-  {
-    id: 2,
-    category: 'conjuntos',
-    name: 'Conjunto Alfaiataria Nude',
-    price: 'R$\u00A0229,90',
-    originalPrice: 'R$\u00A0329,90',
-    discount: '-30%',
-    installments: 'ou 10x de R$\u00A022,99 sem juros',
-    image: 'https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/IMG-20251001-WA0178-resized-1767804430725.jpg?width=8000&height=8000&resize=contain',
-    badges: ['Novidade'],
-    sizes: ['44', '46', '48', '50', '52', '+1'],
-    colors: ['bg-[#f5f3f1]']
-  },
-  {
-    id: 3,
-    category: 'conjuntos',
-    name: 'Conjunto Casual Verde Água',
-    price: 'R$\u00A0189,90',
-    originalPrice: 'R$\u00A0279,90',
-    discount: '-32%',
-    installments: 'ou 10x de R$\u00A018,99 sem juros',
-    image: 'https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/IMG-20251002-WA0066-resized-1767804443812.jpg?width=8000&height=8000&resize=contain',
-    badges: ['Até 32% OFF'],
-    sizes: ['44', '46', '48', '50', '52', '+2'],
-    colors: ['bg-emerald-100']
-  },
-  {
-    id: 4,
-    category: 'estampados',
-    name: 'Vestido Estampado Tropical',
-    price: 'R$\u00A0154,90',
-    originalPrice: 'R$\u00A0229,90',
-    discount: '-32%',
-    installments: 'ou 10x de R$\u00A015,49 sem juros',
-    image: 'https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/IMG-20251007-WA0233-1767804459374.jpg?width=8000&height=8000&resize=contain',
-    badges: ['Destaque'],
-    sizes: ['46', '48', '50', '52', '54', '+2'],
-    colors: ['bg-blue-100']
-  }
-];
-
 export default function FeaturedProductsGrid() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchFeaturedProducts() {
+      try {
+        const { data, error } = await supabase
+          .from('products')
+          .select('*')
+          .eq('is_featured', true)
+          .limit(4);
+
+        if (error) throw error;
+        setProducts(data || []);
+      } catch (error) {
+        console.error('Error fetching featured products:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchFeaturedProducts();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="py-16 flex justify-center items-center">
+        <Loader2 className="animate-spin text-[#800020]" size={32} />
+      </div>
+    );
+  }
+
   return (
     <section className="py-16 bg-secondary">
       <div className="container mx-auto px-4">
@@ -97,21 +73,21 @@ export default function FeaturedProductsGrid() {
               {/* Image Container */}
               <div className="relative aspect-[3/4] overflow-hidden bg-secondary">
                 <img
-                  src={product.image}
+                  src={product.image_url}
                   alt={product.name}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 
                 {/* Badges */}
                 <div className="absolute top-3 left-3 flex flex-col gap-2">
-                  {product.badges.map((badge, idx) => (
-                    <span 
-                      key={idx} 
-                      className={`${badge.includes('Novidade') ? 'bg-black' : 'bg-[#800020]'} text-white text-[10px] font-bold uppercase px-2 py-1 rounded-sm`}
-                    >
-                      {badge}
+                  {product.is_new_arrival && (
+                    <span className="bg-black text-white text-[10px] font-bold uppercase px-2 py-1 rounded-sm">
+                      Novidade
                     </span>
-                  ))}
+                  )}
+                  <span className="bg-[#800020] text-white text-[10px] font-bold uppercase px-2 py-1 rounded-sm">
+                    Oferta
+                  </span>
                 </div>
 
                 {/* Wishlist Button */}
@@ -143,18 +119,18 @@ export default function FeaturedProductsGrid() {
                 </a>
                 
                 <div className="flex items-baseline gap-2 flex-wrap mt-auto">
-                  <span className="text-lg font-bold text-foreground">{product.price}</span>
-                  <span className="text-xs text-muted-foreground line-through">{product.originalPrice}</span>
-                  <span className="text-xs text-[#800020] font-bold">{product.discount}</span>
+                  <span className="text-lg font-bold text-foreground">
+                    {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
+                  </span>
                 </div>
                 
                 <p className="text-[11px] text-muted-foreground mt-1">
-                  {product.installments}
+                  ou 10x de {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price / 10)} sem juros
                 </p>
 
                 {/* Size Chips */}
                 <div className="hidden md:flex gap-1 mt-4 flex-wrap">
-                  {product.sizes.map((size, idx) => (
+                  {['44', '46', '48', '50', '52'].map((size, idx) => (
                     <span 
                       key={idx} 
                       className="text-[10px] px-2 py-1 bg-secondary rounded text-muted-foreground font-medium"
