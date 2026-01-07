@@ -385,7 +385,7 @@ export default function AdminPage() {
                             <Edit size={18} />
                           </button>
                           <button
-                            onClick={() => handleDelete(product.id)}
+                            onClick={() => setDeleteConfirm(product.id)}
                             className="p-1.5 text-red-600 hover:bg-red-50 rounded-md transition-colors"
                           >
                             <Trash2 size={18} />
@@ -399,6 +399,30 @@ export default function AdminPage() {
             </table>
           </div>
         </section>
+
+        {/* Delete Confirmation Modal */}
+        {deleteConfirm && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+            <div className="bg-white rounded-xl p-6 max-w-sm w-full shadow-xl">
+              <h3 className="text-xl font-bold mb-2">Excluir Produto?</h3>
+              <p className="text-gray-600 mb-6">Esta ação não pode ser desfeita. Tem certeza que deseja excluir este produto?</p>
+              <div className="flex justify-end gap-3">
+                <button
+                  onClick={() => setDeleteConfirm(null)}
+                  className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-md transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={() => handleDelete(deleteConfirm)}
+                  className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+                >
+                  Excluir
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
