@@ -18,61 +18,52 @@ const NewsletterSection: React.FC = () => {
     // Implementation for subscription would go here
   };
 
-  return (
-    <section className="bg-[#3d0021] py-[60px] px-4 md:px-0">
-      <div className="container mx-auto max-w-[1200px]">
-        {/* Section Title with Horizontal Rules */}
-        <div className="flex items-center justify-center mb-8">
-          <div className="flex-1 border-b border-[#9c848d]/40"></div>
-          <h2 className="mx-6 text-[24px] font-display font-bold uppercase tracking-wider text-white whitespace-nowrap">
-            Nosso Newsletter
-          </h2>
-          <div className="flex-1 border-b border-[#9c848d]/40"></div>
-        </div>
-
-        {/* Newsletter Description */}
-        <p className="text-center font-sans text-[14px] text-white/90 mb-6">
-          Inscreva-se para receber as últimas novidades.
-        </p>
-
-        {/* Subscription Form */}
-        <form 
-          onSubmit={handleSubmit}
-          className="max-w-[400px] mx-auto flex flex-col gap-4"
-        >
-          <div className="flex flex-col gap-3">
-            <input
-              type="text"
-              placeholder="Nome Completo"
-              required
-              className="w-full bg-[#3d0021] border border-[#9c848d] px-4 py-2.5 text-white placeholder:text-[#9c848d] focus:outline-none focus:ring-1 focus:ring-[#9c848d] transition-all duration-300 font-sans text-sm rounded-none"
-            />
-            <input
-              type="email"
-              placeholder="Seu E-mail"
-              required
-              className="w-full bg-[#3d0021] border border-[#9c848d] px-4 py-2.5 text-white placeholder:text-[#9c848d] focus:outline-none focus:ring-1 focus:ring-[#9c848d] transition-all duration-300 font-sans text-sm rounded-none"
-            />
+    return (
+      <section className="bg-secondary py-[60px] px-4 md:px-0 border-t border-border">
+        <div className="container mx-auto max-w-[1200px]">
+          {/* Section Title with Horizontal Rules */}
+          <div className="flex items-center justify-center mb-8">
+            <div className="flex-1 border-b border-border"></div>
+            <h2 className="mx-6 text-[24px] font-display font-bold uppercase tracking-wider text-foreground whitespace-nowrap">
+              Nosso Newsletter
+            </h2>
+            <div className="flex-1 border-b border-border"></div>
           </div>
 
-          <button
-            type="submit"
-            className="w-full md:w-max mx-auto bg-[#9c848d] text-[#3d0021] font-display font-bold text-[13px] uppercase tracking-[0.2em] py-3 px-10 hover:bg-white transition-colors duration-300 rounded-none cursor-pointer mt-2"
-          >
-            Inscrever-se
-          </button>
-        </form>
-      </div>
+          {/* Newsletter Description */}
+          <p className="text-center font-sans text-[14px] text-muted-foreground mb-6">
+            Inscreva-se para receber as últimas novidades.
+          </p>
 
-      <style jsx global>{`
-        .font-display {
-          font-family: "Roboto Condensed", sans-serif;
-        }
-        .font-sans {
-          font-family: "Roboto", sans-serif;
-        }
-      `}</style>
-    </section>
+          {/* Subscription Form */}
+          <form 
+            onSubmit={handleSubmit}
+            className="max-w-[400px] mx-auto flex flex-col gap-4"
+          >
+            <div className="flex flex-col gap-3">
+              <input
+                type="text"
+                placeholder="Nome Completo"
+                required
+                className="w-full bg-background border border-border px-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary transition-all duration-300 font-sans text-sm rounded-none"
+              />
+              <input
+                type="email"
+                placeholder="Seu E-mail"
+                required
+                className="w-full bg-background border border-border px-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary transition-all duration-300 font-sans text-sm rounded-none"
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="w-full md:w-max mx-auto bg-primary text-primary-foreground font-display font-bold text-[13px] uppercase tracking-[0.2em] py-3 px-10 hover:bg-foreground hover:text-background transition-colors duration-300 rounded-none cursor-pointer mt-2"
+            >
+              Inscrever-se
+            </button>
+          </form>
+        </div>
+      </section>
   );
 };
 
