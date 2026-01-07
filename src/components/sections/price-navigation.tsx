@@ -60,7 +60,7 @@ const PriceNavigation = () => {
                 <span className="text-[#000000] text-sm md:text-base font-medium font-sans">
                   {card.title}
                 </span>
-                <span className="text-[#e11d48] text-[10px] md:text-xs font-medium font-sans leading-tight">
+                <span className="text-[#800020] text-[10px] md:text-xs font-medium font-sans leading-tight">
                   por
                 </span>
                 <div className="flex items-baseline gap-1">
