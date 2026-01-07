@@ -64,27 +64,27 @@ export default function HeroSection() {
 
   return (
       <section className="relative w-full overflow-hidden bg-[#3d0021]">
-        <div className="relative group w-full">
-          {/* Carousel Container */}
-          <div className="relative aspect-[4/5] sm:aspect-[16/9] md:aspect-[21/9] lg:aspect-[25/9] w-full">
-          {slides.map((slide, index) => (
-            <div
-              key={slide.id}
-              className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-                index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
-              }`}
-            >
-              <Image
-                src={slide.url}
-                alt={slide.alt}
-                fill
-                priority={index === 0}
-                className="object-cover object-top"
-                sizes="100vw"
-              />
-            </div>
-          ))}
-        </div>
+          <div className="relative group w-full">
+            {/* Carousel Container */}
+            <div className="relative aspect-[4/5] sm:aspect-[16/9] md:aspect-[2/1] lg:aspect-[2.4/1] w-full">
+            {slides.map((slide, index) => (
+              <div
+                key={slide.id}
+                className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+                  index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
+                }`}
+              >
+                <Image
+                  src={slide.url}
+                  alt={slide.alt}
+                  fill
+                  priority={index === 0}
+                  className="object-contain"
+                  sizes="100vw"
+                />
+              </div>
+            ))}
+          </div>
 
         {/* Navigation Arrows - Only show if more than one slide */}
         {slides.length > 1 && (
