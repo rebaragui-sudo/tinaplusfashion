@@ -1,65 +1,59 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Roboto+Condensed:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --color-background: #ffffff;
-  --color-foreground: #3d0021;
+  --color-background: #faf9f6;
+  --color-foreground: #09090b;
 
   --color-card: #ffffff;
-  --color-card-foreground: #3d0021;
+  --color-card-foreground: #09090b;
 
   --color-popover: #ffffff;
-  --color-popover-foreground: #3d0021;
+  --color-popover-foreground: #09090b;
 
-  --color-primary: #C5A059;
+  --color-primary: #e11d48;
   --color-primary-foreground: #ffffff;
 
-  --color-secondary: #fdfcfb;
-  --color-secondary-foreground: #3d0021;
+  --color-secondary: #f3f4f6;
+  --color-secondary-foreground: #09090b;
 
-  --color-muted: #f4f4f4;
-  --color-muted-foreground: #9c848d;
+  --color-muted: #f3f4f6;
+  --color-muted-foreground: #71717a;
 
-  --color-accent: #C5A059;
+  --color-accent: #e11d48;
   --color-accent-foreground: #ffffff;
 
   --color-destructive: #ef4444;
   --color-destructive-foreground: #fafafa;
 
-  --color-border: #e5e7eb;
-  --color-input: #e5e7eb;
-  --color-ring: #C5A059;
+  --color-border: #e4e4e7;
+  --color-input: #e4e4e7;
+  --color-ring: #e11d48;
 
-  --color-chart-1: #e67e22;
+  --color-chart-1: #e11d48;
   --color-chart-2: #2d8659;
   --color-chart-3: #1e3a5f;
   --color-chart-4: #f1c40f;
   --color-chart-5: #e74c3c;
 
   --color-sidebar: #ffffff;
-  --color-sidebar-foreground: #3d0021;
-  --color-sidebar-primary: #C5A059;
+  --color-sidebar-foreground: #09090b;
+  --color-sidebar-primary: #e11d48;
   --color-sidebar-primary-foreground: #ffffff;
-  --color-sidebar-accent: #fdfcfb;
-  --sidebar-accent-foreground: #3d0021;
-  --color-sidebar-border: #e5e7eb;
-  --color-sidebar-ring: #C5A059;
+  --color-sidebar-accent: #f3f4f6;
+  --color-sidebar-accent-foreground: #e11d48;
+  --color-sidebar-border: #e4e4e7;
+  --color-sidebar-ring: #e11d48;
 
-  --color-whatsapp: #25d366;
-  --color-burgundy-dark: #3d0021;
-  --color-burgundy-light: #541d3b;
-  --color-taupe: #9c848d;
-  --color-gold: #C5A059;
+  --font-sans: "Inter", sans-serif;
+  --font-serif: "Playfair Display", serif;
 
-  --font-sans: "Roboto", sans-serif;
-  --font-display: "Roboto Condensed", sans-serif;
-
-  --radius-lg: 0px;
-  --radius-md: 0px;
-  --radius-sm: 0px;
+  --radius-lg: 0.75rem;
+  --radius-md: 0.5rem;
+  --radius-sm: 0.25rem;
 
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
@@ -88,40 +82,40 @@
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: #9c848d;
+    border-color: #e4e4e7;
   }
 }
 
 @layer base {
   :root {
-    --background: #ffffff;
-    --foreground: #3d0021;
+    --background: #faf9f6;
+    --foreground: #09090b;
     --card: #ffffff;
-    --card-foreground: #3d0021;
+    --card-foreground: #09090b;
     --popover: #ffffff;
-    --popover-foreground: #3d0021;
-    --primary: #C5A059;
+    --popover-foreground: #09090b;
+    --primary: #e11d48;
     --primary-foreground: #ffffff;
-    --secondary: #fdfcfb;
-    --secondary-foreground: #3d0021;
-    --muted: #f4f4f4;
-    --muted-foreground: #9c848d;
-    --accent: #C5A059;
+    --secondary: #f3f4f6;
+    --secondary-foreground: #09090b;
+    --muted: #f3f4f6;
+    --muted-foreground: #71717a;
+    --accent: #e11d48;
     --accent-foreground: #ffffff;
     --destructive: #ef4444;
     --destructive-foreground: #fafafa;
-    --border: #e5e7eb;
-    --input: #e5e7eb;
-    --ring: #C5A059;
-    --radius: 0px;
+    --border: #e4e4e7;
+    --input: #e4e4e7;
+    --ring: #e11d48;
+    --radius: 0.5rem;
     --sidebar-background: #ffffff;
-    --sidebar-foreground: #3d0021;
-    --sidebar-primary: #C5A059;
+    --sidebar-foreground: #09090b;
+    --sidebar-primary: #e11d48;
     --sidebar-primary-foreground: #ffffff;
-    --sidebar-accent: #fdfcfb;
-    --sidebar-accent-foreground: #3d0021;
-    --sidebar-border: #e5e7eb;
-    --sidebar-ring: #C5A059;
+    --sidebar-accent: #f3f4f6;
+    --sidebar-accent-foreground: #e11d48;
+    --sidebar-border: #e4e4e7;
+    --sidebar-ring: #e11d48;
   }
 }
 
@@ -141,11 +135,7 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display font-bold uppercase tracking-wider;
-  }
-
-  a {
-    @apply transition-colors duration-200;
+    @apply font-serif font-bold;
   }
 
   .container {
@@ -154,60 +144,44 @@
     margin-left: auto;
     padding-right: 1rem;
     padding-left: 1rem;
-    max-width: 1200px;
+    max-width: 1280px;
   }
 
-  .font-condensed {
-    font-family: "Roboto Condensed", sans-serif;
+  .font-display {
+    font-family: "Playfair Display", serif;
   }
 
-  .section-title {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    @apply font-display text-2xl font-bold uppercase my-8;
+  .font-body {
+    font-family: "Inter", sans-serif;
   }
 
-  .section-title::before,
-  .section-title::after {
-    content: "";
-    flex: 1;
-    border-bottom: 1px solid var(--color-tau);
+  .btn-boutique {
+    @apply inline-flex items-center justify-center px-6 py-3 text-sm font-medium transition-all duration-200 rounded-md;
   }
 
-  .section-title:not(:empty)::before {
-    margin-right: 1.5rem;
-  }
-
-  .section-title:not(:empty)::after {
-    margin-left: 1.5rem;
-  }
-
-  button, .btn {
-    @apply font-display uppercase tracking-widest text-sm transition-all duration-300;
-    border-radius: 0;
-  }
-
-  input, textarea {
-    @apply bg-transparent border border-taupe px-4 py-2 focus:outline-none focus:ring-1 focus:ring-taupe;
-    border-radius: 0;
+  .product-card-shadow {
+    box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.05);
   }
 }
 
 @layer utilities {
-  .aspect-fashion {
-    aspect-ratio: 1 / 1.5;
-  }
-  
-  .text-installment {
-    @apply text-[10px] uppercase text-taupe;
+  .aspect-product {
+    aspect-ratio: 3 / 4;
   }
 
-  .text-price {
-    @apply text-lg font-display;
+  .text-price-main {
+    @apply text-lg font-bold text-foreground;
   }
 
-  .text-product-title {
-    @apply text-sm font-display font-bold uppercase text-center;
+  .text-price-old {
+    @apply text-sm text-muted-foreground line-through;
+  }
+
+  .text-discount {
+    @apply text-xs font-bold text-primary;
+  }
+
+  .nav-link-hover {
+    @apply relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full;
   }
 }
