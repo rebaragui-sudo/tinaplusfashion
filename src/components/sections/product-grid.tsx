@@ -77,71 +77,70 @@ const products: Product[] = [
 ];
 
 const ProductCard = ({ product }: { product: Product }) => {
-  return (
-    <div className="flex flex-col items-center group mb-10">
-      <div className="relative w-full aspect-fashion overflow-hidden bg-burgundy-light">
-        <Image
-          src={product.image}
-          alt={product.title}
-          fill
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-        />
-      </div>
-      
-      <div className="mt-4 flex flex-col items-center text-center w-full px-2">
-        <h3 className="text-product-title h-10 line-clamp-2 mb-1" style={{ color: '#ffffff' }}>
-          {product.title}
-        </h3>
-        
-        <div className="text-price mb-1" style={{ color: '#ffffff' }}>
-          {product.price}
+    return (
+      <div className="flex flex-col items-center group mb-10">
+        <div className="relative w-full aspect-fashion overflow-hidden bg-secondary">
+          <Image
+            src={product.image}
+            alt={product.title}
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+          />
         </div>
         
-        <div className="text-installment mb-4" style={{ color: '#9c848d' }}>
-          {product.installments}
-        </div>
-        
-        <button 
-          className="w-full py-2.5 bg-taupe hover:bg-[#b0969f] text-burgundy-dark font-display font-bold uppercase tracking-widest text-[13px] transition-colors duration-300"
-          style={{ backgroundColor: '#9c848d', color: '#3d0021' }}
-        >
-          COMPRAR
-        </button>
-      </div>
-    </div>
-  );
-};
-
-export default function ProductGrid() {
-  return (
-    <section className="py-[60px] bg-burgundy-dark">
-      <div className="container mx-auto">
-        {/* Section Title with Lines */}
-        <div className="flex items-center justify-center mb-12">
-          <div className="flex-grow border-b border-taupe opacity-30"></div>
-          <h2 className="px-6 text-2xl font-display font-bold uppercase tracking-[2px] whitespace-nowrap" style={{ color: '#ffffff' }}>
-            Destaques
-          </h2>
-          <div className="flex-grow border-b border-taupe opacity-30"></div>
-        </div>
-
-        {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-5 gap-y-2">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
-
-        {/* View All Button */}
-        <div className="mt-12 flex justify-center">
+        <div className="mt-4 flex flex-col items-center text-center w-full px-2">
+          <h3 className="text-product-title h-10 line-clamp-2 mb-1 text-foreground">
+            {product.title}
+          </h3>
+          
+          <div className="text-price mb-1 text-foreground font-bold">
+            {product.price}
+          </div>
+          
+          <div className="text-installment mb-4 text-muted-foreground uppercase tracking-tighter text-[10px]">
+            {product.installments}
+          </div>
+          
           <button 
-            className="px-12 py-3 bg-taupe/20 border border-taupe hover:bg-taupe hover:text-burgundy-dark text-white font-display font-bold uppercase tracking-widest text-sm transition-all duration-300"
+            className="w-full py-2.5 bg-primary hover:bg-foreground hover:text-background text-primary-foreground font-display font-bold uppercase tracking-widest text-[13px] transition-colors duration-300"
           >
-            VER TODOS OS PRODUTOS
+            COMPRAR
           </button>
         </div>
       </div>
-    </section>
-  );
-}
+    );
+  };
+  
+  export default function ProductGrid() {
+    return (
+      <section className="py-[60px] bg-background">
+        <div className="container mx-auto">
+          {/* Section Title with Lines */}
+          <div className="flex items-center justify-center mb-12">
+            <div className="flex-grow border-b border-border"></div>
+            <h2 className="px-6 text-2xl font-display font-bold uppercase tracking-[2px] whitespace-nowrap text-foreground">
+              Destaques
+            </h2>
+            <div className="flex-grow border-b border-border"></div>
+          </div>
+  
+          {/* Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-5 gap-y-2">
+            {products.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+  
+          {/* View All Button */}
+          <div className="mt-12 flex justify-center">
+            <button 
+              className="px-12 py-3 bg-secondary border border-border hover:bg-primary hover:text-primary-foreground text-foreground font-display font-bold uppercase tracking-widest text-sm transition-all duration-300"
+            >
+              VER TODOS OS PRODUTOS
+            </button>
+          </div>
+        </div>
+      </section>
+    );
+  }
