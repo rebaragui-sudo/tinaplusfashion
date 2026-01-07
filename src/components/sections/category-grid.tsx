@@ -3,25 +3,25 @@ import Image from 'next/image';
 
 const categories = [
   {
-    title: 'Blazers',
-    offer: 'ATÉ 60% OFF',
-    image: 'https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/ea02e2c1-3719-4f3c-b449-729e57b40008-hubpmg-com-br/assets/images/blazer-bege-1--ZXdRYvY-1.png',
-    href: '/blazers',
-    alt: 'Blazers até 60%'
+    title: 'Vestidos',
+    offer: 'ATÉ 40% OFF',
+    image: 'https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/IMG-20250926-WA0044-resized-1767804410315.jpg?width=8000&height=8000&resize=contain',
+    href: '/vestidos',
+    alt: 'Vestidos Plus Size'
   },
   {
-    title: 'Bermudas',
-    offer: 'A PARTIR DE 20% OFF',
-    image: 'https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/ea02e2c1-3719-4f3c-b449-729e57b40008-hubpmg-com-br/assets/images/blazer-mostarda-1-7WQyBaXJ-3.png',
-    href: '/bermudas',
-    alt: 'Bermudas a partir de 20% OFF'
+    title: 'Conjuntos',
+    offer: 'NOVIDADES',
+    image: 'https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/IMG-20251002-WA0066-resized-1767804443812.jpg?width=8000&height=8000&resize=contain',
+    href: '/conjuntos',
+    alt: 'Conjuntos Plus Size'
   },
   {
-    title: 'Regatas',
-    offer: 'ATÉ 60% OFF',
-    image: 'https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/ea02e2c1-3719-4f3c-b449-729e57b40008-hubpmg-com-br/assets/images/regata-branca-BmI6_eQT-4.png',
-    href: '/regatas',
-    alt: 'Regatas até 60%'
+    title: 'Estampados',
+    offer: 'LANÇAMENTOS',
+    image: 'https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/IMG-20251007-WA0233-1767804459374.jpg?width=8000&height=8000&resize=contain',
+    href: '/estampados',
+    alt: 'Looks Estampados'
   }
 ];
 
