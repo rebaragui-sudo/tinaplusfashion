@@ -21,7 +21,7 @@ const NewsletterModal = () => {
     setIsOpen(false);
   };
 
-  const logoAsset = "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/ea02e2c1-3719-4f3c-b449-729e57b40008-sheilamodasplussize-com/assets/images/logo-1436884897-1751978062-9dec51dd6ef1f3b700bae55-1.webp";
+  const logoAsset = "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/274740645_329754545882127_7954351337395034502_n-1767801263809.jpg?width=8000&height=8000&resize=contain";
 
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center">
