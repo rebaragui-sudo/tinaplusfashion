@@ -55,6 +55,13 @@ export default function HeroSection() {
     setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
   }, []);
 
+  useEffect(() => {
+    const timer = setInterval(() => {
+      nextSlide();
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [nextSlide]);
+
   return (
     <section className="relative w-full overflow-hidden bg-[#3d0021]">
       <div className="relative group mx-auto max-w-[1200px]">
