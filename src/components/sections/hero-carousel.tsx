@@ -12,12 +12,36 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
  */
 
 const slides = [
-    {
-      id: 1,
-      url: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/ea02e2c1-3719-4f3c-b449-729e57b40008-sheilamodasplussize-com/assets/images/2-slide-1762514985209-8803278792-b741101ff1578b85b-3.webp",
-      alt: "Tina Plus Fashion Banner",
-    },
-  // Add more slides here if they were available, for now we replicate the single one seen in screenshots
+  {
+    id: 1,
+    url: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/IMG-20251023-WA0130-resized-1767802553558.jpg?width=8000&height=8000&resize=contain",
+    alt: "Tina Plus Fashion Banner 1",
+  },
+  {
+    id: 2,
+    url: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/IMG-20251020-WA0665-resized-1767802608825.jpg?width=8000&height=8000&resize=contain",
+    alt: "Tina Plus Fashion Banner 2",
+  },
+  {
+    id: 3,
+    url: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/IMG-20251020-WA0616-resized-1767802630019.jpg?width=8000&height=8000&resize=contain",
+    alt: "Tina Plus Fashion Banner 3",
+  },
+  {
+    id: 4,
+    url: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/IMG-20251015-WA0224-resized-1767802656607.jpg?width=8000&height=8000&resize=contain",
+    alt: "Tina Plus Fashion Banner 4",
+  },
+  {
+    id: 5,
+    url: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/IMG-20251010-WA0190-resized-1767802716610.jpg?width=8000&height=8000&resize=contain",
+    alt: "Tina Plus Fashion Banner 5",
+  },
+  {
+    id: 6,
+    url: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/IMG-20250915-WA0470-resized-1767802776978.jpg?width=8000&height=8000&resize=contain",
+    alt: "Tina Plus Fashion Banner 6",
+  },
 ];
 
 export default function HeroSection() {
