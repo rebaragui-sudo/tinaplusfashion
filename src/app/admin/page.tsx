@@ -31,6 +31,7 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
     name: '',
