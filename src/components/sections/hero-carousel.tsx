@@ -63,10 +63,10 @@ export default function HeroSection() {
   }, [nextSlide]);
 
   return (
-    <section className="relative w-full overflow-hidden bg-[#3d0021]">
-      <div className="relative group mx-auto max-w-[1200px]">
-        {/* Carousel Container */}
-        <div className="relative aspect-[1200/1500] sm:aspect-[1200/800] md:aspect-[1200/600] lg:aspect-[1200/500] xl:aspect-[1/1.25] w-full">
+      <section className="relative w-full overflow-hidden bg-[#3d0021]">
+        <div className="relative group w-full">
+          {/* Carousel Container */}
+          <div className="relative aspect-[4/5] sm:aspect-[16/9] md:aspect-[21/9] lg:aspect-[25/9] w-full">
           {slides.map((slide, index) => (
             <div
               key={slide.id}
