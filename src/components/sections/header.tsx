@@ -39,16 +39,16 @@ const Header = () => {
       <div className="container mx-auto px-4 py-6 md:py-8 lg:py-6 flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-0">
         {/* Logo */}
         <div className="flex-shrink-0 w-[120px] md:w-[150px] lg:w-[180px]">
-          <a href="/" className="block">
-            <Image 
-              src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/ea02e2c1-3719-4f3c-b449-729e57b40008-sheilamodasplussize-com/assets/images/logo-1436884897-1751978062-9dec51dd6ef1f3b700bae55-1.webp"
-              alt="Sheila Modas Plus Size"
-              width={180}
-              height={80}
-              priority
-              className="w-full h-auto object-contain"
-            />
-          </a>
+            <a href="/" className="block">
+              <Image 
+                src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/274740645_329754545882127_7954351337395034502_n-1767801263809.jpg?width=8000&height=8000&resize=contain"
+                alt="Tina Plus"
+                width={180}
+                height={80}
+                priority
+                className="w-full h-auto object-contain"
+              />
+            </a>
         </div>
 
         {/* Desktop Navigation Links */}
