@@ -20,37 +20,37 @@ const InfoBanner = () => {
     },
   ];
 
-  return (
-    <section 
-      className="w-full bg-[#3d0021] py-8 border-b border-[#9c848d]/20"
-      aria-label="Informações da loja"
-    >
-      <div className="container mx-auto max-w-[1200px] px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-4">
-          {items.map((item, index) => (
-            <div 
-              key={index} 
-              className="flex flex-col items-center text-center space-y-2 md:px-4"
-            >
-              <div className="flex items-center justify-center mb-1 text-white">
-                <span className="flex items-center gap-3">
-                  {/* Customizing Lucide icons to match the aesthetic if specific assets aren't present */}
-                  {React.cloneElement(item.icon, {
-                    className: "w-[20px] h-[20px] stroke-[1.5]",
-                  })}
-                  <h3 className="font-display text-[13px] md:text-[14px] font-bold uppercase tracking-[0.15em] text-white">
-                    {item.title}
-                  </h3>
-                </span>
+    return (
+      <section 
+        className="w-full bg-secondary py-8 border-b border-border"
+        aria-label="Informações da loja"
+      >
+        <div className="container mx-auto max-w-[1200px] px-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-4">
+            {items.map((item, index) => (
+              <div 
+                key={index} 
+                className="flex flex-col items-center text-center space-y-2 md:px-4"
+              >
+                <div className="flex items-center justify-center mb-1 text-foreground">
+                  <span className="flex items-center gap-3">
+                    {/* Customizing Lucide icons to match the aesthetic if specific assets aren't present */}
+                    {React.cloneElement(item.icon, {
+                      className: "w-[20px] h-[20px] stroke-[1.5] text-primary",
+                    })}
+                    <h3 className="font-display text-[13px] md:text-[14px] font-bold uppercase tracking-[0.15em] text-foreground">
+                      {item.title}
+                    </h3>
+                  </span>
+                </div>
+                <p className="font-sans text-[12px] md:text-[14px] text-muted-foreground leading-relaxed uppercase tracking-wider">
+                  {item.description}
+                </p>
               </div>
-              <p className="font-sans text-[12px] md:text-[14px] text-[#9c848d] leading-relaxed">
-                {item.description}
-              </p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
   );
 };
 
