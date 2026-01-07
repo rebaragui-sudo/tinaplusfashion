@@ -17,31 +17,31 @@ const Footer = () => {
     <footer className="bg-[#3d0021] text-white pt-16">
       <div className="container mx-auto px-4">
         {/* Instagram Section */}
-        <div className="mb-20 text-center">
-          <div className="flex items-center justify-center mb-8">
-            <div className="h-[1px] bg-[#9c848d] flex-grow"></div>
-            <div className="px-6 flex items-center space-x-2">
-              <Instagram size={20} className="text-[#9c848d]" />
-              <h2 className="text-xl font-bold font-display uppercase tracking-widest">@csheilamodas_plus</h2>
+          <div className="mb-20 text-center">
+            <div className="flex items-center justify-center mb-8">
+              <div className="h-[1px] bg-[#9c848d] flex-grow"></div>
+              <div className="px-6 flex items-center space-x-2">
+                <Instagram size={20} className="text-[#9c848d]" />
+                <h2 className="text-xl font-bold font-display uppercase tracking-widest">@tinaplus</h2>
+              </div>
+              <div className="h-[1px] bg-[#9c848d] flex-grow"></div>
             </div>
-            <div className="h-[1px] bg-[#9c848d] flex-grow"></div>
-          </div>
-          
-          <div className="flex flex-col items-center">
-            <div className="bg-[#541d3b] p-4 mb-4 rounded-full">
-              <Instagram size={48} className="text-white" />
+            
+            <div className="flex flex-col items-center">
+              <div className="bg-[#541d3b] p-4 mb-4 rounded-full">
+                <Instagram size={48} className="text-white" />
+              </div>
+              <p className="text-xs uppercase tracking-widest text-[#9c848d] mb-6">Nosso Instagram</p>
+              <a 
+                href="https://www.instagram.com/tinaplus" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="bg-[#9c848d] text-[#3d0021] px-8 py-3 text-xs font-bold tracking-widest uppercase hover:opacity-90 transition-opacity"
+              >
+                Ver Perfil
+              </a>
             </div>
-            <p className="text-xs uppercase tracking-widest text-[#9c848d] mb-6">Nosso Instagram</p>
-            <a 
-              href="https://www.instagram.com/csheilamodas_plus" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="bg-[#9c848d] text-[#3d0021] px-8 py-3 text-xs font-bold tracking-widest uppercase hover:opacity-90 transition-opacity"
-            >
-              Ver Perfil
-            </a>
           </div>
-        </div>
 
         {/* Siga-nos Section */}
         <div className="mb-20 text-center">
