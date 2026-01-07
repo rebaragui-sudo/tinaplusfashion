@@ -5,7 +5,7 @@ import ErrorReporter from "@/components/ErrorReporter";
 import Script from "next/script";
 
 export const metadata: Metadata = {
-  title: "Sheila Modas Plus Size | Moda Feminina Plus Size",
+  title: "Tina Plus | Moda Feminina Plus Size",
   description: "A melhor moda plus size feminina com elegância e sofisticação. Encontre conjuntos, macacões, chemises e muito mais.",
 };
 
