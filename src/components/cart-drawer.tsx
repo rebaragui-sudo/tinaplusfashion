@@ -134,7 +134,7 @@ const CartDrawer = () => {
                 </span>
               </div>
               <p className="text-[10px] text-[#71717a] text-center mt-2 italic">
-                *Frete grátis para compras acima de R$ 350,00
+                *Frete grátis para compra mínima de R$ 350,00
               </p>
             </div>
             <div className="w-full space-y-2">
