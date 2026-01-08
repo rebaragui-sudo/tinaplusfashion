@@ -165,17 +165,18 @@ export default function AdminPage() {
         toast.success('Produto criado!');
       }
 
-      setFormData({
-        name: '',
-        description: '',
-        price: '',
-        category: '',
-        image_url: '',
-        images: [],
-        is_featured: false,
-        is_new_arrival: false,
-        color: '#000000',
-      });
+        setFormData({
+          name: '',
+          description: '',
+          price: '',
+          category: '',
+          image_url: '',
+          images: [],
+          is_featured: false,
+          is_new_arrival: false,
+          color: '#000000',
+          sizes: ['G1', 'G2', 'G3'],
+        });
       setIsEditing(null);
       fetchProducts();
     } catch (error: any) {
