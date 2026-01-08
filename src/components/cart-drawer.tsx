@@ -447,15 +447,27 @@ const CartDrawer = () => {
           )}
         </div>
 
-        {items.length > 0 && (
-          <SheetFooter className="p-4 border-t bg-[#f9f9f9] flex-col gap-4">
-            <div className="space-y-1.5 w-full">
-              <div className="flex justify-between text-sm">
-                <span className="text-[#71717a]">Subtotal</span>
-                <span className="font-medium">
-                  {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalPrice)}
-                </span>
-              </div>
+            <SheetFooter className="p-4 border-t bg-[#f9f9f9] flex-col gap-4">
+              <div className="space-y-1.5 w-full">
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-[#71717a]">Subtotal</span>
+                  <div className="flex items-center gap-4">
+                    <button 
+                      onClick={() => {
+                        if (confirm('Tem certeza que deseja limpar todo o carrinho?')) {
+                          clearCart();
+                        }
+                      }}
+                      className="text-[10px] text-[#800020] hover:underline flex items-center gap-1 font-bold uppercase"
+                    >
+                      <Trash2 size={10} />
+                      Limpar Carrinho
+                    </button>
+                    <span className="font-medium">
+                      {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalPrice)}
+                    </span>
+                  </div>
+                </div>
               
                 {isCheckout && (
                   <>
