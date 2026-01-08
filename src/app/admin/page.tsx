@@ -13,7 +13,9 @@ import {
   Save,
   X,
   ExternalLink,
-  ChevronLeft
+  ChevronLeft,
+  Pipette,
+  Palette
 } from 'lucide-react';
 import { toast } from 'sonner';
 import Link from 'next/link';
@@ -27,6 +29,7 @@ interface Product {
   category: string;
   is_featured: boolean;
   is_new_arrival: boolean;
+  color?: string;
 }
 
 export default function AdminPage() {
@@ -44,6 +47,7 @@ export default function AdminPage() {
     image_url: '',
     is_featured: false,
     is_new_arrival: false,
+    color: '#000000',
   });
 
   useEffect(() => {
@@ -66,6 +70,21 @@ export default function AdminPage() {
       setLoading(false);
     }
   }
+
+  const openEyeDropper = async () => {
+    if (!('EyeDropper' in window)) {
+      toast.error('Seu navegador não suporta o conta-gotas');
+      return;
+    }
+
+    try {
+      const eyeDropper = new (window as any).EyeDropper();
+      const result = await eyeDropper.open();
+      setFormData({ ...formData, color: result.sRGBHex });
+    } catch (e) {
+      // User cancelled
+    }
+  };
 
   async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
     try {
