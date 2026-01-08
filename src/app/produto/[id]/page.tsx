@@ -137,6 +137,10 @@ export default function ProductPage() {
                   className="w-full h-full object-cover transition-all duration-500"
                 />
                 
+                <button className="absolute top-4 right-4 p-2.5 bg-white/80 backdrop-blur-sm rounded-full text-muted-foreground hover:text-[#800020] hover:bg-white transition-all shadow-sm z-10">
+                  <Heart size={22} />
+                </button>
+
                 {allImages.length > 1 && (
                   <div className="absolute inset-0 flex items-center justify-between p-4 md:hidden">
                     <button 
