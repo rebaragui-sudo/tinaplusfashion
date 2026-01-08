@@ -9,7 +9,7 @@ import {
   SheetFooter 
 } from '@/components/ui/sheet';
 import { useCart } from '@/hooks/use-cart';
-import { ShoppingBag, X, Plus, Minus, Trash2, ArrowLeft, Truck, Bus, Loader2 } from 'lucide-react';
+import { ShoppingBag, X, Plus, Minus, Trash2, ArrowLeft, Truck, Bus, Loader2, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
