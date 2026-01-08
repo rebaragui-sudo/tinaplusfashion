@@ -40,11 +40,12 @@ export function ShippingCalculator() {
       // In a real app, you would call a shipping API
       await new Promise(resolve => setTimeout(resolve, 800));
       
-      const results: ShippingOption[] = [
-        { name: 'PAC', price: 15.90, days: '7 a 10 dias úteis' },
-        { name: 'SEDEX', price: 29.90, days: '2 a 4 dias úteis' },
-        { name: 'Entrega Expressa', price: 45.00, days: '1 a 2 dias úteis' }
-      ];
+        const results: ShippingOption[] = [
+          { name: 'PAC', price: 15.90, days: '7 a 10 dias úteis' },
+          { name: 'SEDEX', price: 29.90, days: '2 a 4 dias úteis' },
+          { name: 'Entrega Expressa', price: 45.00, days: '1 a 2 dias úteis' },
+          { name: 'Ônibus / Transportadora', price: 0, days: 'A combinar' }
+        ];
 
       setOptions(results);
     } catch (error) {
