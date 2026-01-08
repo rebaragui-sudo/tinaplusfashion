@@ -64,7 +64,7 @@ const ProductCard = ({ product }: { product: Product }) => (
       <p className="text-[11px] text-[#71717a]">ou 10x de {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price / 10)} sem juros</p>
 
       <div className="flex flex-wrap gap-1 mt-3">
-        {['44', '46', '48', '50', '52'].map((size, idx) => (
+        {(product.sizes || ['G1', 'G2', 'G3']).map((size, idx) => (
           <span key={idx} className="text-[10px] px-2 py-1 bg-[#f5f3f1] rounded text-[#71717a] font-medium min-w-[24px] text-center">
             {size}
           </span>
