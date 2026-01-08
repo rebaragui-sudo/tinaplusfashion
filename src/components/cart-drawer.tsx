@@ -397,6 +397,9 @@ const CartDrawer = () => {
                   {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalPrice)}
                 </span>
               </div>
+              
+              {isCheckout && (
+                <>
                   <div className="flex justify-between text-sm">
                     <span className="text-[#71717a]">Frete</span>
                     <span className="text-[#121812] font-medium">
@@ -412,12 +415,28 @@ const CartDrawer = () => {
                       {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalPrice + shippingPrice)}
                     </span>
                   </div>
-                {!isCheckout && (
+                </>
+              )}
+
+              {!isCheckout && (
+                <>
+                  <Separator className="my-2" />
+                  <div className="flex justify-between text-base font-bold text-[#121812]">
+                    <span>Total</span>
+                    <span>
+                      {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalPrice)}
+                    </span>
+                  </div>
                   <p className="text-[10px] text-[#800020] text-center mt-2 font-bold uppercase">
+                    *Frete calculado na finalização do pedido
+                  </p>
+                  <p className="text-[10px] text-[#800020] text-center mt-1 font-bold uppercase">
                     *Compra mínima de R$ 350,00
                   </p>
-                )}
-              </div>
+                </>
+              )}
+            </div>
+
                 <div className="w-full space-y-2">
                   {totalPrice < 350 && !isCheckout && (
                     <p className="text-xs text-[#800020] text-center font-medium animate-pulse">
