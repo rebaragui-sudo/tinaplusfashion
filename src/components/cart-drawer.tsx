@@ -25,7 +25,7 @@ const CartDrawer = () => {
   const { items, removeItem, updateQuantity, totalPrice, totalItems, isOpen, setIsOpen, clearCart } = useCart();
   const [isCheckout, setIsCheckout] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [shippingMethod, setShippingMethod] = useState('pac');
+  const [shippingMethod, setShippingMethod] = useState('');
   const [shippingPrice, setShippingPrice] = useState(0);
   const [isCalculating, setIsCalculating] = useState(false);
   const [calculatedOptions, setCalculatedOptions] = useState<{id: string, label: string, price: number, days: string}[]>([]);
