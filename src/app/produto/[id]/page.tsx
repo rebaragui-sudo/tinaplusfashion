@@ -237,6 +237,7 @@ export default function ProductPage() {
 
               <div className="flex flex-col gap-3 mb-8">
                 <button 
+                  onClick={handleAddToCart}
                   className="w-full h-14 bg-[#800020] hover:bg-[#600018] text-white font-bold rounded-lg flex items-center justify-center gap-2 transition-colors shadow-lg shadow-[#800020]/10"
                 >
                   <ShoppingBag size={20} />
