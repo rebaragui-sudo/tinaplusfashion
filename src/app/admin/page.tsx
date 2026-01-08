@@ -216,6 +216,15 @@ export default function AdminPage() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  const toggleSize = (size: string) => {
+    setFormData(prev => {
+      const sizes = prev.sizes.includes(size)
+        ? prev.sizes.filter(s => s !== size)
+        : [...prev.sizes, size];
+      return { ...prev, sizes };
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
