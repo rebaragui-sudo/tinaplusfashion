@@ -129,45 +129,42 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
       setIsOpen(true);
     }, []);
 
-    const removeItem = useCallback((cartId: string) => {
-      if (!cartId) {
-        console.warn('Attempted to remove item with no cartId');
-        return;
-      }
-      
-      setItems((prevItems) => {
-        console.log(`Attempting to remove item with cartId: ${cartId}`);
-        const beforeCount = prevItems.length;
-        
-        // 1. Try exact match by cartId
-        let newItems = prevItems.filter((item) => item.cartId !== cartId);
-        
-        // 2. Fallback: If nothing removed, try matching by id (if cartId was actually a productId)
-        if (newItems.length === beforeCount) {
-          console.log(`No item found with cartId ${cartId}, trying fallback by id...`);
-          newItems = prevItems.filter((item) => item.id !== cartId);
+      const removeItem = useCallback((cartId: string) => {
+        if (!cartId) {
+          console.warn('Attempted to remove item with no cartId');
+          return;
         }
         
-        // 3. Last resort: If still nothing removed, try partial matches
-        if (newItems.length === beforeCount) {
-          console.log(`Still no match. Trying fuzzy match...`);
-          newItems = prevItems.filter((item) => {
-            const itemCartId = String(item.cartId || '').toLowerCase();
-            const targetCartId = String(cartId).toLowerCase();
-            return itemCartId !== targetCartId && item.id !== cartId;
-          });
-        }
+        setItems((prevItems) => {
+          console.log(`Removing item: ${cartId}`);
+          
+          // Try to find the item index first to be sure
+          const itemIndex = prevItems.findIndex(item => 
+            item.cartId === cartId || item.id === cartId
+          );
 
-        if (newItems.length < beforeCount) {
+          if (itemIndex === -1) {
+            console.log('Item not found by ID, trying loose match...');
+            // One last try: filter anything that matches the ID in any way
+            const filtered = prevItems.filter(item => 
+              item.cartId !== cartId && item.id !== cartId
+            );
+            
+            if (filtered.length < prevItems.length) {
+              toast.info('Item removido');
+              return filtered;
+            }
+            
+            toast.error('Não foi possível encontrar o item');
+            return prevItems;
+          }
+
+          const newItems = [...prevItems];
+          newItems.splice(itemIndex, 1);
           toast.info('Item removido do carrinho');
           return newItems;
-        } else {
-          console.error(`FAILED to remove item ${cartId}. Cart state:`, prevItems);
-          toast.error('Erro ao remover item. Tente limpar o carrinho.');
-          return prevItems;
-        }
-      });
-    }, []);
+        });
+      }, []);
 
   const updateQuantity = useCallback((cartId: string, quantity: number) => {
     if (!cartId) return;
