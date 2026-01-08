@@ -174,8 +174,16 @@ export default function ProductPage() {
               </div>
             </div>
 
-            <div className="lg:col-span-5 flex flex-col">
-              <div className="mb-6">
+            <div className="lg:col-span-5 flex flex-col relative">
+              <div className="absolute top-0 right-0">
+                <button 
+                  className="p-2 text-muted-foreground hover:text-[#800020] transition-colors"
+                  title="Compartilhar"
+                >
+                  <Share2 size={22} />
+                </button>
+              </div>
+              <div className="mb-6 pr-10">
                 <span className="text-xs font-bold text-[#800020] uppercase tracking-widest mb-2 block">
                   {product.category}
                 </span>
