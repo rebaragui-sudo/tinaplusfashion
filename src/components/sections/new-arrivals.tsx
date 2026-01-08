@@ -11,6 +11,7 @@ interface Product {
   price: number;
   image_url: string;
   is_new_arrival: boolean;
+  colors: string[];
   sizes: string[];
 }
 
@@ -50,7 +51,24 @@ const ProductCard = ({ product }: { product: Product }) => (
     </div>
 
     <div className="py-4 flex flex-col flex-grow">
-      <p className="text-[11px] text-[#71717a] uppercase tracking-widest mb-1 font-semibold">{product.category}</p>
+      <div className="flex justify-between items-start mb-1">
+        <p className="text-[11px] text-[#71717a] uppercase tracking-widest font-semibold">{product.category}</p>
+        
+        {/* Color dots */}
+        <div className="flex gap-1">
+          {(product.colors || []).slice(0, 3).map((color, idx) => (
+            <div 
+              key={idx}
+              className="w-2.5 h-2.5 rounded-full border border-gray-200"
+              style={{ backgroundColor: color }}
+            />
+          ))}
+          {(product.colors?.length || 0) > 3 && (
+            <span className="text-[8px] text-muted-foreground">+{product.colors.length - 3}</span>
+          )}
+        </div>
+      </div>
+
       <h3 className="text-sm font-medium text-black line-clamp-2 mb-2 group-hover:text-[#800020] transition-colors">
         {product.name}
       </h3>
@@ -64,7 +82,7 @@ const ProductCard = ({ product }: { product: Product }) => (
       <p className="text-[11px] text-[#71717a]">ou 10x de {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price / 10)} sem juros</p>
 
       <div className="flex flex-wrap gap-1 mt-3">
-        {(product.sizes || ['G1', 'G2', 'G3']).map((size, idx) => (
+        {(product.sizes || []).map((size, idx) => (
           <span key={idx} className="text-[10px] px-2 py-1 bg-[#f5f3f1] rounded text-[#71717a] font-medium min-w-[24px] text-center">
             {size}
           </span>
