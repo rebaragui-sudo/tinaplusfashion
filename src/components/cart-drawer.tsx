@@ -305,20 +305,25 @@ const CartDrawer = () => {
                 </p>
               )}
             </div>
-            <div className="w-full space-y-2">
-              <Button 
-                className="w-full bg-[#121812] hover:bg-[#800020] text-white py-6 text-base font-bold uppercase tracking-wider"
-                onClick={() => {
-                  if (isCheckout) {
-                    handleFinish();
-                  } else {
-                    setIsCheckout(true);
-                  }
-                }}
-              >
-                {isCheckout ? 'Confirmar Pedido' : 'Finalizar Compra'}
-              </Button>
-              {!isCheckout && (
+              <div className="w-full space-y-2">
+                <Button 
+                  className="w-full bg-[#121812] hover:bg-[#800020] text-white py-6 text-base font-bold uppercase tracking-wider"
+                  disabled={isSubmitting}
+                  onClick={() => {
+                    if (isCheckout) {
+                      handleFinish();
+                    } else {
+                      setIsCheckout(true);
+                    }
+                  }}
+                >
+                  {isSubmitting ? (
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                  ) : (
+                    isCheckout ? 'Confirmar Pedido' : 'Finalizar Compra'
+                  )}
+                </Button>
+                {!isCheckout && (
                 <Button 
                   variant="outline"
                   className="w-full border-[#121812] text-[#121812] hover:bg-[#f5f3f1]"
