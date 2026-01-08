@@ -14,12 +14,12 @@ const FeaturesBar = () => {
       description: 'Guia completo',
       bgColor: 'transparent',
     },
-    {
-      icon: <RefreshCw className="w-6 h-6 text-[#9a866d]" />,
-      title: 'Troca Fácil',
-      description: 'Até 30 dias',
-      bgColor: 'transparent',
-    },
+      {
+        icon: <RefreshCw className="w-6 h-6 text-[#9a866d]" />,
+        title: '7 dias',
+        description: 'Até 12x sem juros',
+        bgColor: 'transparent',
+      },
     {
       icon: <Truck className="w-6 h-6 text-[#9a866d]" />,
       title: 'Entrega Brasil',
