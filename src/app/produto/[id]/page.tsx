@@ -34,6 +34,7 @@ interface Product {
 
 export default function ProductPage() {
   const { id } = useParams();
+  const { addItem } = useCart();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
