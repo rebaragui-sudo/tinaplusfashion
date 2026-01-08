@@ -397,45 +397,50 @@ const CartDrawer = () => {
                   {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalPrice)}
                 </span>
               </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-[#71717a]">Frete</span>
-                  <span className={`${shippingPrice === 0 ? 'text-[#008000]' : 'text-[#121812]'} font-medium`}>
-                    {shippingMethod === 'onibus' ? 'A combinar' : (
-                      shippingPrice === 0 ? 'Grátis' : new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(shippingPrice)
-                    )}
-                  </span>
-                </div>
-                <Separator className="my-2" />
-                <div className="flex justify-between text-base font-bold text-[#121812]">
-                  <span>Total</span>
-                  <span>
-                    {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalPrice + shippingPrice)}
-                  </span>
-                </div>
-              {!isCheckout && (
-                <p className="text-[10px] text-[#71717a] text-center mt-2 italic">
-                  *Frete grátis para compra mínima de R$ 350,00
-                </p>
-              )}
-            </div>
-              <div className="w-full space-y-2">
-                <Button 
-                  className="w-full bg-[#121812] hover:bg-[#800020] text-white py-6 text-base font-bold uppercase tracking-wider"
-                  disabled={isSubmitting}
-                  onClick={() => {
-                    if (isCheckout) {
-                      handleFinish();
-                    } else {
-                      setIsCheckout(true);
-                    }
-                  }}
-                >
-                  {isSubmitting ? (
-                    <Loader2 className="h-5 w-5 animate-spin" />
-                  ) : (
-                    isCheckout ? 'Confirmar Pedido' : 'Finalizar Compra'
+                  <div className="flex justify-between text-sm">
+                    <span className="text-[#71717a]">Frete</span>
+                    <span className="text-[#121812] font-medium">
+                      {shippingMethod === 'onibus' ? 'A combinar' : (
+                        new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(shippingPrice)
+                      )}
+                    </span>
+                  </div>
+                  <Separator className="my-2" />
+                  <div className="flex justify-between text-base font-bold text-[#121812]">
+                    <span>Total</span>
+                    <span>
+                      {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalPrice + shippingPrice)}
+                    </span>
+                  </div>
+                {!isCheckout && (
+                  <p className="text-[10px] text-[#800020] text-center mt-2 font-bold uppercase">
+                    *Compra mínima de R$ 350,00
+                  </p>
+                )}
+              </div>
+                <div className="w-full space-y-2">
+                  {totalPrice < 350 && !isCheckout && (
+                    <p className="text-xs text-[#800020] text-center font-medium animate-pulse">
+                      Faltam {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(350 - totalPrice)} para o pedido mínimo
+                    </p>
                   )}
-                </Button>
+                  <Button 
+                    className="w-full bg-[#121812] hover:bg-[#800020] text-white py-6 text-base font-bold uppercase tracking-wider"
+                    disabled={isSubmitting || (totalPrice < 350)}
+                    onClick={() => {
+                      if (isCheckout) {
+                        handleFinish();
+                      } else {
+                        setIsCheckout(true);
+                      }
+                    }}
+                  >
+                    {isSubmitting ? (
+                      <Loader2 className="h-5 w-5 animate-spin" />
+                    ) : (
+                      isCheckout ? 'Confirmar Pedido' : 'Finalizar Compra'
+                    )}
+                  </Button>
                 {!isCheckout && (
                 <Button 
                   variant="outline"
