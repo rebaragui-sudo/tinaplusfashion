@@ -56,7 +56,10 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
               const productId = item.id || item.productId;
               if (!productId) return;
 
-              const cartId = item.cartId || generateCartId(productId, item.size, item.color);
+              // Force regeneration of cartId if it looks like a plain product ID or is missing
+              // A variation-aware cartId should have at least two hyphens beyond the UUID structure
+              // or we can just always regenerate it to be safe.
+              const cartId = generateCartId(productId, item.size, item.color);
               
               if (!seenIds.has(cartId)) {
                 seenIds.add(cartId);
