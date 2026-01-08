@@ -12,6 +12,7 @@ interface Product {
   image_url: string;
   is_featured: boolean;
   is_new_arrival: boolean;
+  sizes: string[];
 }
 
 export default function FeaturedProductsGrid() {
