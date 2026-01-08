@@ -9,13 +9,13 @@ const categories = [
     href: '/vestidos',
     alt: 'Vestidos Plus Size'
   },
-  {
-    title: 'Conjuntos',
-    offer: 'NOVIDADES',
-    image: 'https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/IMG-20251002-WA0066-resized-1767804443812.jpg?width=8000&height=8000&resize=contain',
-    href: '/conjuntos',
-    alt: 'Conjuntos Plus Size'
-  },
+    {
+      title: 'Conjuntos',
+      offer: 'NOVIDADES',
+      image: 'https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/IMG-20251117-WA0363-1767868040959.jpg?width=8000&height=8000&resize=contain',
+      href: '/conjuntos',
+      alt: 'Conjuntos Plus Size'
+    },
   {
     title: 'Estampados',
     offer: 'LANÇAMENTOS',
