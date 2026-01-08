@@ -77,15 +77,23 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     setIsOpen(true);
   };
 
-  const removeItem = (id: string) => {
-    setItems((prevItems) => prevItems.filter((item) => item.id !== id));
+  const removeItem = (id: string, size?: string, color?: string) => {
+    setItems((prevItems) => 
+      prevItems.filter((item) => 
+        !(item.id === id && item.size === size && item.color === color)
+      )
+    );
     toast.info('Item removido do carrinho');
   };
 
-  const updateQuantity = (id: string, quantity: number) => {
+  const updateQuantity = (id: string, quantity: number, size?: string, color?: string) => {
     if (quantity < 1) return;
     setItems((prevItems) =>
-      prevItems.map((item) => (item.id === id ? { ...item, quantity } : item))
+      prevItems.map((item) => 
+        item.id === id && item.size === size && item.color === color 
+          ? { ...item, quantity } 
+          : item
+      )
     );
   };
 
