@@ -46,6 +46,20 @@ export default function AdminPage() {
   const [uploading, setUploading] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [colorInput, setColorInput] = useState('#000000');
+  const [formData, setFormData] = useState({
+    name: '',
+    description: '',
+    price: '',
+    category: '',
+    image_url: '',
+    images: [] as string[],
+    is_featured: false,
+    is_new_arrival: false,
+    colors: [] as string[],
+    sizes: ['G1', 'G2', 'G3'],
+  });
+
+  const availableSizes = ['P', 'M', 'G', 'GG', 'G1', 'G2', 'G3', 'G4'];
 
   useEffect(() => {
     const auth = localStorage.getItem('isAdmin');
