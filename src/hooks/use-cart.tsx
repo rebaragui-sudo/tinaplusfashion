@@ -41,51 +41,51 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Load cart from localStorage
-  useEffect(() => {
-    const savedCart = localStorage.getItem('tina-plus-cart');
-    if (savedCart) {
-      try {
-        const parsed = JSON.parse(savedCart);
-        
-        if (Array.isArray(parsed)) {
-          const migratedMap = new Map<string, CartItem>();
+    // Load cart from localStorage
+    useEffect(() => {
+      const savedCart = localStorage.getItem('tina-plus-cart');
+      if (savedCart) {
+        try {
+          const parsed = JSON.parse(savedCart);
           
-          parsed.forEach((item: any) => {
-            // Use existing cartId if valid, otherwise generate one
-            const productId = item.id || item.productId;
-            if (!productId) return;
-
-            const cartId = item.cartId || generateCartId(productId, item.size, item.color);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            const migratedItems: CartItem[] = [];
+            const seenIds = new Set<string>();
             
-            if (migratedMap.has(cartId)) {
-              const existing = migratedMap.get(cartId)!;
-              migratedMap.set(cartId, {
-                ...existing,
-                quantity: existing.quantity + (item.quantity || 1)
-              });
-            } else {
-              migratedMap.set(cartId, {
-                id: productId,
-                name: item.name || 'Produto',
-                price: item.price || 0,
-                image_url: item.image_url || '',
-                quantity: item.quantity || 1,
-                size: item.size,
-                color: item.color,
-                cartId: cartId
-              });
-            }
-          });
-          
-          setItems(Array.from(migratedMap.values()));
+            parsed.forEach((item: any) => {
+              const productId = item.id || item.productId;
+              if (!productId) return;
+
+              const cartId = item.cartId || generateCartId(productId, item.size, item.color);
+              
+              if (!seenIds.has(cartId)) {
+                seenIds.add(cartId);
+                migratedItems.push({
+                  id: productId,
+                  name: item.name || 'Produto',
+                  price: item.price || 0,
+                  image_url: item.image_url || '',
+                  quantity: item.quantity || 1,
+                  size: item.size,
+                  color: item.color,
+                  cartId: cartId
+                });
+              } else {
+                const existingIndex = migratedItems.findIndex(i => i.cartId === cartId);
+                if (existingIndex > -1) {
+                  migratedItems[existingIndex].quantity += (item.quantity || 1);
+                }
+              }
+            });
+            
+            setItems(migratedItems);
+          }
+        } catch (e) {
+          console.error('Failed to parse cart from localStorage', e);
         }
-      } catch (e) {
-        console.error('Failed to parse cart from localStorage', e);
       }
-    }
-    setIsLoaded(true);
-  }, []);
+      setIsLoaded(true);
+    }, []);
 
   // Save cart to localStorage
   useEffect(() => {
