@@ -143,62 +143,65 @@ const CartDrawer = () => {
     const renderCartItems = () => (
       <ScrollArea className="h-full">
         <div className="p-4 space-y-4">
-          {items.filter(item => item && item.cartId).map((item) => (
-            <div key={item.cartId} className="flex gap-4">
-              <div className="h-24 w-20 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                <img
-                  src={item.image_url}
-                  alt={item.name}
-                  className="h-full w-full object-cover object-center"
-                />
-              </div>
+          {items.map((item) => {
+            const displayId = item.cartId || item.id || Math.random().toString();
+            return (
+              <div key={displayId} className="flex gap-4">
+                <div className="h-24 w-20 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 bg-gray-50">
+                  <img
+                    src={item.image_url || 'https://via.placeholder.com/150'}
+                    alt={item.name}
+                    className="h-full w-full object-cover object-center"
+                  />
+                </div>
 
-              <div className="flex flex-1 flex-col">
-                <div>
-                  <div className="flex justify-between text-sm font-medium text-[#121812]">
-                    <h3 className="line-clamp-1">{item.name}</h3>
-                    <p className="ml-4">
-                      {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.price)}
+                <div className="flex flex-1 flex-col">
+                  <div>
+                    <div className="flex justify-between text-sm font-medium text-[#121812]">
+                      <h3 className="line-clamp-1">{item.name || 'Produto'}</h3>
+                      <p className="ml-4">
+                        {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.price || 0)}
+                      </p>
+                    </div>
+                    <p className="mt-1 text-xs text-[#71717a]">
+                      {item.size && `Tam: ${item.size}`} {item.color && `| Cor: ${item.color}`}
                     </p>
                   </div>
-                  <p className="mt-1 text-xs text-[#71717a]">
-                    {item.size && `Tam: ${item.size}`} {item.color && `| Cor: ${item.color}`}
-                  </p>
-                </div>
-                <div className="flex flex-1 items-end justify-between text-sm">
-                  <div className="flex items-center border border-gray-200 rounded-md">
-                      <button
-                        type="button"
-                        onClick={() => updateQuantity(item.cartId, item.quantity - 1)}
-                        className="p-1 hover:text-[#800020] disabled:opacity-30"
-                        disabled={item.quantity <= 1}
-                      >
-                        <Minus size={14} />
-                      </button>
-                      <span className="px-2 text-xs font-medium w-8 text-center">{item.quantity}</span>
-                      <button
-                        type="button"
-                        onClick={() => updateQuantity(item.cartId, item.quantity + 1)}
-                        className="p-1 hover:text-[#800020]"
-                      >
-                        <Plus size={14} />
+                  <div className="flex flex-1 items-end justify-between text-sm">
+                    <div className="flex items-center border border-gray-200 rounded-md">
+                        <button
+                          type="button"
+                          onClick={() => updateQuantity(displayId, item.quantity - 1)}
+                          className="p-1 hover:text-[#800020] disabled:opacity-30"
+                          disabled={item.quantity <= 1}
+                        >
+                          <Minus size={14} />
+                        </button>
+                        <span className="px-2 text-xs font-medium w-8 text-center">{item.quantity || 1}</span>
+                        <button
+                          type="button"
+                          onClick={() => updateQuantity(displayId, item.quantity + 1)}
+                          className="p-1 hover:text-[#800020]"
+                        >
+                          <Plus size={14} />
+                        </button>
+                      </div>
+
+                      <div className="flex">
+                        <button
+                          type="button"
+                          onClick={() => removeItem(displayId)}
+                          className="font-medium text-[#800020] hover:text-[#a00028] flex items-center gap-1 text-xs"
+                        >
+                        <Trash2 size={14} />
+                        Remover
                       </button>
                     </div>
-
-                    <div className="flex">
-                      <button
-                        type="button"
-                        onClick={() => removeItem(item.cartId)}
-                        className="font-medium text-[#800020] hover:text-[#a00028] flex items-center gap-1 text-xs"
-                      >
-                      <Trash2 size={14} />
-                      Remover
-                    </button>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </ScrollArea>
     );
