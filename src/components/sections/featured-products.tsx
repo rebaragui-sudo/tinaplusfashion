@@ -129,17 +129,17 @@ export default function FeaturedProductsGrid() {
                   ou 10x de {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price / 10)} sem juros
                 </p>
 
-                {/* Size Chips */}
-                <div className="hidden md:flex gap-1 mt-4 flex-wrap">
-                  {['44', '46', '48', '50', '52'].map((size, idx) => (
-                    <span 
-                      key={idx} 
-                      className="text-[10px] px-2 py-1 bg-secondary rounded text-muted-foreground font-medium"
-                    >
-                      {size}
-                    </span>
-                  ))}
-                </div>
+                  {/* Size Chips */}
+                  <div className="hidden md:flex gap-1 mt-4 flex-wrap">
+                    {(product.sizes || ['G1', 'G2', 'G3']).map((size, idx) => (
+                      <span 
+                        key={idx} 
+                        className="text-[10px] px-2 py-1 bg-secondary rounded text-muted-foreground font-medium"
+                      >
+                        {size}
+                      </span>
+                    ))}
+                  </div>
               </div>
             </div>
           ))}
