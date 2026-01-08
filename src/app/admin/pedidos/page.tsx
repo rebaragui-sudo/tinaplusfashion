@@ -346,49 +346,63 @@ export default function AdminOrdersPage() {
                       <div className="bg-gray-100 p-2 rounded-lg text-gray-600">
                         <MapPin size={18} />
                       </div>
-                      <div className="flex flex-col">
-                        <span className="text-xs text-gray-500 font-medium">Destino</span>
-                        <span className="text-sm font-bold text-gray-900">
-                          {selectedOrder.shipping_data?.cidade}, {selectedOrder.shipping_data?.estado}
-                        </span>
-                        <span className="text-[10px] text-gray-500 font-medium mt-1 uppercase bg-gray-100 px-1.5 py-0.5 rounded inline-block w-fit">
-                          {selectedOrder.shipping_method}
+                        <div className="flex flex-col">
+                          <span className="text-xs text-gray-500 font-medium">Destino</span>
+                          <span className="text-sm font-bold text-gray-900">
+                            {selectedOrder.shipping_data?.endereco}, {selectedOrder.shipping_data?.numero}
+                          </span>
+                          <span className="text-xs text-gray-600">
+                            {selectedOrder.shipping_data?.bairro} - {selectedOrder.shipping_data?.cidade}, {selectedOrder.shipping_data?.estado}
+                          </span>
+                          <span className="text-xs font-mono text-gray-500 mt-0.5">
+                            CEP: {selectedOrder.shipping_data?.cep}
+                          </span>
+                          <span className="text-[10px] text-gray-500 font-medium mt-2 uppercase bg-gray-100 px-1.5 py-0.5 rounded inline-block w-fit">
+                            {selectedOrder.shipping_method}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Items */}
+                    <div className="space-y-4 pt-4 border-t">
+                      <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Produtos</label>
+                      <div className="space-y-3">
+                        {selectedOrder.items.map((item, idx) => (
+                          <div key={idx} className="flex gap-3 items-center">
+                            <div className="w-12 h-16 bg-gray-100 rounded overflow-hidden border">
+                              <img src={item.image_url} alt="" className="w-full h-full object-cover" />
+                            </div>
+                            <div className="flex-grow min-w-0">
+                              <p className="text-xs font-bold text-gray-900 truncate">{item.name}</p>
+                              <div className="flex gap-2 mt-1">
+                                <span className="text-[10px] bg-gray-100 px-1.5 py-0.5 rounded font-bold text-gray-600">{item.size}</span>
+                                <div className="w-3.5 h-3.5 rounded-full border border-gray-200" style={{ backgroundColor: item.color }} />
+                              </div>
+                              <p className="text-[10px] text-gray-500 mt-1 font-medium">{item.quantity}x • {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.price)}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Total */}
+                    <div className="pt-4 border-t space-y-2">
+                      <div className="flex justify-between text-xs text-gray-500">
+                        <span>Subtotal</span>
+                        <span>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(selectedOrder.total_price - (selectedOrder.shipping_price || 0))}</span>
+                      </div>
+                      <div className="flex justify-between text-xs text-gray-500">
+                        <span>Frete</span>
+                        <span>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(selectedOrder.shipping_price || 0)}</span>
+                      </div>
+                      <div className="flex justify-between items-center bg-gray-50 p-3 rounded-lg border border-dashed border-gray-200 mt-2">
+                        <span className="text-sm font-bold text-gray-600">Total do Pedido</span>
+                        <span className="text-lg font-black text-[#800020]">
+                          {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(selectedOrder.total_price)}
                         </span>
                       </div>
                     </div>
-                  </div>
-
-                  {/* Items */}
-                  <div className="space-y-4 pt-4 border-t">
-                    <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Produtos</label>
-                    <div className="space-y-3">
-                      {selectedOrder.items.map((item, idx) => (
-                        <div key={idx} className="flex gap-3 items-center">
-                          <div className="w-12 h-16 bg-gray-100 rounded overflow-hidden border">
-                            <img src={item.image_url} alt="" className="w-full h-full object-cover" />
-                          </div>
-                          <div className="flex-grow min-w-0">
-                            <p className="text-xs font-bold text-gray-900 truncate">{item.name}</p>
-                            <div className="flex gap-2 mt-1">
-                              <span className="text-[10px] bg-gray-100 px-1.5 py-0.5 rounded font-bold text-gray-600">{item.size}</span>
-                              <div className="w-3.5 h-3.5 rounded-full border border-gray-200" style={{ backgroundColor: item.color }} />
-                            </div>
-                            <p className="text-[10px] text-gray-500 mt-1 font-medium">{item.quantity}x • {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.price)}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Total */}
-                  <div className="pt-4 border-t">
-                    <div className="flex justify-between items-center bg-gray-50 p-3 rounded-lg border border-dashed border-gray-200">
-                      <span className="text-sm font-bold text-gray-600">Total do Pedido</span>
-                      <span className="text-lg font-black text-[#800020]">
-                        {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(selectedOrder.total_price)}
-                      </span>
-                    </div>
-                  </div>
                 </div>
               </div>
             ) : (
