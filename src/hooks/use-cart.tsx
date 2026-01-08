@@ -28,9 +28,15 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
+// Helper to generate a unique ID for a product variation
+const generateCartId = (productId: string, size?: string, color?: string): string => {
+  return `${productId}-${size || 'no-size'}-${color || 'no-color'}`;
+};
+
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [items, setItems] = useState<CartItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   // Load cart from localStorage
   useEffect(() => {
@@ -38,36 +44,57 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     if (savedCart) {
       try {
         const parsed = JSON.parse(savedCart);
-        // Migration: Add cartId to old items if missing
-        const migrated = parsed.map((item: any) => ({
-          ...item,
-          cartId: item.cartId || `${item.id}-${item.size || ''}-${item.color || ''}`
-        }));
-        setItems(migrated);
+        
+        // Ensure all items have a valid cartId and de-duplicate if necessary
+        const migratedMap = new Map<string, CartItem>();
+        
+        parsed.forEach((item: any) => {
+          const cartId = item.cartId || generateCartId(item.id, item.size, item.color);
+          if (migratedMap.has(cartId)) {
+            // If duplicate cartId found during migration, merge quantities
+            const existing = migratedMap.get(cartId)!;
+            migratedMap.set(cartId, {
+              ...existing,
+              quantity: existing.quantity + (item.quantity || 1)
+            });
+          } else {
+            migratedMap.set(cartId, {
+              ...item,
+              cartId,
+              quantity: item.quantity || 1
+            });
+          }
+        });
+        
+        setItems(Array.from(migratedMap.values()));
       } catch (e) {
         console.error('Failed to parse cart from localStorage', e);
       }
     }
+    setIsLoaded(true);
   }, []);
 
   // Save cart to localStorage
   useEffect(() => {
-    localStorage.setItem('tina-plus-cart', JSON.stringify(items));
-  }, [items]);
+    if (isLoaded) {
+      localStorage.setItem('tina-plus-cart', JSON.stringify(items));
+    }
+  }, [items, isLoaded]);
 
   const addItem = (product: any, quantity: number = 1, size?: string, color?: string) => {
-    const cartId = `${product.id}-${size || ''}-${color || ''}`;
+    const cartId = generateCartId(product.id, size, color);
     
     setItems((prevItems) => {
-      const existingItem = prevItems.find((item) => item.cartId === cartId);
+      const existingItemIndex = prevItems.findIndex((item) => item.cartId === cartId);
 
-      if (existingItem) {
+      if (existingItemIndex > -1) {
+        const newItems = [...prevItems];
+        newItems[existingItemIndex] = {
+          ...newItems[existingItemIndex],
+          quantity: newItems[existingItemIndex].quantity + quantity
+        };
         toast.success(`Quantidade de ${product.name} atualizada`);
-        return prevItems.map((item) =>
-          item.cartId === cartId
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
-        );
+        return newItems;
       }
 
       toast.success(`${product.name} adicionado ao carrinho`);
@@ -93,14 +120,21 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const updateQuantity = (cartId: string, quantity: number) => {
-    if (quantity < 1) return;
-    setItems((prevItems) =>
-      prevItems.map((item) => 
+    if (quantity < 1) {
+      removeItem(cartId);
+      return;
+    }
+    
+    setItems((prevItems) => {
+      const itemExists = prevItems.some(item => item.cartId === cartId);
+      if (!itemExists) return prevItems;
+      
+      return prevItems.map((item) => 
         item.cartId === cartId 
           ? { ...item, quantity } 
           : item
-      )
-    );
+      );
+    });
   };
 
   const clearCart = () => {
