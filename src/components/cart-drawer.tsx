@@ -449,25 +449,29 @@ const CartDrawer = () => {
                 </span>
               </div>
               
-              {isCheckout && (
-                <>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-[#71717a]">Frete</span>
-                    <span className="text-[#121812] font-medium">
-                      {shippingMethod === 'onibus' ? 'A combinar' : (
-                        new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(shippingPrice)
-                      )}
-                    </span>
-                  </div>
-                  <Separator className="my-2" />
-                  <div className="flex justify-between text-base font-bold text-[#121812]">
-                    <span>Total</span>
-                    <span>
-                      {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalPrice + shippingPrice)}
-                    </span>
-                  </div>
-                </>
-              )}
+                {isCheckout && (
+                  <>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-[#71717a]">Frete</span>
+                      <span className="text-[#121812] font-medium">
+                        {!isShippingSelected ? (
+                          <span className="text-[#800020] text-[10px] font-bold italic animate-pulse">SELECIONE O FRETE</span>
+                        ) : shippingMethod === 'onibus' ? (
+                          'A combinar'
+                        ) : (
+                          new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(shippingPrice)
+                        )}
+                      </span>
+                    </div>
+                    <Separator className="my-2" />
+                    <div className="flex justify-between text-base font-bold text-[#121812]">
+                      <span>Total</span>
+                      <span>
+                        {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalPrice + shippingPrice)}
+                      </span>
+                    </div>
+                  </>
+                )}
 
               {!isCheckout && (
                 <>
