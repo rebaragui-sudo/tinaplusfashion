@@ -257,8 +257,6 @@ export default function ProductPage() {
                 </button>
               </div>
 
-              <ShippingCalculator />
-
               <div className="prose prose-sm max-w-none my-8">
                 <h3 className="text-sm font-bold uppercase mb-2">Descrição</h3>
                 <p className="text-muted-foreground leading-relaxed whitespace-pre-line">
