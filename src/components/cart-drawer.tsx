@@ -143,7 +143,7 @@ const CartDrawer = () => {
     const renderCartItems = () => (
       <ScrollArea className="h-full">
         <div className="p-4 space-y-4">
-          {items.map((item) => (
+          {items.filter(item => item && item.cartId).map((item) => (
             <div key={item.cartId} className="flex gap-4">
               <div className="h-24 w-20 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                 <img
