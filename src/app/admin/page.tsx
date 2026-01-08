@@ -533,9 +533,18 @@ export default function AdminPage() {
                                 <span className="text-[10px] font-mono text-gray-400 uppercase">{product.color || 'n/a'}</span>
                               </div>
                             </div>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 text-center">
+                            </div>
+                          </td>
+                          <td className="px-6 py-4">
+                            <div className="flex flex-wrap gap-1 max-w-[150px]">
+                              {(product.sizes || []).map((size, idx) => (
+                                <span key={idx} className="text-[10px] px-1.5 py-0.5 bg-gray-100 rounded text-gray-600 font-bold">
+                                  {size}
+                                </span>
+                              ))}
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 text-center">
                           <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-bold">
                             <ImageIcon size={12} />
                             {1 + (product.images?.length || 0)}
