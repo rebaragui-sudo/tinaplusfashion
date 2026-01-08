@@ -103,41 +103,42 @@ const CartDrawer = () => {
 
     setIsSubmitting(true);
     
-    try {
-      const { data, error } = await supabase
-        .from('orders')
-        .insert([
-          {
-            total_price: totalPrice + shippingPrice,
-            shipping_method: shippingMethod,
-            shipping_price: shippingPrice,
-            items: items,
-            shipping_data: shippingData,
-            status: 'pending'
-          }
-        ])
-        .select();
+      try {
+        const { data, error } = await supabase
+          .from('orders')
+          .insert([
+            {
+              total_price: totalPrice + shippingPrice,
+              shipping_method: shippingMethod,
+              shipping_price: shippingPrice,
+              items: items,
+              shipping_data: shippingData,
+              status: 'pending'
+            }
+          ])
+          .select();
 
-      if (error) throw error;
-
-      // Store order ID in localStorage to track "my orders" for guest
-      const existingOrders = JSON.parse(localStorage.getItem('tina-plus-orders') || '[]');
-      if (data && data[0]) {
-        localStorage.setItem('tina-plus-orders', JSON.stringify([...existingOrders, data[0].id]));
+        if (error) throw error;
+        
+        toast.success('Pedido recebido! Entraremos em contato.');
+        clearCart();
+        setIsOpen(false);
+        setIsCheckout(false);
+        router.push('/pedidos');
+      } catch (error) {
+        console.error('Error saving order:', error);
+        toast.error('Erro ao processar pedido.');
+      } finally {
+        setIsSubmitting(false);
       }
+    };
 
-      toast.success('Pedido recebido! Entraremos em contato para finalizar o pagamento.');
-      clearCart();
-      setIsOpen(false);
-      setIsCheckout(false);
-      router.push('/pedidos');
-    } catch (error) {
-      console.error('Error saving order:', error);
-      toast.error('Erro ao processar pedido. Tente novamente.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+    const isShippingSelected = shippingMethod !== '';
+    const canFinishCheckout = isShippingSelected && (
+      shippingMethod === 'onibus' 
+        ? (shippingData.nome && shippingData.estado && shippingData.cidade && shippingData.celular)
+        : (shippingData.nome && shippingData.cep && shippingData.endereco && shippingData.numero && shippingData.celular)
+    );
 
   const renderCartItems = () => (
     <ScrollArea className="h-full">
