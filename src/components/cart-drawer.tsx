@@ -143,10 +143,10 @@ const CartDrawer = () => {
     const renderCartItems = () => (
       <ScrollArea className="h-full">
         <div className="p-4 space-y-4">
-          {items.map((item) => {
-            // Ensure we have a unique key. cartId is now forced in use-cart hook,
-            // but we add item.id and index as fallback just in case of any state issues.
-            const uniqueKey = item.cartId || `${item.id}-${Math.random()}`;
+          {items.map((item, index) => {
+            // Ensure we have a unique key by combining cartId and index
+            // This prevents React "same key" errors even if data is corrupted
+            const uniqueKey = `${item.cartId || item.id}-${index}`;
             return (
               <div key={uniqueKey} className="flex gap-4">
                 <div className="h-24 w-20 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 bg-gray-50">
@@ -173,16 +173,16 @@ const CartDrawer = () => {
                     <div className="flex items-center border border-gray-200 rounded-md">
                         <button
                           type="button"
-                          onClick={() => updateQuantity(item.cartId, item.quantity - 1)}
+                          onClick={() => updateQuantity(item.cartId, (item.quantity || 1) - 1)}
                           className="p-1 hover:text-[#800020] disabled:opacity-30"
-                          disabled={item.quantity <= 1}
+                          disabled={(item.quantity || 1) <= 1}
                         >
                           <Minus size={14} />
                         </button>
                         <span className="px-2 text-xs font-medium w-8 text-center">{item.quantity || 1}</span>
                         <button
                           type="button"
-                          onClick={() => updateQuantity(item.cartId, item.quantity + 1)}
+                          onClick={() => updateQuantity(item.cartId, (item.quantity || 1) + 1)}
                           className="p-1 hover:text-[#800020]"
                         >
                           <Plus size={14} />
@@ -192,7 +192,10 @@ const CartDrawer = () => {
                       <div className="flex">
                         <button
                           type="button"
-                          onClick={() => removeItem(item.cartId)}
+                          onClick={() => {
+                            console.log('Removing item:', item.cartId);
+                            removeItem(item.cartId);
+                          }}
                           className="font-medium text-[#800020] hover:text-[#a00028] flex items-center gap-1 text-xs"
                         >
                         <Trash2 size={14} />
