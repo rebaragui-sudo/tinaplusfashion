@@ -25,8 +25,10 @@ const CartDrawer = () => {
   const { items, removeItem, updateQuantity, totalPrice, totalItems, isOpen, setIsOpen, clearCart } = useCart();
   const [isCheckout, setIsCheckout] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [shippingMethod, setShippingMethod] = useState('correios');
+  const [shippingMethod, setShippingMethod] = useState('pac');
   const [shippingPrice, setShippingPrice] = useState(0);
+  const [isCalculating, setIsCalculating] = useState(false);
+  const [calculatedOptions, setCalculatedOptions] = useState<{id: string, label: string, price: number, days: string}[]>([]);
   const [shippingData, setShippingData] = useState({
     nome: '',
     estado: '',
@@ -38,19 +40,48 @@ const CartDrawer = () => {
     bairro: ''
   });
 
-    // Calculate shipping based on volume (quantity)
-    React.useEffect(() => {
-      if (shippingMethod === 'onibus') {
-        setShippingPrice(0);
-        return;
-      }
+  // Calculate shipping based on volume (quantity) and method
+  React.useEffect(() => {
+    if (shippingMethod === 'onibus') {
+      setShippingPrice(0);
+      return;
+    }
 
-      // Volume-based calculation: Base R$ 22,90 + R$ 3,50 per item
-      const basePrice = 22.90;
-      const pricePerItem = 3.50;
-      const calculated = basePrice + (totalItems * pricePerItem);
-      setShippingPrice(calculated);
-    }, [totalItems, shippingMethod]);
+    const selectedOption = calculatedOptions.find(opt => opt.id === shippingMethod);
+    if (selectedOption) {
+      setShippingPrice(selectedOption.price);
+    }
+  }, [totalItems, shippingMethod, calculatedOptions]);
+
+  // Trigger calculation when CEP is valid
+  React.useEffect(() => {
+    const cleanCep = shippingData.cep.replace(/\D/g, '');
+    if (cleanCep.length === 8) {
+      handleCalculateShipping(cleanCep);
+    } else {
+      setCalculatedOptions([]);
+    }
+  }, [shippingData.cep, totalItems]);
+
+  const handleCalculateShipping = async (cep: string) => {
+    setIsCalculating(true);
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 800));
+    
+    // Mock calculation based on total items
+    const basePac = 22.90;
+    const baseSedex = 45.50;
+    const perItem = 3.50;
+    
+    const pacPrice = basePac + (totalItems * perItem);
+    const sedexPrice = baseSedex + (totalItems * perItem * 1.2);
+
+    setCalculatedOptions([
+      { id: 'pac', label: 'PAC (Correios)', price: pacPrice, days: '8-12 dias úteis' },
+      { id: 'sedex', label: 'SEDEX (Correios)', price: sedexPrice, days: '2-4 dias úteis' }
+    ]);
+    setIsCalculating(false);
+  };
 
   const handleFinish = async () => {
     if (shippingMethod === 'onibus') {
