@@ -170,30 +170,29 @@ export default function ProductPage() {
                 </div>
               </div>
 
-              {/* Size Selection */}
-              <div className="mb-8">
-                <div className="flex justify-between items-center mb-3">
-                  <label className="text-sm font-semibold">Tamanho:</label>
-                  <button className="text-xs text-[#800020] flex items-center gap-1 hover:underline">
-                    <Ruler size={14} /> Tabela de medidas
-                  </button>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {['44', '46', '48', '50', '52'].map((size) => (
-                    <button
-                      key={size}
-                      onClick={() => setSelectedSize(size)}
-                      className={`h-12 w-12 flex items-center justify-center rounded-md border text-sm font-medium transition-all ${
-                        selectedSize === size 
-                          ? 'bg-foreground text-background border-foreground' 
-                          : 'border-input hover:border-foreground'
-                      }`}
-                    >
-                      {size}
+                <div className="mb-8">
+                  <div className="flex justify-between items-center mb-3">
+                    <label className="text-sm font-semibold">Tamanho:</label>
+                    <button className="text-xs text-[#800020] flex items-center gap-1 hover:underline">
+                      <Ruler size={14} /> Tabela de medidas
                     </button>
-                  ))}
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {(product.sizes || ['G1', 'G2', 'G3']).map((size) => (
+                      <button
+                        key={size}
+                        onClick={() => setSelectedSize(size)}
+                        className={`h-12 w-12 flex items-center justify-center rounded-md border text-sm font-medium transition-all ${
+                          selectedSize === size 
+                            ? 'bg-foreground text-background border-foreground' 
+                            : 'border-input hover:border-foreground'
+                        }`}
+                      >
+                        {size}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
 
               {/* Action Buttons */}
               <div className="flex flex-col gap-3 mb-8">
