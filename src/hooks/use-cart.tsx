@@ -11,13 +11,14 @@ export interface CartItem {
   quantity: number;
   size?: string;
   color?: string;
+  cartId: string;
 }
 
 interface CartContextType {
   items: CartItem[];
   addItem: (product: any, quantity?: number, size?: string, color?: string) => void;
-  removeItem: (id: string, size?: string, color?: string) => void;
-  updateQuantity: (id: string, quantity: number, size?: string, color?: string) => void;
+  removeItem: (cartId: string) => void;
+  updateQuantity: (cartId: string, quantity: number) => void;
   clearCart: () => void;
   totalItems: number;
   totalPrice: number;
@@ -36,7 +37,13 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     const savedCart = localStorage.getItem('tina-plus-cart');
     if (savedCart) {
       try {
-        setItems(JSON.parse(savedCart));
+        const parsed = JSON.parse(savedCart);
+        // Migration: Add cartId to old items if missing
+        const migrated = parsed.map((item: any) => ({
+          ...item,
+          cartId: item.cartId || `${item.id}-${item.size || ''}-${item.color || ''}`
+        }));
+        setItems(migrated);
       } catch (e) {
         console.error('Failed to parse cart from localStorage', e);
       }
@@ -49,15 +56,15 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   }, [items]);
 
   const addItem = (product: any, quantity: number = 1, size?: string, color?: string) => {
+    const cartId = `${product.id}-${size || ''}-${color || ''}`;
+    
     setItems((prevItems) => {
-      const existingItem = prevItems.find(
-        (item) => item.id === product.id && item.size === size && item.color === color
-      );
+      const existingItem = prevItems.find((item) => item.cartId === cartId);
 
       if (existingItem) {
         toast.success(`Quantidade de ${product.name} atualizada`);
         return prevItems.map((item) =>
-          item.id === product.id && item.size === size && item.color === color
+          item.cartId === cartId
             ? { ...item, quantity: item.quantity + quantity }
             : item
         );
@@ -71,26 +78,25 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         image_url: product.image_url, 
         quantity, 
         size, 
-        color 
+        color,
+        cartId
       }];
     });
     setIsOpen(true);
   };
 
-  const removeItem = (id: string, size?: string, color?: string) => {
+  const removeItem = (cartId: string) => {
     setItems((prevItems) => 
-      prevItems.filter((item) => 
-        !(item.id === id && item.size === size && item.color === color)
-      )
+      prevItems.filter((item) => item.cartId !== cartId)
     );
     toast.info('Item removido do carrinho');
   };
 
-  const updateQuantity = (id: string, quantity: number, size?: string, color?: string) => {
+  const updateQuantity = (cartId: string, quantity: number) => {
     if (quantity < 1) return;
     setItems((prevItems) =>
       prevItems.map((item) => 
-        item.id === id && item.size === size && item.color === color 
+        item.cartId === cartId 
           ? { ...item, quantity } 
           : item
       )
