@@ -50,6 +50,8 @@ const CartDrawer = () => {
     const selectedOption = calculatedOptions.find(opt => opt.id === shippingMethod);
     if (selectedOption) {
       setShippingPrice(selectedOption.price);
+    } else if (shippingMethod !== 'onibus') {
+      setShippingPrice(0);
     }
   }, [totalItems, shippingMethod, calculatedOptions]);
 
@@ -60,6 +62,9 @@ const CartDrawer = () => {
       handleCalculateShipping(cleanCep);
     } else {
       setCalculatedOptions([]);
+      if (shippingMethod !== 'onibus') {
+        setShippingMethod('');
+      }
     }
   }, [shippingData.cep, totalItems]);
 
