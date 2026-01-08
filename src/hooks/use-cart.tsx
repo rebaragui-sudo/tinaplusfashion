@@ -28,18 +28,19 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-// Helper to generate a unique ID for a product variation
-const generateCartId = (productId: string, size?: string, color?: string): string => {
-  if (!productId) return `unknown-${Math.random().toString(36).substring(2, 9)}`;
-  const s = size ? size.trim().toLowerCase() : 'no-size';
-  const c = color ? color.trim().toLowerCase() : 'no-color';
-  return `${productId}-${s}-${c}`;
-};
+  // Helper to generate a unique ID for a product variation
+  const generateCartId = (productId: string, size?: string, color?: string): string => {
+    if (!productId) return `unknown-${Math.random().toString(36).substring(2, 9)}`;
+    const s = size && typeof size === 'string' ? size.trim().toLowerCase() : 'no-size';
+    const c = color && typeof color === 'string' ? color.trim().toLowerCase() : 'no-color';
+    // Use a separator that is unlikely to be in the ID itself, and ensure we don't have double hyphens
+    return `cart-${productId}-${s}-${c}`.replace(/-+/g, '-');
+  };
 
-export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [items, setItems] = useState<CartItem[]>([]);
-  const [isOpen, setIsOpen] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
+  export const CartProvider = ({ children }: { children: ReactNode }) => {
+    const [items, setItems] = useState<CartItem[]>([]);
+    const [isOpen, setIsOpen] = useState(false);
+    const [isLoaded, setIsLoaded] = useState(false);
 
     // Load cart from localStorage
     useEffect(() => {
@@ -56,9 +57,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
               const productId = item.id || item.productId;
               if (!productId) return;
 
-              // Force regeneration of cartId if it looks like a plain product ID or is missing
-              // A variation-aware cartId should have at least two hyphens beyond the UUID structure
-              // or we can just always regenerate it to be safe.
+              // Force regeneration of cartId to ensure it's in the correct format
               const cartId = generateCartId(productId, item.size, item.color);
               
               if (!seenIds.has(cartId)) {
@@ -66,17 +65,17 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
                 migratedItems.push({
                   id: productId,
                   name: item.name || 'Produto',
-                  price: item.price || 0,
+                  price: typeof item.price === 'number' ? item.price : 0,
                   image_url: item.image_url || '',
-                  quantity: item.quantity || 1,
-                  size: item.size,
-                  color: item.color,
+                  quantity: typeof item.quantity === 'number' ? item.quantity : 1,
+                  size: item.size || undefined,
+                  color: item.color || undefined,
                   cartId: cartId
                 });
               } else {
                 const existingIndex = migratedItems.findIndex(i => i.cartId === cartId);
                 if (existingIndex > -1) {
-                  migratedItems[existingIndex].quantity += (item.quantity || 1);
+                  migratedItems[existingIndex].quantity += (typeof item.quantity === 'number' ? item.quantity : 1);
                 }
               }
             });
@@ -90,56 +89,70 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       setIsLoaded(true);
     }, []);
 
-  // Save cart to localStorage
-  useEffect(() => {
-    if (isLoaded) {
-      localStorage.setItem('tina-plus-cart', JSON.stringify(items));
-    }
-  }, [items, isLoaded]);
+    // Save cart to localStorage
+    useEffect(() => {
+      if (isLoaded) {
+        localStorage.setItem('tina-plus-cart', JSON.stringify(items));
+      }
+    }, [items, isLoaded]);
 
-  const addItem = useCallback((product: any, quantity: number = 1, size?: string, color?: string) => {
-    if (!product || !product.id) return;
-    
-    const cartId = generateCartId(product.id, size, color);
-    
-    setItems((prevItems) => {
-      const existingItemIndex = prevItems.findIndex((item) => item.cartId === cartId);
+    const addItem = useCallback((product: any, quantity: number = 1, size?: string, color?: string) => {
+      if (!product || !product.id) return;
+      
+      const cartId = generateCartId(product.id, size, color);
+      
+      setItems((prevItems) => {
+        const existingItemIndex = prevItems.findIndex((item) => item.cartId === cartId);
 
-      if (existingItemIndex > -1) {
-        const newItems = [...prevItems];
-        newItems[existingItemIndex] = {
-          ...newItems[existingItemIndex],
-          quantity: newItems[existingItemIndex].quantity + quantity
-        };
-        toast.success(`Quantidade de ${product.name} atualizada`);
+        if (existingItemIndex > -1) {
+          const newItems = [...prevItems];
+          newItems[existingItemIndex] = {
+            ...newItems[existingItemIndex],
+            quantity: newItems[existingItemIndex].quantity + quantity
+          };
+          toast.success(`Quantidade de ${product.name} atualizada`);
+          return newItems;
+        }
+
+        toast.success(`${product.name} adicionado ao carrinho`);
+        return [...prevItems, { 
+          id: product.id, 
+          name: product.name, 
+          price: product.price, 
+          image_url: product.image_url, 
+          quantity, 
+          size: size || undefined, 
+          color: color || undefined,
+          cartId
+        }];
+      });
+      setIsOpen(true);
+    }, []);
+
+    const removeItem = useCallback((cartId: string) => {
+      if (!cartId) {
+        console.warn('Attempted to remove item with no cartId');
+        return;
+      }
+      
+      setItems((prevItems) => {
+        const beforeCount = prevItems.length;
+        const newItems = prevItems.filter((item) => item.cartId !== cartId);
+        
+        if (newItems.length < beforeCount) {
+          toast.info('Item removido do carrinho');
+        } else {
+          console.warn(`Item with cartId ${cartId} not found in cart`, prevItems);
+          // Fallback: if we can't find it by cartId, maybe it's an old item with just ID
+          const fallbackItems = prevItems.filter((item) => item.id !== cartId);
+          if (fallbackItems.length < beforeCount) {
+            toast.info('Item removido do carrinho (fallback)');
+            return fallbackItems;
+          }
+        }
         return newItems;
-      }
-
-      toast.success(`${product.name} adicionado ao carrinho`);
-      return [...prevItems, { 
-        id: product.id, 
-        name: product.name, 
-        price: product.price, 
-        image_url: product.image_url, 
-        quantity, 
-        size, 
-        color,
-        cartId
-      }];
-    });
-    setIsOpen(true);
-  }, []);
-
-  const removeItem = useCallback((cartId: string) => {
-    if (!cartId) return;
-    setItems((prevItems) => {
-      const newItems = prevItems.filter((item) => item.cartId !== cartId);
-      if (newItems.length !== prevItems.length) {
-        toast.info('Item removido do carrinho');
-      }
-      return newItems;
-    });
-  }, []);
+      });
+    }, []);
 
   const updateQuantity = useCallback((cartId: string, quantity: number) => {
     if (!cartId) return;
