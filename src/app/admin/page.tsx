@@ -252,20 +252,30 @@ export default function AdminPage() {
     <div className="min-h-screen bg-gray-50 p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
           <header className="flex justify-between items-center mb-8">
-            <div className="flex flex-col gap-2">
-              <Link 
-                href="/" 
-                className="flex items-center gap-1 text-[#800020] hover:underline text-sm font-medium mb-2 group"
-              >
-                <ChevronLeft size={16} className="transition-transform group-hover:-translate-x-1" />
-                Voltar para o Site
-              </Link>
-              <h1 className="text-3xl font-bold text-gray-900">Painel de Controle</h1>
-              <p className="text-gray-600">Gerencie seus produtos e preços</p>
-            </div>
-            <div className="bg-[#800020] text-white p-3 rounded-full shadow-lg">
-              <Package size={24} />
-            </div>
+              <div className="flex flex-col gap-2">
+                <Link 
+                  href="/" 
+                  className="flex items-center gap-1 text-[#800020] hover:underline text-sm font-medium mb-2 group"
+                >
+                  <ChevronLeft size={16} className="transition-transform group-hover:-translate-x-1" />
+                  Voltar para o Site
+                </Link>
+                <h1 className="text-3xl font-bold text-gray-900">Painel de Controle</h1>
+                <p className="text-gray-600">Gerencie seus produtos e preços</p>
+              </div>
+              <div className="flex items-center gap-4">
+                <Link 
+                  href="/admin/pedidos"
+                  className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-bold text-gray-700 hover:border-[#800020] hover:text-[#800020] transition-all shadow-sm"
+                >
+                  <ShoppingBag size={18} />
+                  Ver Pedidos
+                </Link>
+                <div className="bg-[#800020] text-white p-3 rounded-full shadow-lg">
+                  <Package size={24} />
+                </div>
+              </div>
+
           </header>
 
         {/* Form Section */}
