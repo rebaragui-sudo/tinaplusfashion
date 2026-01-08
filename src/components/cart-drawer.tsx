@@ -402,19 +402,21 @@ const CartDrawer = () => {
                   {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalPrice)}
                 </span>
               </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-[#71717a]">Frete</span>
-                <span className="text-[#008000] font-medium">
-                  {shippingMethod === 'onibus' ? 'A combinar' : 'Grátis*'}
-                </span>
-              </div>
-              <Separator className="my-2" />
-              <div className="flex justify-between text-base font-bold text-[#121812]">
-                <span>Total</span>
-                <span>
-                  {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalPrice)}
-                </span>
-              </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-[#71717a]">Frete</span>
+                  <span className={`${shippingPrice === 0 ? 'text-[#008000]' : 'text-[#121812]'} font-medium`}>
+                    {shippingMethod === 'onibus' ? 'A combinar' : (
+                      shippingPrice === 0 ? 'Grátis' : new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(shippingPrice)
+                    )}
+                  </span>
+                </div>
+                <Separator className="my-2" />
+                <div className="flex justify-between text-base font-bold text-[#121812]">
+                  <span>Total</span>
+                  <span>
+                    {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalPrice + shippingPrice)}
+                  </span>
+                </div>
               {!isCheckout && (
                 <p className="text-[10px] text-[#71717a] text-center mt-2 italic">
                   *Frete grátis para compra mínima de R$ 350,00
