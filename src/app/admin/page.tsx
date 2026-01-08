@@ -38,6 +38,8 @@ interface Product {
 }
 
 export default function AdminPage() {
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [password, setPassword] = useState('');
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState<string | null>(null);
@@ -45,24 +47,63 @@ export default function AdminPage() {
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [colorInput, setColorInput] = useState('#000000');
 
-  const availableSizes = ['44', '46', '48', '50', '52', 'G1', 'G2', 'G3'];
-
-  const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    price: '',
-    category: '',
-    image_url: '',
-    images: [] as string[],
-    is_featured: false,
-    is_new_arrival: false,
-    colors: [] as string[],
-    sizes: ['G1', 'G2', 'G3'] as string[],
-  });
-
   useEffect(() => {
-    fetchProducts();
+    const auth = localStorage.getItem('isAdmin');
+    if (auth === 'true') {
+      setIsAdmin(true);
+      fetchProducts();
+    } else {
+      setLoading(false);
+    }
   }, []);
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password === 'tina2025') {
+      localStorage.setItem('isAdmin', 'true');
+      setIsAdmin(true);
+      fetchProducts();
+    } else {
+      toast.error('Senha incorreta!');
+    }
+  };
+
+  if (!isAdmin && !loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <div className="bg-white p-8 rounded-2xl shadow-xl max-w-md w-full border border-gray-100">
+          <div className="w-16 h-16 bg-[#800020] text-white rounded-full flex items-center justify-center mx-auto mb-6">
+            <Package size={32} />
+          </div>
+          <h1 className="text-2xl font-bold text-center text-gray-900 mb-2">Acesso Restrito</h1>
+          <p className="text-gray-500 text-center mb-8">Digite a senha para acessar o painel administrativo.</p>
+          
+          <form onSubmit={handleLogin} className="space-y-4">
+            <input
+              type="password"
+              className="w-full p-3 border rounded-xl focus:ring-2 focus:ring-[#800020] outline-none transition-all text-center text-lg"
+              placeholder="Sua senha"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoFocus
+            />
+            <button
+              type="submit"
+              className="w-full py-3 bg-[#800020] text-white rounded-xl font-bold hover:bg-[#600018] transition-all shadow-lg shadow-[#800020]/20"
+            >
+              Entrar no Painel
+            </button>
+            <Link 
+              href="/"
+              className="block text-center text-sm text-gray-500 hover:text-[#800020] transition-colors"
+            >
+              Voltar para o site
+            </Link>
+          </form>
+        </div>
+      </div>
+    );
+  }
 
   async function fetchProducts() {
     try {
