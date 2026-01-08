@@ -34,12 +34,17 @@ interface ShippingData {
   estado: string;
   cidade: string;
   celular: string;
+  cep?: string;
+  endereco?: string;
+  numero?: string;
+  bairro?: string;
 }
 
 interface Order {
   id: string;
   created_at: string;
   total_price: number;
+  shipping_price: number;
   status: string;
   shipping_method: string;
   items: OrderItem[];
