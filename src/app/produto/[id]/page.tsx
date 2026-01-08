@@ -67,6 +67,22 @@ export default function ProductPage() {
     if (id) fetchProduct();
   }, [id]);
 
+  const handleAddToCart = () => {
+    if (!product) return;
+    
+    if (product.sizes && product.sizes.length > 0 && !selectedSize) {
+      toast.error('Por favor, selecione um tamanho');
+      return;
+    }
+    
+    if (product.colors && product.colors.length > 0 && !selectedColor) {
+      toast.error('Por favor, selecione uma cor');
+      return;
+    }
+
+    addItem(product, 1, selectedSize || undefined, selectedColor || undefined);
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col">
