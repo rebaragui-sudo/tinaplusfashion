@@ -15,7 +15,8 @@ import {
   ExternalLink,
   ChevronLeft,
   Pipette,
-  Palette
+  Palette,
+  Upload
 } from 'lucide-react';
 import { toast } from 'sonner';
 import Link from 'next/link';
@@ -26,6 +27,7 @@ interface Product {
   description: string;
   price: number;
   image_url: string;
+  images: string[];
   category: string;
   is_featured: boolean;
   is_new_arrival: boolean;
@@ -45,6 +47,7 @@ export default function AdminPage() {
     price: '',
     category: '',
     image_url: '',
+    images: [] as string[],
     is_featured: false,
     is_new_arrival: false,
     color: '#000000',
@@ -86,34 +89,53 @@ export default function AdminPage() {
     }
   };
 
-  async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>, isGallery = false) {
     try {
       setUploading(true);
-      const file = e.target.files?.[0];
-      if (!file) return;
+      const files = e.target.files;
+      if (!files || files.length === 0) return;
 
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${Math.random()}.${fileExt}`;
-      const filePath = `product-images/${fileName}`;
+      const newUrls: string[] = [];
 
-      const { error: uploadError } = await supabase.storage
-        .from('products')
-        .upload(filePath, file);
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Math.random()}.${fileExt}`;
+        const filePath = `product-images/${fileName}`;
 
-      if (uploadError) throw uploadError;
+        const { error: uploadError } = await supabase.storage
+          .from('products')
+          .upload(filePath, file);
 
-      const { data } = supabase.storage
-        .from('products')
-        .getPublicUrl(filePath);
+        if (uploadError) throw uploadError;
 
-      setFormData({ ...formData, image_url: data.publicUrl });
-      toast.success('Imagem enviada com sucesso!');
+        const { data } = supabase.storage
+          .from('products')
+          .getPublicUrl(filePath);
+        
+        newUrls.push(data.publicUrl);
+      }
+
+      if (isGallery) {
+        setFormData(prev => ({ ...prev, images: [...prev.images, ...newUrls] }));
+        toast.success(`${newUrls.length} imagem(ns) adicionada(s) à galeria!`);
+      } else {
+        setFormData(prev => ({ ...prev, image_url: newUrls[0] }));
+        toast.success('Imagem principal atualizada!');
+      }
     } catch (error: any) {
       toast.error('Erro no upload: ' + error.message);
     } finally {
       setUploading(false);
     }
   }
+
+  const removeGalleryImage = (index: number) => {
+    setFormData(prev => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index)
+    }));
+  };
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -145,6 +167,7 @@ export default function AdminPage() {
         price: '',
         category: '',
         image_url: '',
+        images: [],
         is_featured: false,
         is_new_arrival: false,
         color: '#000000',
@@ -181,6 +204,7 @@ export default function AdminPage() {
       price: product.price.toString(),
       category: product.category || '',
       image_url: product.image_url || '',
+      images: product.images || [],
       is_featured: product.is_featured,
       is_new_arrival: product.is_new_arrival,
       color: product.color || '#000000',
@@ -215,25 +239,25 @@ export default function AdminPage() {
             {isEditing ? 'Editar Produto' : 'Adicionar Novo Produto'}
           </h2>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium">Nome do Produto</label>
+                <label className="text-sm font-medium text-gray-700">Nome do Produto</label>
                 <input
                   required
-                  className="w-full p-2 border rounded-md focus:ring-2 focus:ring-[#800020] outline-none"
+                  className="w-full p-2 border rounded-md focus:ring-2 focus:ring-[#800020] outline-none transition-all"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   placeholder="Ex: Conjunto Alfaiataria"
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium">Preço (R$)</label>
+                <label className="text-sm font-medium text-gray-700">Preço (R$)</label>
                 <input
                   required
                   type="number"
                   step="0.01"
-                  className="w-full p-2 border rounded-md focus:ring-2 focus:ring-[#800020] outline-none"
+                  className="w-full p-2 border rounded-md focus:ring-2 focus:ring-[#800020] outline-none transition-all"
                   value={formData.price}
                   onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                   placeholder="0.00"
@@ -243,16 +267,16 @@ export default function AdminPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium">Categoria</label>
+                <label className="text-sm font-medium text-gray-700">Categoria</label>
                 <input
-                  className="w-full p-2 border rounded-md focus:ring-2 focus:ring-[#800020] outline-none"
+                  className="w-full p-2 border rounded-md focus:ring-2 focus:ring-[#800020] outline-none transition-all"
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                   placeholder="Ex: Conjuntos, Vestidos"
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium">Cor do Produto</label>
+                <label className="text-sm font-medium text-gray-700">Cor do Produto</label>
                 <div className="flex gap-2">
                   <div className="relative flex-grow flex items-center">
                     <input
@@ -286,9 +310,9 @@ export default function AdminPage() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">Descrição</label>
+              <label className="text-sm font-medium text-gray-700">Descrição</label>
               <textarea
-                className="w-full p-2 border rounded-md focus:ring-2 focus:ring-[#800020] outline-none"
+                className="w-full p-2 border rounded-md focus:ring-2 focus:ring-[#800020] outline-none transition-all"
                 rows={3}
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
@@ -296,63 +320,98 @@ export default function AdminPage() {
               />
             </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Imagem do Produto</label>
-              <div className="flex items-center gap-4">
-                <div className="relative w-24 h-24 border rounded-md flex items-center justify-center bg-gray-50 overflow-hidden">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Main Image */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700">Imagem Principal</label>
+                <div className="relative aspect-[3/4] max-w-[200px] border-2 border-dashed rounded-lg flex flex-col items-center justify-center bg-gray-50 overflow-hidden group">
                   {formData.image_url ? (
-                    <img src={formData.image_url} alt="Preview" className="w-full h-full object-cover" />
+                    <>
+                      <img src={formData.image_url} alt="Preview" className="w-full h-full object-cover" />
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <label htmlFor="main-upload" className="cursor-pointer p-2 bg-white rounded-full text-[#800020]">
+                          <Upload size={20} />
+                        </label>
+                      </div>
+                    </>
                   ) : (
-                    <ImageIcon className="text-gray-400" size={32} />
+                    <label htmlFor="main-upload" className="cursor-pointer flex flex-col items-center p-4 text-center">
+                      <ImageIcon className="text-gray-400 mb-2" size={32} />
+                      <span className="text-xs text-gray-500 font-medium">Clique para enviar</span>
+                    </label>
                   )}
                   {uploading && (
                     <div className="absolute inset-0 bg-white/80 flex items-center justify-center">
                       <Loader2 className="animate-spin text-[#800020]" />
                     </div>
                   )}
-                </div>
-                <div className="flex-grow">
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={handleFileUpload}
+                    onChange={(e) => handleFileUpload(e, false)}
                     className="hidden"
-                    id="file-upload"
+                    id="main-upload"
                   />
-                  <label
-                    htmlFor="file-upload"
-                    className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 border rounded-md hover:bg-gray-50 transition-colors"
-                  >
-                    <ImageIcon size={18} />
-                    Selecionar Imagem
-                  </label>
-                  <p className="text-xs text-gray-500 mt-2">Formatos aceitos: JPG, PNG. Máx 5MB.</p>
                 </div>
+              </div>
+
+              {/* Gallery Images */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700">Outras Fotos (Galeria)</label>
+                <div className="grid grid-cols-3 gap-2">
+                  {formData.images.map((url, idx) => (
+                    <div key={idx} className="relative aspect-square rounded-md overflow-hidden border group">
+                      <img src={url} alt="" className="w-full h-full object-cover" />
+                      <button 
+                        type="button"
+                        onClick={() => removeGalleryImage(idx)}
+                        className="absolute top-1 right-1 p-1 bg-red-600 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <X size={12} />
+                      </button>
+                    </div>
+                  ))}
+                  <label 
+                    htmlFor="gallery-upload"
+                    className="aspect-square border-2 border-dashed rounded-md flex flex-col items-center justify-center bg-gray-50 cursor-pointer hover:bg-gray-100 transition-colors"
+                  >
+                    <Plus className="text-gray-400" size={20} />
+                    <span className="text-[10px] text-gray-500 mt-1">Adicionar</span>
+                  </label>
+                </div>
+                <input
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  onChange={(e) => handleFileUpload(e, true)}
+                  className="hidden"
+                  id="gallery-upload"
+                />
               </div>
             </div>
 
             <div className="flex gap-6 py-2">
-              <label className="flex items-center gap-2 cursor-pointer">
+              <label className="flex items-center gap-2 cursor-pointer group">
                 <input
                   type="checkbox"
                   checked={formData.is_featured}
                   onChange={(e) => setFormData({ ...formData, is_featured: e.target.checked })}
-                  className="rounded text-[#800020] focus:ring-[#800020]"
+                  className="w-4 h-4 rounded text-[#800020] focus:ring-[#800020]"
                 />
-                <span className="text-sm">Em Destaque</span>
+                <span className="text-sm font-medium group-hover:text-[#800020]">Em Destaque</span>
               </label>
-              <label className="flex items-center gap-2 cursor-pointer">
+              <label className="flex items-center gap-2 cursor-pointer group">
                 <input
                   type="checkbox"
                   checked={formData.is_new_arrival}
                   onChange={(e) => setFormData({ ...formData, is_new_arrival: e.target.checked })}
-                  className="rounded text-[#800020] focus:ring-[#800020]"
+                  className="w-4 h-4 rounded text-[#800020] focus:ring-[#800020]"
                 />
-                <span className="text-sm">Novidade</span>
+                <span className="text-sm font-medium group-hover:text-[#800020]">Novidade</span>
               </label>
             </div>
 
-            <div className="flex justify-end gap-3 pt-4 border-t">
+            <div className="flex justify-end gap-3 pt-6 border-t">
               {isEditing && (
                 <button
                   type="button"
@@ -364,11 +423,13 @@ export default function AdminPage() {
                       price: '',
                       category: '',
                       image_url: '',
+                      images: [],
                       is_featured: false,
                       is_new_arrival: false,
+                      color: '#000000',
                     });
                   }}
-                  className="px-6 py-2 border rounded-md hover:bg-gray-50 transition-colors flex items-center gap-2"
+                  className="px-6 py-2 border rounded-md hover:bg-gray-50 transition-colors flex items-center gap-2 font-medium"
                 >
                   <X size={18} />
                   Cancelar
@@ -377,7 +438,7 @@ export default function AdminPage() {
               <button
                 type="submit"
                 disabled={loading || uploading}
-                className="px-6 py-2 bg-[#800020] text-white rounded-md hover:bg-[#600018] transition-colors disabled:opacity-50 flex items-center gap-2"
+                className="px-8 py-2 bg-[#800020] text-white rounded-md hover:bg-[#600018] transition-colors disabled:opacity-50 flex items-center gap-2 font-bold shadow-md shadow-[#800020]/20"
               >
                 {loading ? <Loader2 className="animate-spin" size={18} /> : (isEditing ? <Save size={18} /> : <Plus size={18} />)}
                 {isEditing ? 'Salvar Alterações' : 'Cadastrar Produto'}
@@ -388,54 +449,66 @@ export default function AdminPage() {
 
         {/* Product List */}
         <section className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-          <div className="p-6 border-b">
+          <div className="p-6 border-b flex justify-between items-center">
             <h2 className="text-xl font-semibold">Seus Produtos</h2>
+            <span className="text-sm text-gray-500 font-medium">{products.length} itens</span>
           </div>
           
           <div className="overflow-x-auto">
-            <table className="w-full text-left">
+            <table className="w-full text-left border-collapse">
                 <thead className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
                   <tr>
-                    <th className="px-6 py-3 font-medium">Produto</th>
-                    <th className="px-6 py-3 font-medium">Cor</th>
-                    <th className="px-6 py-3 font-medium">Categoria</th>
-                    <th className="px-6 py-3 font-medium">Preço</th>
-                    <th className="px-6 py-3 font-medium">Status</th>
-                    <th className="px-6 py-3 font-medium text-right">Ações</th>
+                    <th className="px-6 py-4 font-semibold">Produto</th>
+                    <th className="px-6 py-4 font-semibold text-center">Fotos</th>
+                    <th className="px-6 py-4 font-semibold">Categoria</th>
+                    <th className="px-6 py-4 font-semibold">Preço</th>
+                    <th className="px-6 py-4 font-semibold">Status</th>
+                    <th className="px-6 py-4 font-semibold text-right">Ações</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y">
+                <tbody className="divide-y divide-gray-100">
                   {products.length === 0 ? (
                     <tr>
-                      <td colSpan={6} className="px-6 py-10 text-center text-gray-500">
-                        {loading ? 'Carregando...' : 'Nenhum produto cadastrado.'}
+                      <td colSpan={6} className="px-6 py-12 text-center text-gray-500">
+                        <div className="flex flex-col items-center gap-2">
+                          <Package size={48} className="text-gray-200" />
+                          <p className="font-medium">{loading ? 'Carregando produtos...' : 'Nenhum produto cadastrado.'}</p>
+                        </div>
                       </td>
                     </tr>
                   ) : (
                     products.map((product) => (
-                      <tr key={product.id} className="hover:bg-gray-50 transition-colors">
+                      <tr key={product.id} className="hover:bg-gray-50/50 transition-colors">
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-3">
-                            <img
-                              src={product.image_url || 'https://via.placeholder.com/40'}
-                              className="w-10 h-10 rounded object-cover border"
-                              alt=""
-                            />
-                            <span className="font-medium text-gray-900">{product.name}</span>
+                            <div className="relative w-12 h-16 rounded overflow-hidden border bg-gray-50">
+                              <img
+                                src={product.image_url || 'https://via.placeholder.com/40'}
+                                className="w-full h-full object-cover"
+                                alt=""
+                              />
+                            </div>
+                            <div className="flex flex-col">
+                              <span className="font-bold text-gray-900 leading-tight">{product.name}</span>
+                              <div className="flex items-center gap-1.5 mt-1">
+                                <div 
+                                  className="w-3 h-3 rounded-full border border-gray-200 shadow-sm"
+                                  style={{ backgroundColor: product.color || '#fff' }}
+                                />
+                                <span className="text-[10px] font-mono text-gray-400 uppercase">{product.color || 'n/a'}</span>
+                              </div>
+                            </div>
                           </div>
                         </td>
-                        <td className="px-6 py-4">
-                          <div className="flex items-center gap-2">
-                            <div 
-                              className="w-5 h-5 rounded border shadow-sm"
-                              style={{ backgroundColor: product.color || '#fff' }}
-                            />
-                            <span className="text-xs font-mono text-gray-500">{product.color || '-'}</span>
-                          </div>
+                        <td className="px-6 py-4 text-center">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-bold">
+                            <ImageIcon size={12} />
+                            {1 + (product.images?.length || 0)}
+                          </span>
                         </td>
-                      <td className="px-6 py-4 text-sm text-gray-600">{product.category}</td>
-                      <td className="px-6 py-4 font-semibold text-gray-900">
-                        R$ {product.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                      <td className="px-6 py-4 text-sm font-medium text-gray-600">{product.category}</td>
+                      <td className="px-6 py-4 font-bold text-[#800020]">
+                        {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex gap-1">
@@ -455,13 +528,15 @@ export default function AdminPage() {
                         <div className="flex justify-end gap-2">
                           <button
                             onClick={() => handleEdit(product)}
-                            className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
+                            className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                            title="Editar"
                           >
                             <Edit size={18} />
                           </button>
                           <button
                             onClick={() => setDeleteConfirm(product.id)}
-                            className="p-1.5 text-red-600 hover:bg-red-50 rounded-md transition-colors"
+                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                            title="Excluir"
                           >
                             <Trash2 size={18} />
                           </button>
@@ -477,22 +552,25 @@ export default function AdminPage() {
 
         {/* Delete Confirmation Modal */}
         {deleteConfirm && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-xl p-6 max-w-sm w-full shadow-xl">
-              <h3 className="text-xl font-bold mb-2">Excluir Produto?</h3>
-              <p className="text-gray-600 mb-6">Esta ação não pode ser desfeita. Tem certeza que deseja excluir este produto?</p>
-              <div className="flex justify-end gap-3">
-                <button
-                  onClick={() => setDeleteConfirm(null)}
-                  className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-md transition-colors"
-                >
-                  Cancelar
-                </button>
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+            <div className="bg-white rounded-2xl p-8 max-w-sm w-full shadow-2xl scale-in-center">
+              <div className="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Trash2 size={32} />
+              </div>
+              <h3 className="text-xl font-bold text-center mb-2">Excluir Produto?</h3>
+              <p className="text-gray-500 text-center mb-8">Esta ação removerá o produto permanentemente. Tem certeza?</p>
+              <div className="flex flex-col gap-2">
                 <button
                   onClick={() => handleDelete(deleteConfirm)}
-                  className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+                  className="w-full py-3 bg-red-600 text-white rounded-xl font-bold hover:bg-red-700 transition-colors shadow-lg shadow-red-600/20"
                 >
-                  Excluir
+                  Confirmar Exclusão
+                </button>
+                <button
+                  onClick={() => setDeleteConfirm(null)}
+                  className="w-full py-3 text-gray-500 font-medium hover:bg-gray-100 rounded-xl transition-colors"
+                >
+                  Cancelar
                 </button>
               </div>
             </div>
