@@ -498,17 +498,17 @@ const CartDrawer = () => {
                       Faltam {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(350 - totalPrice)} para o pedido mínimo
                     </p>
                   )}
-                  <Button 
-                    className="w-full bg-[#121812] hover:bg-[#800020] text-white py-6 text-base font-bold uppercase tracking-wider"
-                    disabled={isSubmitting || (totalPrice < 350)}
-                    onClick={() => {
-                      if (isCheckout) {
-                        handleFinish();
-                      } else {
-                        setIsCheckout(true);
-                      }
-                    }}
-                  >
+                    <Button 
+                      className="w-full bg-[#121812] hover:bg-[#800020] text-white py-6 text-base font-bold uppercase tracking-wider"
+                      disabled={isSubmitting || (totalPrice < 350) || (isCheckout && !canFinishCheckout)}
+                      onClick={() => {
+                        if (isCheckout) {
+                          handleFinish();
+                        } else {
+                          setIsCheckout(true);
+                        }
+                      }}
+                    >
                     {isSubmitting ? (
                       <Loader2 className="h-5 w-5 animate-spin" />
                     ) : (
