@@ -38,24 +38,19 @@ const CartDrawer = () => {
     bairro: ''
   });
 
-  // Calculate shipping based on volume (quantity)
-  React.useEffect(() => {
-    if (totalPrice >= 350) {
-      setShippingPrice(0);
-      return;
-    }
+    // Calculate shipping based on volume (quantity)
+    React.useEffect(() => {
+      if (shippingMethod === 'onibus') {
+        setShippingPrice(0);
+        return;
+      }
 
-    if (shippingMethod === 'onibus') {
-      setShippingPrice(0);
-      return;
-    }
-
-    // Volume-based calculation: Base R$ 20,00 + R$ 3,50 per item
-    const basePrice = 22.90;
-    const pricePerItem = 3.50;
-    const calculated = basePrice + (totalItems * pricePerItem);
-    setShippingPrice(calculated);
-  }, [totalItems, totalPrice, shippingMethod]);
+      // Volume-based calculation: Base R$ 22,90 + R$ 3,50 per item
+      const basePrice = 22.90;
+      const pricePerItem = 3.50;
+      const calculated = basePrice + (totalItems * pricePerItem);
+      setShippingPrice(calculated);
+    }, [totalItems, shippingMethod]);
 
   const handleFinish = async () => {
     if (shippingMethod === 'onibus') {
