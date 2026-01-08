@@ -10,9 +10,9 @@ const Header = () => {
       {/* Primary-colored announcement bar */}
       <div className="bg-[#121812] text-white text-center py-2 px-4 text-sm font-sans">
         <span className="hidden md:inline">
-          Frete grátis acima de R$ 299 | Troca fácil em até 30 dias | Até 10x sem juros
+          Compras acima de 350,00 | 7 dias | Até 12x sem juros
         </span>
-        <span className="md:hidden">Frete grátis acima de R$ 299</span>
+        <span className="md:hidden">Compras acima de 350,00</span>
       </div>
 
       <div className="container mx-auto px-4">
