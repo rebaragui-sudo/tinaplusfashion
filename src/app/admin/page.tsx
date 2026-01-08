@@ -31,7 +31,7 @@ interface Product {
   category: string;
   is_featured: boolean;
   is_new_arrival: boolean;
-  color?: string;
+  colors: string[];
   sizes: string[];
 }
 
@@ -41,6 +41,7 @@ export default function AdminPage() {
   const [isEditing, setIsEditing] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+  const [colorInput, setColorInput] = useState('#000000');
 
   const availableSizes = ['44', '46', '48', '50', '52', 'G1', 'G2', 'G3'];
 
@@ -53,7 +54,7 @@ export default function AdminPage() {
     images: [] as string[],
     is_featured: false,
     is_new_arrival: false,
-    color: '#000000',
+    colors: [] as string[],
     sizes: ['G1', 'G2', 'G3'] as string[],
   });
 
@@ -87,10 +88,28 @@ export default function AdminPage() {
     try {
       const eyeDropper = new (window as any).EyeDropper();
       const result = await eyeDropper.open();
-      setFormData({ ...formData, color: result.sRGBHex });
+      setColorInput(result.sRGBHex);
     } catch (e) {
       // User cancelled
     }
+  };
+
+  const addColor = () => {
+    if (formData.colors.includes(colorInput)) {
+      toast.error('Esta cor já foi adicionada');
+      return;
+    }
+    setFormData(prev => ({
+      ...prev,
+      colors: [...prev.colors, colorInput]
+    }));
+  };
+
+  const removeColor = (color: string) => {
+    setFormData(prev => ({
+      ...prev,
+      colors: prev.colors.filter(c => c !== color)
+    }));
   };
 
   async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>, isGallery = false) {
@@ -174,7 +193,7 @@ export default function AdminPage() {
           images: [],
           is_featured: false,
           is_new_arrival: false,
-          color: '#000000',
+          colors: [],
           sizes: ['G1', 'G2', 'G3'],
         });
       setIsEditing(null);
@@ -212,7 +231,7 @@ export default function AdminPage() {
       images: product.images || [],
       is_featured: product.is_featured,
       is_new_arrival: product.is_new_arrival,
-      color: product.color || '#000000',
+      colors: product.colors || [],
       sizes: product.sizes || ['G1', 'G2', 'G3'],
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -291,35 +310,65 @@ export default function AdminPage() {
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700">Cor do Produto</label>
-                <div className="flex gap-2">
-                  <div className="relative flex-grow flex items-center">
+                <label className="text-sm font-medium text-gray-700">Cores do Produto</label>
+                <div className="space-y-3">
+                  <div className="flex gap-2">
+                    <div className="relative flex-grow flex items-center">
+                      <input
+                        type="text"
+                        className="w-full p-2 pl-10 border rounded-md focus:ring-2 focus:ring-[#800020] outline-none font-mono text-sm"
+                        value={colorInput}
+                        onChange={(e) => setColorInput(e.target.value)}
+                        placeholder="#000000"
+                      />
+                      <div 
+                        className="absolute left-2 w-6 h-6 rounded border shadow-sm"
+                        style={{ backgroundColor: colorInput }}
+                      />
+                    </div>
                     <input
-                      type="text"
-                      className="w-full p-2 pl-10 border rounded-md focus:ring-2 focus:ring-[#800020] outline-none font-mono text-sm"
-                      value={formData.color}
-                      onChange={(e) => setFormData({ ...formData, color: e.target.value })}
-                      placeholder="#000000"
+                      type="color"
+                      className="w-12 h-10 p-1 border rounded-md cursor-pointer"
+                      value={colorInput}
+                      onChange={(e) => setColorInput(e.target.value)}
                     />
-                    <div 
-                      className="absolute left-2 w-6 h-6 rounded border shadow-sm"
-                      style={{ backgroundColor: formData.color }}
-                    />
+                    <button
+                      type="button"
+                      onClick={openEyeDropper}
+                      title="Usar conta-gotas"
+                      className="p-2 border rounded-md hover:bg-gray-50 transition-colors text-gray-600"
+                    >
+                      <Pipette size={20} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={addColor}
+                      className="px-3 bg-gray-900 text-white rounded-md hover:bg-black transition-colors flex items-center gap-1 text-sm font-bold"
+                    >
+                      <Plus size={16} /> Add
+                    </button>
                   </div>
-                  <input
-                    type="color"
-                    className="w-12 h-10 p-1 border rounded-md cursor-pointer"
-                    value={formData.color}
-                    onChange={(e) => setFormData({ ...formData, color: e.target.value })}
-                  />
-                  <button
-                    type="button"
-                    onClick={openEyeDropper}
-                    title="Usar conta-gotas"
-                    className="p-2 border rounded-md hover:bg-gray-50 transition-colors text-gray-600"
-                  >
-                    <Pipette size={20} />
-                  </button>
+                  
+                  {formData.colors.length > 0 && (
+                    <div className="flex flex-wrap gap-2 p-3 bg-gray-50 rounded-lg border border-dashed">
+                      {formData.colors.map((color, idx) => (
+                        <div key={idx} className="group relative">
+                          <div 
+                            className="w-8 h-8 rounded-full border shadow-sm cursor-help"
+                            style={{ backgroundColor: color }}
+                            title={color}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => removeColor(color)}
+                            className="absolute -top-1 -right-1 p-0.5 bg-red-600 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            <X size={10} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -461,7 +510,8 @@ export default function AdminPage() {
                       images: [],
                       is_featured: false,
                       is_new_arrival: false,
-                      color: '#000000',
+                      colors: [],
+                      sizes: ['G1', 'G2', 'G3'],
                     });
                   }}
                   className="px-6 py-2 border rounded-md hover:bg-gray-50 transition-colors flex items-center gap-2 font-medium"
@@ -495,7 +545,7 @@ export default function AdminPage() {
                   <tr>
                     <th className="px-6 py-4 font-semibold">Produto</th>
                       <th className="px-6 py-4 font-semibold">Tamanhos</th>
-                      <th className="px-6 py-4 font-semibold text-center">Fotos</th>
+                      <th className="px-6 py-4 font-semibold text-center">Cores</th>
                     <th className="px-6 py-4 font-semibold">Categoria</th>
                     <th className="px-6 py-4 font-semibold">Preço</th>
                     <th className="px-6 py-4 font-semibold">Status</th>
@@ -505,7 +555,7 @@ export default function AdminPage() {
                 <tbody className="divide-y divide-gray-100">
                   {products.length === 0 ? (
                     <tr>
-                      <td colSpan={6} className="px-6 py-12 text-center text-gray-500">
+                      <td colSpan={7} className="px-6 py-12 text-center text-gray-500">
                         <div className="flex flex-col items-center gap-2">
                           <Package size={48} className="text-gray-200" />
                           <p className="font-medium">{loading ? 'Carregando produtos...' : 'Nenhum produto cadastrado.'}</p>
@@ -526,13 +576,6 @@ export default function AdminPage() {
                             </div>
                             <div className="flex flex-col">
                               <span className="font-bold text-gray-900 leading-tight">{product.name}</span>
-                              <div className="flex items-center gap-1.5 mt-1">
-                                <div 
-                                  className="w-3 h-3 rounded-full border border-gray-200 shadow-sm"
-                                  style={{ backgroundColor: product.color || '#fff' }}
-                                />
-                                <span className="text-[10px] font-mono text-gray-400 uppercase">{product.color || 'n/a'}</span>
-                              </div>
                             </div>
                             </div>
                           </td>
@@ -546,11 +589,20 @@ export default function AdminPage() {
                             </div>
                           </td>
                           <td className="px-6 py-4 text-center">
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-bold">
-                            <ImageIcon size={12} />
-                            {1 + (product.images?.length || 0)}
-                          </span>
-                        </td>
+                            <div className="flex flex-wrap gap-1 justify-center min-w-[60px]">
+                              {(product.colors || []).map((color, idx) => (
+                                <div 
+                                  key={idx}
+                                  className="w-4 h-4 rounded-full border border-gray-200 shadow-sm"
+                                  style={{ backgroundColor: color }}
+                                  title={color}
+                                />
+                              ))}
+                              {(!product.colors || product.colors.length === 0) && (
+                                <span className="text-[10px] text-gray-400">n/a</span>
+                              )}
+                            </div>
+                          </td>
                       <td className="px-6 py-4 text-sm font-medium text-gray-600">{product.category}</td>
                       <td className="px-6 py-4 font-bold text-[#800020]">
                         {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
