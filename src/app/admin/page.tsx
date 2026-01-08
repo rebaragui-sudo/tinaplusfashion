@@ -241,14 +241,48 @@ export default function AdminPage() {
               </div>
             </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Categoria</label>
-              <input
-                className="w-full p-2 border rounded-md focus:ring-2 focus:ring-[#800020] outline-none"
-                value={formData.category}
-                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                placeholder="Ex: Conjuntos, Vestidos"
-              />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Categoria</label>
+                <input
+                  className="w-full p-2 border rounded-md focus:ring-2 focus:ring-[#800020] outline-none"
+                  value={formData.category}
+                  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                  placeholder="Ex: Conjuntos, Vestidos"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Cor do Produto</label>
+                <div className="flex gap-2">
+                  <div className="relative flex-grow flex items-center">
+                    <input
+                      type="text"
+                      className="w-full p-2 pl-10 border rounded-md focus:ring-2 focus:ring-[#800020] outline-none font-mono text-sm"
+                      value={formData.color}
+                      onChange={(e) => setFormData({ ...formData, color: e.target.value })}
+                      placeholder="#000000"
+                    />
+                    <div 
+                      className="absolute left-2 w-6 h-6 rounded border shadow-sm"
+                      style={{ backgroundColor: formData.color }}
+                    />
+                  </div>
+                  <input
+                    type="color"
+                    className="w-12 h-10 p-1 border rounded-md cursor-pointer"
+                    value={formData.color}
+                    onChange={(e) => setFormData({ ...formData, color: e.target.value })}
+                  />
+                  <button
+                    type="button"
+                    onClick={openEyeDropper}
+                    title="Usar conta-gotas"
+                    className="p-2 border rounded-md hover:bg-gray-50 transition-colors text-gray-600"
+                  >
+                    <Pipette size={20} />
+                  </button>
+                </div>
+              </div>
             </div>
 
             <div className="space-y-2">
