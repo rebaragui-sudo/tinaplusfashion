@@ -404,7 +404,27 @@ export default function AdminPage() {
               </div>
             </div>
 
-            <div className="flex gap-6 py-2">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700">Tamanhos Disponíveis</label>
+                <div className="flex flex-wrap gap-2">
+                  {availableSizes.map((size) => (
+                    <button
+                      key={size}
+                      type="button"
+                      onClick={() => toggleSize(size)}
+                      className={`px-4 py-2 rounded-md border text-sm font-medium transition-all ${
+                        formData.sizes.includes(size)
+                          ? 'bg-[#800020] text-white border-[#800020]'
+                          : 'bg-white text-gray-600 border-gray-200 hover:border-[#800020]'
+                      }`}
+                    >
+                      {size}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex gap-6 py-2">
               <label className="flex items-center gap-2 cursor-pointer group">
                 <input
                   type="checkbox"
