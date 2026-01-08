@@ -394,35 +394,45 @@ export default function AdminPage() {
           
           <div className="overflow-x-auto">
             <table className="w-full text-left">
-              <thead className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
-                <tr>
-                  <th className="px-6 py-3 font-medium">Produto</th>
-                  <th className="px-6 py-3 font-medium">Categoria</th>
-                  <th className="px-6 py-3 font-medium">Preço</th>
-                  <th className="px-6 py-3 font-medium">Status</th>
-                  <th className="px-6 py-3 font-medium text-right">Ações</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y">
-                {products.length === 0 ? (
+                <thead className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
                   <tr>
-                    <td colSpan={5} className="px-6 py-10 text-center text-gray-500">
-                      {loading ? 'Carregando...' : 'Nenhum produto cadastrado.'}
-                    </td>
+                    <th className="px-6 py-3 font-medium">Produto</th>
+                    <th className="px-6 py-3 font-medium">Cor</th>
+                    <th className="px-6 py-3 font-medium">Categoria</th>
+                    <th className="px-6 py-3 font-medium">Preço</th>
+                    <th className="px-6 py-3 font-medium">Status</th>
+                    <th className="px-6 py-3 font-medium text-right">Ações</th>
                   </tr>
-                ) : (
-                  products.map((product) => (
-                    <tr key={product.id} className="hover:bg-gray-50 transition-colors">
-                      <td className="px-6 py-4">
-                        <div className="flex items-center gap-3">
-                          <img
-                            src={product.image_url || 'https://via.placeholder.com/40'}
-                            className="w-10 h-10 rounded object-cover border"
-                            alt=""
-                          />
-                          <span className="font-medium text-gray-900">{product.name}</span>
-                        </div>
+                </thead>
+                <tbody className="divide-y">
+                  {products.length === 0 ? (
+                    <tr>
+                      <td colSpan={6} className="px-6 py-10 text-center text-gray-500">
+                        {loading ? 'Carregando...' : 'Nenhum produto cadastrado.'}
                       </td>
+                    </tr>
+                  ) : (
+                    products.map((product) => (
+                      <tr key={product.id} className="hover:bg-gray-50 transition-colors">
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-3">
+                            <img
+                              src={product.image_url || 'https://via.placeholder.com/40'}
+                              className="w-10 h-10 rounded object-cover border"
+                              alt=""
+                            />
+                            <span className="font-medium text-gray-900">{product.name}</span>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-2">
+                            <div 
+                              className="w-5 h-5 rounded border shadow-sm"
+                              style={{ backgroundColor: product.color || '#fff' }}
+                            />
+                            <span className="text-xs font-mono text-gray-500">{product.color || '-'}</span>
+                          </div>
+                        </td>
                       <td className="px-6 py-4 text-sm text-gray-600">{product.category}</td>
                       <td className="px-6 py-4 font-semibold text-gray-900">
                         R$ {product.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
