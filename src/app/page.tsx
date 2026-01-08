@@ -6,7 +6,6 @@ import FeaturedProductsGrid from "@/components/sections/featured-products";
 import NewArrivals from "@/components/sections/new-arrivals";
 import FeaturesIcons from "@/components/sections/features-icons";
 import Footer from "@/components/sections/footer";
-import NewsletterModal from "@/components/sections/newsletter-modal";
 
 export default function Home() {
   return (
@@ -21,7 +20,6 @@ export default function Home() {
         <FeaturesIcons />
       </main>
       <Footer />
-      <NewsletterModal />
     </div>
   );
 }
