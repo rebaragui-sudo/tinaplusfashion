@@ -10,14 +10,16 @@ import {
   DollarSign, 
   Image as ImageIcon, 
   Loader2,
-  Save,
-  X,
-  ExternalLink,
-  ChevronLeft,
-  Pipette,
-  Palette,
-  Upload
-} from 'lucide-react';
+    ShoppingBag,
+    Save,
+    X,
+    ExternalLink,
+    ChevronLeft,
+    Pipette,
+    Palette,
+    Upload
+  } from 'lucide-react';
+
 import { toast } from 'sonner';
 import Link from 'next/link';
 
