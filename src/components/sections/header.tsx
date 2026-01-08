@@ -41,43 +41,43 @@ const Header = () => {
             </h1>
           </a>
 
-          {/* Navigation Menu */}
-          <nav className="hidden md:flex items-center gap-8 ml-40">
-            <a 
-              className="text-sm font-medium transition-colors relative group text-[#121812] hover:text-[#D4AF37]" 
-              href="/"
-            >
-              Início
-              <span className="absolute -bottom-1 left-0 h-0.5 bg-[#D4AF37] transition-all w-0 group-hover:w-full"></span>
-            </a>
-            
-            <a 
-              className="text-sm font-medium transition-colors relative group text-[#121812] hover:text-[#D4AF37]" 
-              href="/produtos"
-            >
-              Produtos
-              <span className="absolute -bottom-1 left-0 h-0.5 bg-[#D4AF37] transition-all w-0 group-hover:w-full"></span>
-            </a>
+            {/* Navigation Menu */}
+            <nav className="hidden md:flex items-center gap-8 ml-40">
+              <a 
+                className="text-sm font-medium transition-colors relative group text-[#121812] hover:text-[#D4AF37]" 
+                href="/"
+              >
+                Início
+                <span className="absolute -bottom-1 left-0 h-0.5 bg-[#D4AF37] transition-all w-0 group-hover:w-full"></span>
+              </a>
+              
+              <a 
+                className="text-sm font-medium transition-colors relative group text-[#121812] hover:text-[#D4AF37]" 
+                href="/produtos"
+              >
+                Produtos
+                <span className="absolute -bottom-1 left-0 h-0.5 bg-[#D4AF37] transition-all w-0 group-hover:w-full"></span>
+              </a>
 
-            <a 
-              className="text-sm font-medium transition-colors relative group text-[#121812] hover:text-[#D4AF37]" 
-              href="/vestidos"
-            >
-              Vestidos
-              <span className="absolute -bottom-1 left-0 h-0.5 bg-[#D4AF37] transition-all w-0 group-hover:w-full"></span>
-            </a>
+              <a 
+                className="text-sm font-medium transition-colors relative group text-[#121812] hover:text-[#D4AF37]" 
+                href="/pedidos"
+              >
+                Meus Pedidos
+                <span className="absolute -bottom-1 left-0 h-0.5 bg-[#D4AF37] transition-all w-0 group-hover:w-full"></span>
+              </a>
 
-            <a 
-              className="text-sm font-medium transition-colors relative group text-[#800020]" 
-              href="/promocao"
-            >
-              Promoção
-              <span className="absolute -top-3 -right-3 text-[10px] bg-[#800020] text-white px-1.5 py-0.5 rounded-full font-bold">
-                60%
-              </span>
-              <span className="absolute -bottom-1 left-0 h-0.5 bg-[#800020] transition-all w-0 group-hover:w-full"></span>
-            </a>
-          </nav>
+              <a 
+                className="text-sm font-medium transition-colors relative group text-[#800020]" 
+                href="/promocao"
+              >
+                Promoção
+                <span className="absolute -top-3 -right-3 text-[10px] bg-[#800020] text-white px-1.5 py-0.5 rounded-full font-bold">
+                  60%
+                </span>
+                <span className="absolute -bottom-1 left-0 h-0.5 bg-[#800020] transition-all w-0 group-hover:w-full"></span>
+              </a>
+            </nav>
 
           {/* Functional Icons */}
           <div className="flex items-center gap-1 md:gap-2">
