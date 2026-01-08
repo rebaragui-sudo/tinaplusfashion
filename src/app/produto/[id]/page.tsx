@@ -280,7 +280,9 @@ export default function ProductPage() {
                 </div>
               </div>
 
-              <div className="prose prose-sm max-w-none">
+              <ShippingCalculator />
+
+              <div className="prose prose-sm max-w-none mt-8">
                 <h3 className="text-sm font-bold uppercase mb-2">Descrição</h3>
                 <p className="text-muted-foreground leading-relaxed whitespace-pre-line">
                   {product.description || "Este produto não possui descrição detalhada."}
