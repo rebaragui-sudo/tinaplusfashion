@@ -9,7 +9,7 @@ import {
   SheetFooter 
 } from '@/components/ui/sheet';
 import { useCart } from '@/hooks/use-cart';
-import { ShoppingBag, X, Plus, Minus, Trash2, ArrowLeft, Truck, Bus } from 'lucide-react';
+import { ShoppingBag, X, Plus, Minus, Trash2, ArrowLeft, Truck, Bus, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
@@ -17,10 +17,14 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
+import { supabase } from '@/lib/supabase';
+import { useRouter } from 'next/navigation';
 
 const CartDrawer = () => {
-  const { items, removeItem, updateQuantity, totalPrice, totalItems, isOpen, setIsOpen } = useCart();
+  const router = useRouter();
+  const { items, removeItem, updateQuantity, totalPrice, totalItems, isOpen, setIsOpen, clearCart } = useCart();
   const [isCheckout, setIsCheckout] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [shippingMethod, setShippingMethod] = useState('correios');
   const [shippingData, setShippingData] = useState({
     nome: '',
@@ -29,17 +33,49 @@ const CartDrawer = () => {
     celular: ''
   });
 
-  const handleFinish = () => {
+  const handleFinish = async () => {
     if (shippingMethod === 'onibus') {
       if (!shippingData.nome || !shippingData.estado || !shippingData.cidade || !shippingData.celular) {
         toast.error('Por favor, preencha todos os dados de envio');
         return;
       }
     }
+
+    setIsSubmitting(true);
     
-    toast.success('Pedido recebido! Entraremos em contato para finalizar o pagamento.');
-    setIsOpen(false);
-    setIsCheckout(false);
+    try {
+      const { data, error } = await supabase
+        .from('orders')
+        .insert([
+          {
+            total_price: totalPrice,
+            shipping_method: shippingMethod,
+            items: items,
+            shipping_data: shippingData,
+            status: 'pending'
+          }
+        ])
+        .select();
+
+      if (error) throw error;
+
+      // Store order ID in localStorage to track "my orders" for guest
+      const existingOrders = JSON.parse(localStorage.getItem('tina-plus-orders') || '[]');
+      if (data && data[0]) {
+        localStorage.setItem('tina-plus-orders', JSON.stringify([...existingOrders, data[0].id]));
+      }
+
+      toast.success('Pedido recebido! Entraremos em contato para finalizar o pagamento.');
+      clearCart();
+      setIsOpen(false);
+      setIsCheckout(false);
+      router.push('/pedidos');
+    } catch (error) {
+      console.error('Error saving order:', error);
+      toast.error('Erro ao processar pedido. Tente novamente.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const renderCartItems = () => (
