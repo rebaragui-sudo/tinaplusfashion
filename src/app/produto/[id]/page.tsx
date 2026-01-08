@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import Header from "@/components/sections/header";
 import Footer from "@/components/sections/footer";
 import { supabase } from '@/lib/supabase';
+import { useCart } from '@/hooks/use-cart';
 import { 
   ChevronRight, 
   ShoppingBag, 
