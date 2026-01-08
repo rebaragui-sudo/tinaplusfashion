@@ -204,6 +204,92 @@ const CartDrawer = () => {
           </RadioGroup>
         </div>
 
+        {shippingMethod === 'correios' && (
+          <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
+            <h3 className="text-xs font-bold uppercase text-muted-foreground">Dados de Entrega</h3>
+            <div className="grid gap-3">
+              <div className="space-y-1">
+                <Label htmlFor="nome_entrega" className="text-xs">Nome Completo</Label>
+                <Input 
+                  id="nome_entrega" 
+                  placeholder="Seu nome completo" 
+                  value={shippingData.nome}
+                  onChange={(e) => setShippingData({...shippingData, nome: e.target.value})}
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <Label htmlFor="cep" className="text-xs">CEP</Label>
+                  <Input 
+                    id="cep" 
+                    placeholder="00000-000" 
+                    value={shippingData.cep}
+                    onChange={(e) => setShippingData({...shippingData, cep: e.target.value})}
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="celular_entrega" className="text-xs">Celular (WhatsApp)</Label>
+                  <Input 
+                    id="celular_entrega" 
+                    placeholder="(00) 00000-0000" 
+                    value={shippingData.celular}
+                    onChange={(e) => setShippingData({...shippingData, celular: e.target.value})}
+                  />
+                </div>
+              </div>
+              <div className="space-y-1">
+                <Label htmlFor="endereco" className="text-xs">Endereço</Label>
+                <Input 
+                  id="endereco" 
+                  placeholder="Rua, Avenida, etc." 
+                  value={shippingData.endereco}
+                  onChange={(e) => setShippingData({...shippingData, endereco: e.target.value})}
+                />
+              </div>
+              <div className="grid grid-cols-3 gap-3">
+                <div className="space-y-1">
+                  <Label htmlFor="numero" className="text-xs">Número</Label>
+                  <Input 
+                    id="numero" 
+                    placeholder="123" 
+                    value={shippingData.numero}
+                    onChange={(e) => setShippingData({...shippingData, numero: e.target.value})}
+                  />
+                </div>
+                <div className="col-span-2 space-y-1">
+                  <Label htmlFor="bairro" className="text-xs">Bairro</Label>
+                  <Input 
+                    id="bairro" 
+                    placeholder="Bairro" 
+                    value={shippingData.bairro}
+                    onChange={(e) => setShippingData({...shippingData, bairro: e.target.value})}
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <Label htmlFor="cidade_entrega" className="text-xs">Cidade</Label>
+                  <Input 
+                    id="cidade_entrega" 
+                    placeholder="Cidade" 
+                    value={shippingData.cidade}
+                    onChange={(e) => setShippingData({...shippingData, cidade: e.target.value})}
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="estado_entrega" className="text-xs">Estado</Label>
+                  <Input 
+                    id="estado_entrega" 
+                    placeholder="UF" 
+                    value={shippingData.estado}
+                    onChange={(e) => setShippingData({...shippingData, estado: e.target.value})}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {shippingMethod === 'onibus' && (
           <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
             <h3 className="text-xs font-bold uppercase text-muted-foreground">Dados para Envio</h3>
