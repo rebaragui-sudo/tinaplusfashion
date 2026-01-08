@@ -96,9 +96,9 @@ export function ShippingCalculator() {
                 <span className="text-xs font-bold block">{option.name}</span>
                 <span className="text-[10px] text-muted-foreground">{option.days}</span>
               </div>
-              <span className="text-sm font-bold text-[#800020]">
-                {option.price === 0 ? 'Grátis' : new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(option.price)}
-              </span>
+                <span className="text-sm font-bold text-[#800020]">
+                  {option.price === 0 ? 'A combinar' : new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(option.price)}
+                </span>
             </div>
           ))}
         </div>
