@@ -452,14 +452,13 @@ const CartDrawer = () => {
                 <div className="flex justify-between items-center text-sm">
                   <span className="text-[#71717a]">Subtotal</span>
                   <div className="flex items-center gap-4">
-                    <button 
-                      onClick={() => {
-                        if (confirm('Tem certeza que deseja limpar todo o carrinho?')) {
+                      <button 
+                        onClick={() => {
+                          // Removed confirm() as it fails in iframes
                           clearCart();
-                        }
-                      }}
-                      className="text-[10px] text-[#800020] hover:underline flex items-center gap-1 font-bold uppercase"
-                    >
+                        }}
+                        className="text-[10px] text-[#800020] hover:underline flex items-center gap-1 font-bold uppercase"
+                      >
                       <Trash2 size={10} />
                       Limpar Carrinho
                     </button>
