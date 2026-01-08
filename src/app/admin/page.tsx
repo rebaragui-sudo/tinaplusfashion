@@ -32,6 +32,7 @@ interface Product {
   is_featured: boolean;
   is_new_arrival: boolean;
   color?: string;
+  sizes: string[];
 }
 
 export default function AdminPage() {
@@ -40,6 +41,8 @@ export default function AdminPage() {
   const [isEditing, setIsEditing] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+
+  const availableSizes = ['44', '46', '48', '50', '52', 'G1', 'G2', 'G3'];
 
   const [formData, setFormData] = useState({
     name: '',
@@ -51,6 +54,7 @@ export default function AdminPage() {
     is_featured: false,
     is_new_arrival: false,
     color: '#000000',
+    sizes: ['G1', 'G2', 'G3'] as string[],
   });
 
   useEffect(() => {
