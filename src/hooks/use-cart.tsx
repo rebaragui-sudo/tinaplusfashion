@@ -28,143 +28,128 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-  // Helper to generate a unique ID for a product variation
-  const generateCartId = (productId: string, size?: string, color?: string): string => {
-    if (!productId) return `unknown-${Math.random().toString(36).substring(2, 9)}`;
-    const s = size && typeof size === 'string' ? size.trim().toLowerCase() : 'no-size';
-    const c = color && typeof color === 'string' ? color.trim().toLowerCase() : 'no-color';
-    // Use a separator that is unlikely to be in the ID itself, and ensure we don't have double hyphens
-    return `cart-${productId}-${s}-${c}`.replace(/-+/g, '-');
-  };
+// Helper to generate a unique ID for a product variation
+const generateCartId = (productId: string, size?: string, color?: string): string => {
+  if (!productId) return `unknown-${Math.random().toString(36).substring(2, 9)}`;
+  const s = size && typeof size === 'string' ? size.trim().toLowerCase() : 'no-size';
+  const c = color && typeof color === 'string' ? color.trim().toLowerCase() : 'no-color';
+  return `cart-${productId}-${s}-${c}`.replace(/-+/g, '-');
+};
 
-  export const CartProvider = ({ children }: { children: ReactNode }) => {
-    const [items, setItems] = useState<CartItem[]>([]);
-    const [isOpen, setIsOpen] = useState(false);
-    const [isLoaded, setIsLoaded] = useState(false);
+export const CartProvider = ({ children }: { children: ReactNode }) => {
+  const [items, setItems] = useState<CartItem[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
-    // Load cart from localStorage
-    useEffect(() => {
+  // Load cart from localStorage
+  useEffect(() => {
+    try {
       const savedCart = localStorage.getItem('tina-plus-cart');
       if (savedCart) {
-        try {
-          const parsed = JSON.parse(savedCart);
-          
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            const migratedItems: CartItem[] = [];
-            const seenIds = new Set<string>();
-            
-            parsed.forEach((item: any) => {
-              const productId = item.id || item.productId;
-              if (!productId) return;
-
-              // Force regeneration of cartId to ensure it's in the correct format
-              const cartId = generateCartId(productId, item.size, item.color);
-              
-              if (!seenIds.has(cartId)) {
-                seenIds.add(cartId);
-                migratedItems.push({
-                  id: productId,
-                  name: item.name || 'Produto',
-                  price: typeof item.price === 'number' ? item.price : 0,
-                  image_url: item.image_url || '',
-                  quantity: typeof item.quantity === 'number' ? item.quantity : 1,
-                  size: item.size || undefined,
-                  color: item.color || undefined,
-                  cartId: cartId
-                });
-              } else {
-                const existingIndex = migratedItems.findIndex(i => i.cartId === cartId);
-                if (existingIndex > -1) {
-                  migratedItems[existingIndex].quantity += (typeof item.quantity === 'number' ? item.quantity : 1);
-                }
-              }
-            });
-            
-            setItems(migratedItems);
-          }
-        } catch (e) {
-          console.error('Failed to parse cart from localStorage', e);
-        }
-      }
-      setIsLoaded(true);
-    }, []);
-
-    // Save cart to localStorage
-    useEffect(() => {
-      if (isLoaded) {
-        localStorage.setItem('tina-plus-cart', JSON.stringify(items));
-      }
-    }, [items, isLoaded]);
-
-    const addItem = useCallback((product: any, quantity: number = 1, size?: string, color?: string) => {
-      if (!product || !product.id) return;
-      
-      const cartId = generateCartId(product.id, size, color);
-      
-      setItems((prevItems) => {
-        const existingItemIndex = prevItems.findIndex((item) => item.cartId === cartId);
-
-        if (existingItemIndex > -1) {
-          const newItems = [...prevItems];
-          newItems[existingItemIndex] = {
-            ...newItems[existingItemIndex],
-            quantity: newItems[existingItemIndex].quantity + quantity
-          };
-          toast.success(`Quantidade de ${product.name} atualizada`);
-          return newItems;
-        }
-
-        toast.success(`${product.name} adicionado ao carrinho`);
-        return [...prevItems, { 
-          id: product.id, 
-          name: product.name, 
-          price: product.price, 
-          image_url: product.image_url, 
-          quantity, 
-          size: size || undefined, 
-          color: color || undefined,
-          cartId
-        }];
-      });
-      setIsOpen(true);
-    }, []);
-
-      const removeItem = useCallback((cartId: string) => {
-        if (!cartId) {
-          console.warn('Attempted to remove item with no cartId');
-          return;
-        }
+        const parsed = JSON.parse(savedCart);
         
-        setItems((prevItems) => {
-          console.log(`Removing item: ${cartId}`);
+        if (Array.isArray(parsed)) {
+          const migratedItems: CartItem[] = [];
+          const seenIds = new Set<string>();
           
-          // Try to find the item index first to be sure
-          const itemIndex = prevItems.findIndex(item => 
-            item.cartId === cartId || item.id === cartId
-          );
+          parsed.forEach((item: any) => {
+            const productId = item.id || item.productId;
+            if (!productId) return;
 
-          if (itemIndex === -1) {
-            console.log('Item not found by ID, trying loose match...');
-            // One last try: filter anything that matches the ID in any way
-            const filtered = prevItems.filter(item => 
-              item.cartId !== cartId && item.id !== cartId
-            );
+            const cartId = generateCartId(productId, item.size, item.color);
             
-            if (filtered.length < prevItems.length) {
-              toast.info('Item removido');
-              return filtered;
+            if (!seenIds.has(cartId)) {
+              seenIds.add(cartId);
+              migratedItems.push({
+                id: productId,
+                name: item.name || 'Produto',
+                price: typeof item.price === 'number' ? item.price : 0,
+                image_url: item.image_url || '',
+                quantity: typeof item.quantity === 'number' ? item.quantity : 1,
+                size: item.size || undefined,
+                color: item.color || undefined,
+                cartId: cartId
+              });
+            } else {
+              const existingIndex = migratedItems.findIndex(i => i.cartId === cartId);
+              if (existingIndex > -1) {
+                migratedItems[existingIndex].quantity += (typeof item.quantity === 'number' ? item.quantity : 1);
+              }
             }
-            
-            toast.error('Não foi possível encontrar o item');
-            return prevItems;
-          }
+          });
+          
+          setItems(migratedItems);
+        }
+      }
+    } catch (e) {
+      console.error('Failed to parse cart from localStorage', e);
+    } finally {
+      setIsLoaded(true);
+    }
+  }, []);
 
-          const newItems = [...prevItems];
-          newItems.splice(itemIndex, 1);
-          toast.info('Item removido do carrinho');
-          return newItems;
-        });
-      }, []);
+  // Save cart to localStorage
+  useEffect(() => {
+    if (isLoaded) {
+      localStorage.setItem('tina-plus-cart', JSON.stringify(items));
+    }
+  }, [items, isLoaded]);
+
+  const addItem = useCallback((product: any, quantity: number = 1, size?: string, color?: string) => {
+    if (!product) {
+      console.error('addItem called without product');
+      return;
+    }
+    
+    const productId = product.id || product.productId;
+    if (!productId) {
+      console.error('addItem called with product but no ID', product);
+      return;
+    }
+    
+    const cartId = generateCartId(productId, size, color);
+    console.log('Adding item to cart:', { productId, cartId, size, color });
+    
+    setItems((prevItems) => {
+      const existingItemIndex = prevItems.findIndex((item) => item.cartId === cartId);
+
+      if (existingItemIndex > -1) {
+        const newItems = [...prevItems];
+        newItems[existingItemIndex] = {
+          ...newItems[existingItemIndex],
+          quantity: newItems[existingItemIndex].quantity + quantity
+        };
+        toast.success(`Quantidade de ${product.name || 'produto'} atualizada`);
+        return newItems;
+      }
+
+      toast.success(`${product.name || 'Produto'} adicionado ao carrinho`);
+      return [...prevItems, { 
+        id: productId, 
+        name: product.name || 'Produto', 
+        price: product.price || 0, 
+        image_url: product.image_url || '', 
+        quantity, 
+        size: size || undefined, 
+        color: color || undefined,
+        cartId
+      }];
+    });
+    
+    setIsOpen(true);
+  }, []);
+
+  const removeItem = useCallback((cartId: string) => {
+    if (!cartId) return;
+    
+    setItems((prevItems) => {
+      const newItems = prevItems.filter(item => item.cartId !== cartId && item.id !== cartId);
+      if (newItems.length < prevItems.length) {
+        toast.info('Item removido do carrinho');
+      }
+      return newItems;
+    });
+  }, []);
 
   const updateQuantity = useCallback((cartId: string, quantity: number) => {
     if (!cartId) return;
@@ -185,10 +170,11 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
   const clearCart = useCallback(() => {
     setItems([]);
+    toast.info('Carrinho esvaziado');
   }, []);
 
-  const totalItems = items.reduce((total, item) => total + item.quantity, 0);
-  const totalPrice = items.reduce((total, item) => total + item.price * item.quantity, 0);
+  const totalItems = items.reduce((total, item) => total + (item.quantity || 0), 0);
+  const totalPrice = items.reduce((total, item) => total + ((item.price || 0) * (item.quantity || 0)), 0);
 
   return (
     <CartContext.Provider
