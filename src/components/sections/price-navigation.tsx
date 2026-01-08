@@ -3,13 +3,13 @@ import Image from 'next/image';
 
 const PriceNavigation = () => {
   const priceCards = [
-    {
-      title: "2 Regatas",
-      price: "99",
-      href: "/regatas",
-      image: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/ea02e2c1-3719-4f3c-b449-729e57b40008-hubpmg-com-br/assets/images/regata-branca-BmI6_eQT-4.png",
-      alt: "2 Regatas"
-    },
+      {
+        title: "7 Regatas",
+        price: "99,99",
+        href: "/regatas",
+        image: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/ea02e2c1-3719-4f3c-b449-729e57b40008-hubpmg-com-br/assets/images/regata-branca-BmI6_eQT-4.png",
+        alt: "7 Regatas"
+      },
     {
       title: "3 Bermudas",
       price: "129",
