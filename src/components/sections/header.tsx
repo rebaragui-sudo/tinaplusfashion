@@ -8,12 +8,12 @@ const Header = () => {
       <div className="h-1 bg-[#D4AF37] w-full" />
 
       {/* Primary-colored announcement bar */}
-      <div className="bg-[#121812] text-white text-center py-2 px-4 text-sm font-sans">
-        <span className="hidden md:inline">
-          Compras acima de 350,00 | 7 dias | Até 12x sem juros
-        </span>
-        <span className="md:hidden">Compras acima de 350,00</span>
-      </div>
+        <div className="bg-[#121812] text-white text-center py-2 px-4 text-sm font-sans">
+          <span className="hidden md:inline">
+            Compras acima de R$ 350,00 | Troca fácil até 7 dias | Até 12x sem juros
+          </span>
+          <span className="md:hidden">Compras acima de R$ 350,00</span>
+        </div>
 
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
