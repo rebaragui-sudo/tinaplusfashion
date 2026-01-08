@@ -256,12 +256,21 @@ export default function ProductPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-6 border-t border-b mb-8">
+              <ShippingCalculator />
+
+              <div className="prose prose-sm max-w-none my-8">
+                <h3 className="text-sm font-bold uppercase mb-2">Descrição</h3>
+                <p className="text-muted-foreground leading-relaxed whitespace-pre-line">
+                  {product.description || "Este produto não possui descrição detalhada."}
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-6 border-t border-b">
                 <div className="flex items-start gap-3">
                   <Truck className="text-[#800020] shrink-0" size={20} />
                   <div>
-                    <h4 className="text-xs font-bold uppercase">Frete Grátis</h4>
-                    <p className="text-[10px] text-muted-foreground">Em compras acima de R$ 350,00</p>
+                    <h4 className="text-xs font-bold uppercase">Envio para todo o Brasil</h4>
+                    <p className="text-[10px] text-muted-foreground">Entregas rápidas e seguras</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
@@ -278,15 +287,6 @@ export default function ProductPage() {
                     <p className="text-[10px] text-muted-foreground">Dados protegidos</p>
                   </div>
                 </div>
-              </div>
-
-              <ShippingCalculator />
-
-              <div className="prose prose-sm max-w-none mt-8">
-                <h3 className="text-sm font-bold uppercase mb-2">Descrição</h3>
-                <p className="text-muted-foreground leading-relaxed whitespace-pre-line">
-                  {product.description || "Este produto não possui descrição detalhada."}
-                </p>
               </div>
             </div>
           </div>
