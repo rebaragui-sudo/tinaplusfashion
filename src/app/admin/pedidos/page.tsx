@@ -47,13 +47,69 @@ interface Order {
 }
 
 export default function AdminOrdersPage() {
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [password, setPassword] = useState('');
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
   useEffect(() => {
-    fetchOrders();
+    const auth = localStorage.getItem('isAdmin');
+    if (auth === 'true') {
+      setIsAdmin(true);
+      fetchOrders();
+    } else {
+      setLoading(false);
+    }
   }, []);
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password === 'tina2025') {
+      localStorage.setItem('isAdmin', 'true');
+      setIsAdmin(true);
+      fetchOrders();
+    } else {
+      toast.error('Senha incorreta!');
+    }
+  };
+
+  if (!isAdmin && !loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <div className="bg-white p-8 rounded-2xl shadow-xl max-w-md w-full border border-gray-100">
+          <div className="w-16 h-16 bg-[#800020] text-white rounded-full flex items-center justify-center mx-auto mb-6">
+            <ShoppingBag size={32} />
+          </div>
+          <h1 className="text-2xl font-bold text-center text-gray-900 mb-2">Pedidos - Acesso Restrito</h1>
+          <p className="text-gray-500 text-center mb-8">Digite a senha administrativa para ver os pedidos.</p>
+          
+          <form onSubmit={handleLogin} className="space-y-4">
+            <input
+              type="password"
+              className="w-full p-3 border rounded-xl focus:ring-2 focus:ring-[#800020] outline-none transition-all text-center text-lg"
+              placeholder="Sua senha"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoFocus
+            />
+            <button
+              type="submit"
+              className="w-full py-3 bg-[#800020] text-white rounded-xl font-bold hover:bg-[#600018] transition-all shadow-lg shadow-[#800020]/20"
+            >
+              Acessar Pedidos
+            </button>
+            <Link 
+              href="/"
+              className="block text-center text-sm text-gray-500 hover:text-[#800020] transition-colors"
+            >
+              Voltar para o site
+            </Link>
+          </form>
+        </div>
+      </div>
+    );
+  }
 
   async function fetchOrders() {
     try {
