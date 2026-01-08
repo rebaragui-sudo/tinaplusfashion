@@ -136,21 +136,36 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
       }
       
       setItems((prevItems) => {
+        console.log(`Attempting to remove item with cartId: ${cartId}`);
         const beforeCount = prevItems.length;
-        const newItems = prevItems.filter((item) => item.cartId !== cartId);
         
+        // 1. Try exact match by cartId
+        let newItems = prevItems.filter((item) => item.cartId !== cartId);
+        
+        // 2. Fallback: If nothing removed, try matching by id (if cartId was actually a productId)
+        if (newItems.length === beforeCount) {
+          console.log(`No item found with cartId ${cartId}, trying fallback by id...`);
+          newItems = prevItems.filter((item) => item.id !== cartId);
+        }
+        
+        // 3. Last resort: If still nothing removed, try partial matches
+        if (newItems.length === beforeCount) {
+          console.log(`Still no match. Trying fuzzy match...`);
+          newItems = prevItems.filter((item) => {
+            const itemCartId = String(item.cartId || '').toLowerCase();
+            const targetCartId = String(cartId).toLowerCase();
+            return itemCartId !== targetCartId && item.id !== cartId;
+          });
+        }
+
         if (newItems.length < beforeCount) {
           toast.info('Item removido do carrinho');
+          return newItems;
         } else {
-          console.warn(`Item with cartId ${cartId} not found in cart`, prevItems);
-          // Fallback: if we can't find it by cartId, maybe it's an old item with just ID
-          const fallbackItems = prevItems.filter((item) => item.id !== cartId);
-          if (fallbackItems.length < beforeCount) {
-            toast.info('Item removido do carrinho (fallback)');
-            return fallbackItems;
-          }
+          console.error(`FAILED to remove item ${cartId}. Cart state:`, prevItems);
+          toast.error('Erro ao remover item. Tente limpar o carrinho.');
+          return prevItems;
         }
-        return newItems;
       });
     }, []);
 
