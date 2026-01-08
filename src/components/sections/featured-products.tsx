@@ -12,6 +12,7 @@ interface Product {
   image_url: string;
   is_featured: boolean;
   is_new_arrival: boolean;
+  colors: string[];
   sizes: string[];
 }
 
@@ -110,9 +111,26 @@ export default function FeaturedProductsGrid() {
 
               {/* Product Info */}
               <div className="p-4 flex flex-col flex-grow">
-                <span className="text-[10px] text-muted-foreground uppercase tracking-widest mb-1">
-                  {product.category}
-                </span>
+                <div className="flex justify-between items-start mb-1">
+                  <span className="text-[10px] text-muted-foreground uppercase tracking-widest">
+                    {product.category}
+                  </span>
+                  
+                  {/* Color dots */}
+                  <div className="flex gap-1">
+                    {(product.colors || []).slice(0, 3).map((color, idx) => (
+                      <div 
+                        key={idx}
+                        className="w-2.5 h-2.5 rounded-full border border-gray-200"
+                        style={{ backgroundColor: color }}
+                      />
+                    ))}
+                    {(product.colors?.length || 0) > 3 && (
+                      <span className="text-[8px] text-muted-foreground">+{product.colors.length - 3}</span>
+                    )}
+                  </div>
+                </div>
+
                 <a href={`/produto/${product.id}`} className="group-hover:text-[#800020] transition-colors">
                   <h3 className="text-sm font-medium text-foreground line-clamp-2 mb-2 leading-tight h-10">
                     {product.name}
@@ -131,7 +149,7 @@ export default function FeaturedProductsGrid() {
 
                   {/* Size Chips */}
                   <div className="hidden md:flex gap-1 mt-4 flex-wrap">
-                    {(product.sizes || ['G1', 'G2', 'G3']).map((size, idx) => (
+                    {(product.sizes || []).map((size, idx) => (
                       <span 
                         key={idx} 
                         className="text-[10px] px-2 py-1 bg-secondary rounded text-muted-foreground font-medium"
