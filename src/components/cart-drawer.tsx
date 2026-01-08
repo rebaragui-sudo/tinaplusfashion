@@ -300,5 +300,3 @@ const CartDrawer = () => {
 };
 
 export default CartDrawer;
-
-export default CartDrawer;
