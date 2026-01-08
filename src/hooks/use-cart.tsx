@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
 import { toast } from 'sonner';
 
 export interface CartItem {
@@ -30,7 +30,10 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 // Helper to generate a unique ID for a product variation
 const generateCartId = (productId: string, size?: string, color?: string): string => {
-  return `${productId}-${size || 'no-size'}-${color || 'no-color'}`;
+  if (!productId) return `unknown-${Math.random().toString(36).substring(2, 9)}`;
+  const s = size ? size.trim().toLowerCase() : 'no-size';
+  const c = color ? color.trim().toLowerCase() : 'no-color';
+  return `${productId}-${s}-${c}`;
 };
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
@@ -45,30 +48,38 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       try {
         const parsed = JSON.parse(savedCart);
         
-        // Ensure all items have a valid cartId and de-duplicate if necessary
-        const migratedMap = new Map<string, CartItem>();
-        
-        parsed.forEach((item: any) => {
-          // Re-generate cartId to ensure it's always correct and unique per variation
-          const cartId = generateCartId(item.id, item.size, item.color);
+        if (Array.isArray(parsed)) {
+          const migratedMap = new Map<string, CartItem>();
           
-          if (migratedMap.has(cartId)) {
-            // Merge quantities for the same variation
-            const existing = migratedMap.get(cartId)!;
-            migratedMap.set(cartId, {
-              ...existing,
-              quantity: existing.quantity + (item.quantity || 1)
-            });
-          } else {
-            migratedMap.set(cartId, {
-              ...item,
-              cartId,
-              quantity: item.quantity || 1
-            });
-          }
-        });
-        
-        setItems(Array.from(migratedMap.values()));
+          parsed.forEach((item: any) => {
+            // Use existing cartId if valid, otherwise generate one
+            const productId = item.id || item.productId;
+            if (!productId) return;
+
+            const cartId = item.cartId || generateCartId(productId, item.size, item.color);
+            
+            if (migratedMap.has(cartId)) {
+              const existing = migratedMap.get(cartId)!;
+              migratedMap.set(cartId, {
+                ...existing,
+                quantity: existing.quantity + (item.quantity || 1)
+              });
+            } else {
+              migratedMap.set(cartId, {
+                id: productId,
+                name: item.name || 'Produto',
+                price: item.price || 0,
+                image_url: item.image_url || '',
+                quantity: item.quantity || 1,
+                size: item.size,
+                color: item.color,
+                cartId: cartId
+              });
+            }
+          });
+          
+          setItems(Array.from(migratedMap.values()));
+        }
       } catch (e) {
         console.error('Failed to parse cart from localStorage', e);
       }
@@ -83,7 +94,9 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [items, isLoaded]);
 
-  const addItem = (product: any, quantity: number = 1, size?: string, color?: string) => {
+  const addItem = useCallback((product: any, quantity: number = 1, size?: string, color?: string) => {
+    if (!product || !product.id) return;
+    
     const cartId = generateCartId(product.id, size, color);
     
     setItems((prevItems) => {
@@ -112,36 +125,39 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       }];
     });
     setIsOpen(true);
-  };
+  }, []);
 
-  const removeItem = (cartId: string) => {
-    setItems((prevItems) => 
-      prevItems.filter((item) => item.cartId !== cartId)
-    );
-    toast.info('Item removido do carrinho');
-  };
+  const removeItem = useCallback((cartId: string) => {
+    if (!cartId) return;
+    setItems((prevItems) => {
+      const newItems = prevItems.filter((item) => item.cartId !== cartId);
+      if (newItems.length !== prevItems.length) {
+        toast.info('Item removido do carrinho');
+      }
+      return newItems;
+    });
+  }, []);
 
-  const updateQuantity = (cartId: string, quantity: number) => {
+  const updateQuantity = useCallback((cartId: string, quantity: number) => {
+    if (!cartId) return;
+    
     if (quantity < 1) {
       removeItem(cartId);
       return;
     }
     
     setItems((prevItems) => {
-      const itemExists = prevItems.some(item => item.cartId === cartId);
-      if (!itemExists) return prevItems;
-      
       return prevItems.map((item) => 
         item.cartId === cartId 
           ? { ...item, quantity } 
           : item
       );
     });
-  };
+  }, [removeItem]);
 
-  const clearCart = () => {
+  const clearCart = useCallback(() => {
     setItems([]);
-  };
+  }, []);
 
   const totalItems = items.reduce((total, item) => total + item.quantity, 0);
   const totalPrice = items.reduce((total, item) => total + item.price * item.quantity, 0);
