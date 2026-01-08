@@ -11,6 +11,7 @@ interface Product {
   price: number;
   image_url: string;
   is_new_arrival: boolean;
+  sizes: string[];
 }
 
 const ProductCard = ({ product }: { product: Product }) => (
