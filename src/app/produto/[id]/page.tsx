@@ -19,6 +19,7 @@ import {
   ChevronLeft
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { ShippingCalculator } from '@/components/shipping-calculator';
 
 interface Product {
   id: string;
