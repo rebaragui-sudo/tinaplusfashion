@@ -256,16 +256,6 @@ export default function ProductPage() {
                   <ShoppingBag size={20} />
                   ADICIONAR AO CARRINHO
                 </button>
-                <div className="grid grid-cols-2 gap-3">
-                  <button className="h-12 border rounded-lg flex items-center justify-center gap-2 hover:bg-secondary transition-colors">
-                    <Heart size={18} />
-                    Favoritar
-                  </button>
-                  <button className="h-12 border rounded-lg flex items-center justify-center gap-2 hover:bg-secondary transition-colors">
-                    <Share2 size={18} />
-                    Compartilhar
-                  </button>
-                </div>
               </div>
 
               <ShippingCalculator />
