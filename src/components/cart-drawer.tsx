@@ -144,9 +144,11 @@ const CartDrawer = () => {
       <ScrollArea className="h-full">
         <div className="p-4 space-y-4">
           {items.map((item) => {
-            const displayId = item.cartId || item.id || Math.random().toString();
+            // Ensure we have a unique key. cartId is now forced in use-cart hook,
+            // but we add item.id and index as fallback just in case of any state issues.
+            const uniqueKey = item.cartId || `${item.id}-${Math.random()}`;
             return (
-              <div key={displayId} className="flex gap-4">
+              <div key={uniqueKey} className="flex gap-4">
                 <div className="h-24 w-20 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 bg-gray-50">
                   <img
                     src={item.image_url || 'https://via.placeholder.com/150'}
@@ -171,7 +173,7 @@ const CartDrawer = () => {
                     <div className="flex items-center border border-gray-200 rounded-md">
                         <button
                           type="button"
-                          onClick={() => updateQuantity(displayId, item.quantity - 1)}
+                          onClick={() => updateQuantity(item.cartId, item.quantity - 1)}
                           className="p-1 hover:text-[#800020] disabled:opacity-30"
                           disabled={item.quantity <= 1}
                         >
@@ -180,7 +182,7 @@ const CartDrawer = () => {
                         <span className="px-2 text-xs font-medium w-8 text-center">{item.quantity || 1}</span>
                         <button
                           type="button"
-                          onClick={() => updateQuantity(displayId, item.quantity + 1)}
+                          onClick={() => updateQuantity(item.cartId, item.quantity + 1)}
                           className="p-1 hover:text-[#800020]"
                         >
                           <Plus size={14} />
@@ -190,7 +192,7 @@ const CartDrawer = () => {
                       <div className="flex">
                         <button
                           type="button"
-                          onClick={() => removeItem(displayId)}
+                          onClick={() => removeItem(item.cartId)}
                           className="font-medium text-[#800020] hover:text-[#a00028] flex items-center gap-1 text-xs"
                         >
                         <Trash2 size={14} />
