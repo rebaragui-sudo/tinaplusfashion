@@ -35,7 +35,7 @@ const Header = () => {
             </a>
 
             {/* Navigation Menu */}
-            <nav className="hidden md:flex items-center gap-8 ml-12">
+            <nav className="hidden md:flex items-center gap-8 ml-32">
               <a 
                 className="text-sm font-medium transition-colors relative group text-[#121812] hover:text-[#D4AF37]" 
                 href="/"
