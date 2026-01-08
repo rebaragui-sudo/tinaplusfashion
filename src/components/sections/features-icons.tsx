@@ -9,12 +9,12 @@ const FeaturesIcons = () => {
       subtitle: "Guia completo",
       iconBg: "bg-transparent"
     },
-    {
-      icon: <RefreshCw className="w-6 h-6 text-[#5A8DAE]" />,
-      title: "Troca Fácil",
-      subtitle: "Até 30 dias",
-      iconBg: "bg-transparent"
-    },
+      {
+        icon: <RefreshCw className="w-6 h-6 text-[#5A8DAE]" />,
+        title: "Troca Fácil",
+        subtitle: "Até 7 dias",
+        iconBg: "bg-transparent"
+      },
     {
       icon: <Truck className="w-6 h-6 text-[#C96B44]" />,
       title: "Entrega Brasil",
