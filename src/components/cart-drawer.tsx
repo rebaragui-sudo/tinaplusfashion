@@ -200,6 +200,44 @@ const CartDrawer = () => {
   const renderCheckout = () => (
     <ScrollArea className="h-full">
       <div className="p-4 space-y-6">
+        <div className="space-y-4">
+          <h3 className="text-sm font-bold uppercase flex items-center gap-2">
+            <User className="h-4 w-4 text-[#800020]" />
+            Dados Pessoais
+          </h3>
+          <div className="grid gap-3">
+            <div className="space-y-1">
+              <Label htmlFor="nome_entrega" className="text-xs">Nome Completo</Label>
+              <Input 
+                id="nome_entrega" 
+                placeholder="Seu nome completo" 
+                value={shippingData.nome}
+                onChange={(e) => setShippingData({...shippingData, nome: e.target.value})}
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
+                <Label htmlFor="cep" className="text-xs">CEP</Label>
+                <Input 
+                  id="cep" 
+                  placeholder="00000-000" 
+                  value={shippingData.cep}
+                  onChange={(e) => setShippingData({...shippingData, cep: e.target.value})}
+                />
+              </div>
+              <div className="space-y-1">
+                <Label htmlFor="celular_entrega" className="text-xs">Celular (WhatsApp)</Label>
+                <Input 
+                  id="celular_entrega" 
+                  placeholder="(00) 00000-0000" 
+                  value={shippingData.celular}
+                  onChange={(e) => setShippingData({...shippingData, celular: e.target.value})}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div>
           <h3 className="text-sm font-bold uppercase mb-4 flex items-center gap-2">
             <Truck className="h-4 w-4 text-[#800020]" />
@@ -210,19 +248,42 @@ const CartDrawer = () => {
             onValueChange={setShippingMethod}
             className="space-y-3"
           >
-            <div className={`flex items-center space-x-3 p-3 rounded-lg border transition-all ${shippingMethod === 'correios' ? 'border-[#800020] bg-[#800020]/5' : 'border-gray-200'}`}>
-              <RadioGroupItem value="correios" id="correios" className="text-[#800020]" />
-              <Label htmlFor="correios" className="flex-grow cursor-pointer">
-                <div className="font-bold">Correios (PAC/SEDEX)</div>
-                <div className="text-xs text-muted-foreground">Cálculo baseado no seu CEP</div>
-              </Label>
-              <Truck className="h-5 w-5 text-gray-400" />
-            </div>
+            {calculatedOptions.length > 0 ? (
+              calculatedOptions.map((option) => (
+                <div 
+                  key={option.id}
+                  className={`flex items-center space-x-3 p-3 rounded-lg border transition-all ${shippingMethod === option.id ? 'border-[#800020] bg-[#800020]/5' : 'border-gray-200'}`}
+                >
+                  <RadioGroupItem value={option.id} id={option.id} className="text-[#800020]" />
+                  <Label htmlFor={option.id} className="flex-grow cursor-pointer">
+                    <div className="font-bold flex justify-between">
+                      <span>{option.label}</span>
+                      <span className="text-[#800020]">
+                        {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(option.price)}
+                      </span>
+                    </div>
+                    <div className="text-xs text-muted-foreground">{option.days}</div>
+                  </Label>
+                </div>
+              ))
+            ) : isCalculating ? (
+              <div className="flex items-center justify-center p-8 border border-dashed rounded-lg">
+                <Loader2 className="h-6 w-6 animate-spin text-[#800020] mr-2" />
+                <span className="text-sm text-muted-foreground">Calculando frete...</span>
+              </div>
+            ) : (
+              <div className="p-4 border border-dashed rounded-lg text-center text-sm text-muted-foreground">
+                Insira o CEP para ver as opções de frete
+              </div>
+            )}
             
             <div className={`flex items-center space-x-3 p-3 rounded-lg border transition-all ${shippingMethod === 'onibus' ? 'border-[#800020] bg-[#800020]/5' : 'border-gray-200'}`}>
               <RadioGroupItem value="onibus" id="onibus" className="text-[#800020]" />
               <Label htmlFor="onibus" className="flex-grow cursor-pointer">
-                <div className="font-bold">Ônibus ou Transportadora</div>
+                <div className="font-bold flex justify-between">
+                  <span>Ônibus ou Transportadora</span>
+                  <span className="text-xs font-normal text-muted-foreground">A combinar</span>
+                </div>
                 <div className="text-xs text-muted-foreground">Ideal para compras no atacado</div>
               </Label>
               <Bus className="h-5 w-5 text-gray-400" />
@@ -230,39 +291,10 @@ const CartDrawer = () => {
           </RadioGroup>
         </div>
 
-        {shippingMethod === 'correios' && (
+        {shippingMethod !== 'onibus' && (
           <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
-            <h3 className="text-xs font-bold uppercase text-muted-foreground">Dados de Entrega</h3>
+            <h3 className="text-xs font-bold uppercase text-muted-foreground">Endereço de Entrega</h3>
             <div className="grid gap-3">
-              <div className="space-y-1">
-                <Label htmlFor="nome_entrega" className="text-xs">Nome Completo</Label>
-                <Input 
-                  id="nome_entrega" 
-                  placeholder="Seu nome completo" 
-                  value={shippingData.nome}
-                  onChange={(e) => setShippingData({...shippingData, nome: e.target.value})}
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1">
-                  <Label htmlFor="cep" className="text-xs">CEP</Label>
-                  <Input 
-                    id="cep" 
-                    placeholder="00000-000" 
-                    value={shippingData.cep}
-                    onChange={(e) => setShippingData({...shippingData, cep: e.target.value})}
-                  />
-                </div>
-                <div className="space-y-1">
-                  <Label htmlFor="celular_entrega" className="text-xs">Celular (WhatsApp)</Label>
-                  <Input 
-                    id="celular_entrega" 
-                    placeholder="(00) 00000-0000" 
-                    value={shippingData.celular}
-                    onChange={(e) => setShippingData({...shippingData, celular: e.target.value})}
-                  />
-                </div>
-              </div>
               <div className="space-y-1">
                 <Label htmlFor="endereco" className="text-xs">Endereço</Label>
                 <Input 
@@ -318,17 +350,8 @@ const CartDrawer = () => {
 
         {shippingMethod === 'onibus' && (
           <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
-            <h3 className="text-xs font-bold uppercase text-muted-foreground">Dados para Envio</h3>
+            <h3 className="text-xs font-bold uppercase text-muted-foreground">Dados para Envio por Ônibus</h3>
             <div className="grid gap-3">
-              <div className="space-y-1">
-                <Label htmlFor="nome" className="text-xs">Nome</Label>
-                <Input 
-                  id="nome" 
-                  placeholder="Nome completo ou da empresa" 
-                  value={shippingData.nome}
-                  onChange={(e) => setShippingData({...shippingData, nome: e.target.value})}
-                />
-              </div>
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
                   <Label htmlFor="estado" className="text-xs">Estado</Label>
@@ -348,15 +371,6 @@ const CartDrawer = () => {
                     onChange={(e) => setShippingData({...shippingData, cidade: e.target.value})}
                   />
                 </div>
-              </div>
-              <div className="space-y-1">
-                <Label htmlFor="celular" className="text-xs">Número de Celular (WhatsApp)</Label>
-                <Input 
-                  id="celular" 
-                  placeholder="(00) 00000-0000" 
-                  value={shippingData.celular}
-                  onChange={(e) => setShippingData({...shippingData, celular: e.target.value})}
-                />
               </div>
             </div>
           </div>
