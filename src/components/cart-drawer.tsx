@@ -167,30 +167,30 @@ const CartDrawer = () => {
               </div>
               <div className="flex flex-1 items-end justify-between text-sm">
                 <div className="flex items-center border border-gray-200 rounded-md">
-                  <button
-                    type="button"
-                    onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                    className="p-1 hover:text-[#800020] disabled:opacity-30"
-                    disabled={item.quantity <= 1}
-                  >
-                    <Minus size={14} />
-                  </button>
-                  <span className="px-2 text-xs font-medium w-8 text-center">{item.quantity}</span>
-                  <button
-                    type="button"
-                    onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                    className="p-1 hover:text-[#800020]"
-                  >
-                    <Plus size={14} />
-                  </button>
-                </div>
+                    <button
+                      type="button"
+                      onClick={() => updateQuantity(item.id, item.quantity - 1, item.size, item.color)}
+                      className="p-1 hover:text-[#800020] disabled:opacity-30"
+                      disabled={item.quantity <= 1}
+                    >
+                      <Minus size={14} />
+                    </button>
+                    <span className="px-2 text-xs font-medium w-8 text-center">{item.quantity}</span>
+                    <button
+                      type="button"
+                      onClick={() => updateQuantity(item.id, item.quantity + 1, item.size, item.color)}
+                      className="p-1 hover:text-[#800020]"
+                    >
+                      <Plus size={14} />
+                    </button>
+                  </div>
 
-                <div className="flex">
-                  <button
-                    type="button"
-                    onClick={() => removeItem(item.id)}
-                    className="font-medium text-[#800020] hover:text-[#a00028] flex items-center gap-1 text-xs"
-                  >
+                  <div className="flex">
+                    <button
+                      type="button"
+                      onClick={() => removeItem(item.id, item.size, item.color)}
+                      className="font-medium text-[#800020] hover:text-[#a00028] flex items-center gap-1 text-xs"
+                    >
                     <Trash2 size={14} />
                     Remover
                   </button>
