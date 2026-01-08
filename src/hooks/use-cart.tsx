@@ -49,9 +49,11 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         const migratedMap = new Map<string, CartItem>();
         
         parsed.forEach((item: any) => {
-          const cartId = item.cartId || generateCartId(item.id, item.size, item.color);
+          // Re-generate cartId to ensure it's always correct and unique per variation
+          const cartId = generateCartId(item.id, item.size, item.color);
+          
           if (migratedMap.has(cartId)) {
-            // If duplicate cartId found during migration, merge quantities
+            // Merge quantities for the same variation
             const existing = migratedMap.get(cartId)!;
             migratedMap.set(cartId, {
               ...existing,
