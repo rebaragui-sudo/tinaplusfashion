@@ -212,6 +212,7 @@ export default function AdminPage() {
       is_featured: product.is_featured,
       is_new_arrival: product.is_new_arrival,
       color: product.color || '#000000',
+      sizes: product.sizes || ['G1', 'G2', 'G3'],
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
