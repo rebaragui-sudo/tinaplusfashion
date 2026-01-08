@@ -2,7 +2,6 @@ import Header from "@/components/sections/header";
 import HeroSlider from "@/components/sections/hero-slider";
 import CategoryGrid from "@/components/sections/category-grid";
 import PriceNavigation from "@/components/sections/price-navigation";
-import FeaturedProductsGrid from "@/components/sections/featured-products";
 import NewArrivals from "@/components/sections/new-arrivals";
 import FeaturesIcons from "@/components/sections/features-icons";
 import Footer from "@/components/sections/footer";
@@ -15,7 +14,6 @@ export default function Home() {
         <HeroSlider />
         <CategoryGrid />
         <PriceNavigation />
-        <FeaturedProductsGrid />
         <NewArrivals />
         <FeaturesIcons />
       </main>
