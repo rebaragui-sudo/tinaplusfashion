@@ -147,6 +147,7 @@ export default function AdminPage() {
         image_url: '',
         is_featured: false,
         is_new_arrival: false,
+        color: '#000000',
       });
       setIsEditing(null);
       fetchProducts();
@@ -182,6 +183,7 @@ export default function AdminPage() {
       image_url: product.image_url || '',
       is_featured: product.is_featured,
       is_new_arrival: product.is_new_arrival,
+      color: product.color || '#000000',
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
