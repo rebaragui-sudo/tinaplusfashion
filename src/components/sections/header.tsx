@@ -51,13 +51,13 @@ const Header = () => {
                 <span className="absolute -bottom-1 left-0 h-0.5 bg-[#D4AF37] transition-all w-0 group-hover:w-full"></span>
               </a>
               
-              <a 
-                className="text-sm font-medium transition-colors relative group text-[#121812] hover:text-[#D4AF37]" 
-                href="/produtos"
-              >
-                Produtos
-                <span className="absolute -bottom-1 left-0 h-0.5 bg-[#D4AF37] transition-all w-0 group-hover:w-full"></span>
-              </a>
+                <a 
+                  className="text-sm font-medium transition-colors relative group text-[#121812] hover:text-[#D4AF37]" 
+                  href="/produtos"
+                >
+                  Produtos
+                  <span className="absolute -bottom-1 left-0 h-0.5 bg-[#D4AF37] transition-all w-0 group-hover:w-full"></span>
+                </a>
 
                 <a 
                   className="text-sm font-medium transition-colors relative group text-[#121812] hover:text-[#D4AF37]" 
@@ -68,16 +68,8 @@ const Header = () => {
                 </a>
 
                 <a 
-                  className="text-sm font-medium transition-colors relative group text-[#800020] hover:text-[#D4AF37]" 
-                  href="/admin"
-                >
-                  Painel Admin
-                  <span className="absolute -bottom-1 left-0 h-0.5 bg-[#800020] transition-all w-0 group-hover:w-full"></span>
-                </a>
+                  className="text-sm font-medium transition-colors relative group text-[#800020]" 
 
-
-              <a 
-                className="text-sm font-medium transition-colors relative group text-[#800020]" 
                 href="/promocao"
               >
                 Promoção
