@@ -28,6 +28,7 @@ interface Product {
   images: string[];
   category: string;
   color?: string;
+  sizes: string[];
 }
 
 export default function ProductPage() {
