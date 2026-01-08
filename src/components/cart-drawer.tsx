@@ -26,17 +26,46 @@ const CartDrawer = () => {
   const [isCheckout, setIsCheckout] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [shippingMethod, setShippingMethod] = useState('correios');
+  const [shippingPrice, setShippingPrice] = useState(0);
   const [shippingData, setShippingData] = useState({
     nome: '',
     estado: '',
     cidade: '',
-    celular: ''
+    celular: '',
+    cep: '',
+    endereco: '',
+    numero: '',
+    bairro: ''
   });
+
+  // Calculate shipping based on volume (quantity)
+  React.useEffect(() => {
+    if (totalPrice >= 350) {
+      setShippingPrice(0);
+      return;
+    }
+
+    if (shippingMethod === 'onibus') {
+      setShippingPrice(0);
+      return;
+    }
+
+    // Volume-based calculation: Base R$ 20,00 + R$ 3,50 per item
+    const basePrice = 22.90;
+    const pricePerItem = 3.50;
+    const calculated = basePrice + (totalItems * pricePerItem);
+    setShippingPrice(calculated);
+  }, [totalItems, totalPrice, shippingMethod]);
 
   const handleFinish = async () => {
     if (shippingMethod === 'onibus') {
       if (!shippingData.nome || !shippingData.estado || !shippingData.cidade || !shippingData.celular) {
         toast.error('Por favor, preencha todos os dados de envio');
+        return;
+      }
+    } else {
+      if (!shippingData.nome || !shippingData.cep || !shippingData.endereco || !shippingData.numero || !shippingData.celular) {
+        toast.error('Por favor, preencha os dados de entrega');
         return;
       }
     }
@@ -48,8 +77,9 @@ const CartDrawer = () => {
         .from('orders')
         .insert([
           {
-            total_price: totalPrice,
+            total_price: totalPrice + shippingPrice,
             shipping_method: shippingMethod,
+            shipping_price: shippingPrice,
             items: items,
             shipping_data: shippingData,
             status: 'pending'
