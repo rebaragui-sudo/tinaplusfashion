@@ -27,7 +27,7 @@ interface Product {
   image_url: string;
   images: string[];
   category: string;
-  color?: string;
+  colors: string[];
   sizes: string[];
 }
 
@@ -37,6 +37,7 @@ export default function ProductPage() {
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchProduct() {
@@ -50,6 +51,9 @@ export default function ProductPage() {
 
         if (error) throw error;
         setProduct(data);
+        if (data.colors && data.colors.length > 0) {
+          setSelectedColor(data.colors[0]);
+        }
       } catch (error: any) {
         console.error('Error fetching product:', error);
         toast.error('Erro ao carregar produto');
@@ -86,7 +90,6 @@ export default function ProductPage() {
     );
   }
 
-  // Combine image_url with images array
   const allImages = [product.image_url, ...(product.images || [])].filter(Boolean);
 
   return (
@@ -94,7 +97,6 @@ export default function ProductPage() {
       <Header />
       
       <main className="flex-grow">
-        {/* Breadcrumbs */}
         <div className="container mx-auto px-4 py-4">
           <nav className="flex items-center text-xs text-muted-foreground gap-2">
             <a href="/" className="hover:text-foreground">Home</a>
@@ -108,7 +110,6 @@ export default function ProductPage() {
         <div className="container mx-auto px-4 pb-16">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12">
             
-            {/* Image Gallery */}
             <div className="lg:col-span-7 flex flex-col md:flex-row-reverse gap-4">
               <div className="relative flex-grow aspect-[3/4] rounded-xl overflow-hidden bg-secondary">
                 <img 
@@ -135,7 +136,6 @@ export default function ProductPage() {
                 )}
               </div>
 
-              {/* Thumbnails */}
               <div className="flex md:flex-col gap-3 overflow-x-auto pb-2 md:pb-0 md:w-20 lg:w-24 shrink-0">
                 {allImages.map((img, index) => (
                   <button
@@ -151,7 +151,6 @@ export default function ProductPage() {
               </div>
             </div>
 
-            {/* Product Info */}
             <div className="lg:col-span-5 flex flex-col">
               <div className="mb-6">
                 <span className="text-xs font-bold text-[#800020] uppercase tracking-widest mb-2 block">
@@ -170,6 +169,30 @@ export default function ProductPage() {
                 </div>
               </div>
 
+                {/* Color Selection */}
+                {product.colors && product.colors.length > 0 && (
+                  <div className="mb-6">
+                    <label className="text-sm font-semibold mb-3 block">Cor:</label>
+                    <div className="flex flex-wrap gap-3">
+                      {product.colors.map((color) => (
+                        <button
+                          key={color}
+                          onClick={() => setSelectedColor(color)}
+                          className={`w-10 h-10 rounded-full border-2 transition-all flex items-center justify-center p-0.5 ${
+                            selectedColor === color ? 'border-[#800020] scale-110' : 'border-transparent hover:border-gray-300'
+                          }`}
+                          title={color}
+                        >
+                          <div 
+                            className="w-full h-full rounded-full shadow-inner" 
+                            style={{ backgroundColor: color }}
+                          />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 <div className="mb-8">
                   <div className="flex justify-between items-center mb-3">
                     <label className="text-sm font-semibold">Tamanho:</label>
@@ -178,7 +201,7 @@ export default function ProductPage() {
                     </button>
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    {(product.sizes || ['G1', 'G2', 'G3']).map((size) => (
+                    {(product.sizes || []).map((size) => (
                       <button
                         key={size}
                         onClick={() => setSelectedSize(size)}
@@ -194,7 +217,6 @@ export default function ProductPage() {
                   </div>
                 </div>
 
-              {/* Action Buttons */}
               <div className="flex flex-col gap-3 mb-8">
                 <button 
                   className="w-full h-14 bg-[#800020] hover:bg-[#600018] text-white font-bold rounded-lg flex items-center justify-center gap-2 transition-colors shadow-lg shadow-[#800020]/10"
@@ -214,7 +236,6 @@ export default function ProductPage() {
                 </div>
               </div>
 
-              {/* Benefits */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-6 border-t border-b mb-8">
                 <div className="flex items-start gap-3">
                   <Truck className="text-[#800020] shrink-0" size={20} />
@@ -227,7 +248,7 @@ export default function ProductPage() {
                   <RefreshCw className="text-[#800020] shrink-0" size={20} />
                   <div>
                     <h4 className="text-xs font-bold uppercase">Troca Fácil</h4>
-                    <p className="text-[10px] text-muted-foreground">7 dias para devolução</p>
+                    <p className="text-[10px] text-muted-foreground">Até 7 dias para devolução</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
@@ -239,7 +260,6 @@ export default function ProductPage() {
                 </div>
               </div>
 
-              {/* Description */}
               <div className="prose prose-sm max-w-none">
                 <h3 className="text-sm font-bold uppercase mb-2">Descrição</h3>
                 <p className="text-muted-foreground leading-relaxed whitespace-pre-line">
