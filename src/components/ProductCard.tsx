@@ -4,6 +4,7 @@
 import React from 'react';
 import { ShoppingBag, Eye, Heart } from 'lucide-react';
 import { useCart } from '@/hooks/use-cart';
+import { useRouter } from 'next/navigation';
 
 interface Product {
   id: string;
@@ -21,6 +22,7 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const { addItem } = useCart();
+  const router = useRouter();
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -31,12 +33,18 @@ export default function ProductCard({ product }: ProductCardProps) {
   const handleView = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    // Logic for viewing product could go here if different from main link
-    window.location.href = `/produto/${product.id}`;
+    router.push(`/produto/${product.id}`);
   };
 
   return (
-    <a href={`/produto/${product.id}`} className="group flex flex-col bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow h-full">
+    <a 
+      href={`/produto/${product.id}`} 
+      onClick={(e) => {
+        e.preventDefault();
+        router.push(`/produto/${product.id}`);
+      }}
+      className="group flex flex-col bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow h-full"
+    >
       {/* Image Container */}
       <div className="relative aspect-[3/4] overflow-hidden bg-secondary">
         <img
