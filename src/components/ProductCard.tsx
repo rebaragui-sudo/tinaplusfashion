@@ -18,7 +18,7 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   return (
-    <div className="group flex flex-col bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow h-full">
+    <a href={`/produto/${product.id}`} className="group flex flex-col bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow h-full">
       {/* Image Container */}
       <div className="relative aspect-[3/4] overflow-hidden bg-secondary">
         <img
@@ -42,7 +42,10 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
 
         {/* Wishlist Button */}
-        <button className="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-sm rounded-full text-muted-foreground hover:text-[#800020] hover:bg-white transition-all shadow-sm">
+        <button 
+          className="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-sm rounded-full text-muted-foreground hover:text-[#800020] hover:bg-white transition-all shadow-sm z-10"
+          onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+        >
           <Heart className="h-5 w-5" />
         </button>
 
@@ -63,11 +66,9 @@ export default function ProductCard({ product }: ProductCardProps) {
         <span className="text-[10px] text-muted-foreground uppercase tracking-widest mb-1">
           {product.category}
         </span>
-        <a href={`/produto/${product.id}`} className="group-hover:text-[#800020] transition-colors">
-          <h3 className="text-sm font-medium text-foreground line-clamp-2 mb-2 leading-tight h-10">
-            {product.name}
-          </h3>
-        </a>
+        <h3 className="text-sm font-medium text-foreground line-clamp-2 mb-2 leading-tight h-10 group-hover:text-[#800020] transition-colors">
+          {product.name}
+        </h3>
         
         <div className="flex items-baseline gap-2 flex-wrap mt-auto">
           <span className="text-lg font-bold text-foreground">
@@ -79,6 +80,6 @@ export default function ProductCard({ product }: ProductCardProps) {
           ou 10x de {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price / 10)} sem juros
         </p>
       </div>
-    </div>
+    </a>
   );
 }
