@@ -68,21 +68,20 @@ const Footer = () => {
                 Atendimento
               </h3>
               <ul className="space-y-4">
-                <li className="flex items-start gap-2">
-                  <Phone size={16} className="text-[#D4AF37] mt-0.5 shrink-0" />
-                  <span className="text-sm text-[#71717a]">(11) 99999-9999</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Mail size={16} className="text-[#D4AF37] mt-0.5 shrink-0" />
-                  <span className="text-sm text-[#71717a]">contato@tinaplus.com.br</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Clock size={16} className="text-[#D4AF37] mt-0.5 shrink-0" />
-                  <div className="text-sm text-[#71717a]">
-                    <p>Seg a Sex: 9h às 18h</p>
-                    <p>Sáb: 9h às 13h</p>
-                  </div>
-                </li>
+                  <li className="flex items-start gap-2">
+                    <Phone size={16} className="text-[#D4AF37] mt-0.5 shrink-0" />
+                    <span className="text-sm text-[#71717a]">(11) 953714884</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Mail size={16} className="text-[#D4AF37] mt-0.5 shrink-0" />
+                    <span className="text-sm text-[#71717a]">contato@tinaplus.com.br</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Clock size={16} className="text-[#D4AF37] mt-0.5 shrink-0" />
+                    <div className="text-sm text-[#71717a]">
+                      <p>Seg a Sex: 7h às 15h</p>
+                    </div>
+                  </li>
               </ul>
             </div>
 
