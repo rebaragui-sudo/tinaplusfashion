@@ -69,11 +69,17 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         {/* Hover Add to Cart Action */}
         <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent transition-all duration-300 opacity-0 group-hover:opacity-100 flex gap-2">
-          <button className="flex-1 flex items-center justify-center gap-2 bg-white text-black text-sm font-semibold h-10 rounded-md hover:bg-[#800020] hover:text-white transition-colors">
+          <button 
+            onClick={handleAddToCart}
+            className="flex-1 flex items-center justify-center gap-2 bg-white text-black text-sm font-semibold h-10 rounded-md hover:bg-[#800020] hover:text-white transition-colors"
+          >
             <ShoppingBag className="h-4 w-4" />
             Adicionar
           </button>
-          <button className="w-10 h-10 flex items-center justify-center bg-white/80 backdrop-blur-sm rounded-md hover:bg-white transition-colors">
+          <button 
+            onClick={handleView}
+            className="w-10 h-10 flex items-center justify-center bg-white/80 backdrop-blur-sm rounded-md hover:bg-white transition-colors"
+          >
             <Eye className="h-4 w-4" />
           </button>
         </div>
