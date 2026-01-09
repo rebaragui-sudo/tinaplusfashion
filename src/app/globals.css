@@ -56,9 +56,15 @@
   --radius-sm: calc(0.5rem - 4px);
 
   --animate-accordion-down: accordion-down 0.2s ease-out;
-  --animate-accordion-up: accordion-up 0.2s ease-out;
+    --animate-accordion-up: accordion-up 0.2s ease-out;
+    --animate-marquee: marquee 20s linear infinite;
 
-  @keyframes accordion-down {
+    @keyframes marquee {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+
+    @keyframes accordion-down {
     from {
       height: 0;
     }
