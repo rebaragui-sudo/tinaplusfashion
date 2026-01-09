@@ -73,9 +73,6 @@ const Header = () => {
                 href="/promocao"
               >
                 Promoção
-                <span className="absolute -top-3 -right-3 text-[10px] bg-[#800020] text-white px-1.5 py-0.5 rounded-full font-bold">
-                  60%
-                </span>
                 <span className="absolute -bottom-1 left-0 h-0.5 bg-[#800020] transition-all w-0 group-hover:w-full"></span>
               </a>
             </nav>
