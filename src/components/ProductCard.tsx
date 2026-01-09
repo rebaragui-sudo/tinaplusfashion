@@ -1,6 +1,9 @@
 
+'use client';
+
 import React from 'react';
 import { ShoppingBag, Eye, Heart } from 'lucide-react';
+import { useCart } from '@/hooks/use-cart';
 
 interface Product {
   id: string;
@@ -17,6 +20,21 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const { addItem } = useCart();
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addItem(product);
+  };
+
+  const handleView = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    // Logic for viewing product could go here if different from main link
+    window.location.href = `/produto/${product.id}`;
+  };
+
   return (
     <a href={`/produto/${product.id}`} className="group flex flex-col bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow h-full">
       {/* Image Container */}
