@@ -14,18 +14,27 @@ const Header = () => {
       {/* Brand top-bar strip */}
       <div className="h-1 bg-[#D4AF37] w-full" />
 
-        {/* Primary-colored announcement bar */}
-        <div className="bg-[#121812] text-white py-2 px-4 text-sm font-sans overflow-hidden">
-          <div className="animate-marquee whitespace-nowrap">
-            <span className="inline-block px-4">
-              Compra mínima de R$ 350,00 | Troca fácil até 7 dias | Até 12x sem juros
-            </span>
-            {/* Repeat for seamless loop */}
-            <span className="inline-block px-4">
-              Compra mínima de R$ 350,00 | Troca fácil até 7 dias | Até 12x sem juros
-            </span>
+          {/* Primary-colored announcement bar */}
+          <div className="bg-[#121812] text-white py-2 overflow-hidden">
+            <div className="animate-marquee whitespace-nowrap inline-flex items-center">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="flex items-center">
+                  <span className="px-8 text-xs md:text-sm font-medium tracking-wide">
+                    Compra mínima de R$ 350,00
+                  </span>
+                  <span className="h-1 w-1 rounded-full bg-[#D4AF37]" />
+                  <span className="px-8 text-xs md:text-sm font-medium tracking-wide">
+                    Troca fácil até 7 dias
+                  </span>
+                  <span className="h-1 w-1 rounded-full bg-[#D4AF37]" />
+                  <span className="px-8 text-xs md:text-sm font-medium tracking-wide">
+                    Até 12x sem juros
+                  </span>
+                  <span className="h-1 w-1 rounded-full bg-[#D4AF37]" />
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
 
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
