@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { ArrowRight, Heart, ShoppingBag, Eye, Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useCart } from '@/hooks/use-cart';
+import { getColorValue } from '@/lib/colors';
 
 interface Product {
   id: string;
