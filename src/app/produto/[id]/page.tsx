@@ -16,7 +16,9 @@ import {
   RefreshCw, 
   ShieldCheck,
   Loader2,
-  ChevronLeft
+  ChevronLeft,
+  Plus,
+  Minus
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -47,8 +49,7 @@ export default function ProductPage() {
   const [variants, setVariants] = useState<Variant[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
-  const [selectedSize, setSelectedSize] = useState<string | null>(null);
-  const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [quantities, setQuantities] = useState<Record<string, number>>({});
 
   useEffect(() => {
     async function fetchProductAndVariants() {
@@ -71,10 +72,6 @@ export default function ProductPage() {
 
         setProduct(productRes.data);
         setVariants(variantsRes.data || []);
-        
-        if (productRes.data.colors && productRes.data.colors.length > 0) {
-          setSelectedColor(productRes.data.colors[0]);
-        }
       } catch (error: any) {
         console.error('Error fetching product:', error);
         toast.error('Erro ao carregar produto');
@@ -86,45 +83,40 @@ export default function ProductPage() {
     if (id) fetchProductAndVariants();
   }, [id]);
 
-  const isSizeAvailable = (size: string) => {
-    // If no color selected, check if there's ANY color that has this size in stock
-    if (!selectedColor) {
-      return variants.some(v => v.size === size && v.stock > 0);
-    }
-    // If color is selected, check if THAT specific combination has stock
-    return variants.some(v => v.size === size && v.color === selectedColor && v.stock > 0);
-  };
-
-  const isColorAvailable = (color: string) => {
-    // If no size selected, check if there's ANY size that has this color in stock
-    if (!selectedSize) {
-      return variants.some(v => v.color === color && v.stock > 0);
-    }
-    // If size is selected, check if THAT specific combination has stock
-    return variants.some(v => v.size === selectedSize && v.color === color && v.stock > 0);
+  const updateQuantity = (variantId: string, delta: number, maxStock: number) => {
+    setQuantities(prev => {
+      const current = prev[variantId] || 0;
+      const next = current + delta;
+      
+      if (next < 0) return prev;
+      if (next > maxStock) {
+        toast.error(`Apenas ${maxStock} unidades disponíveis em estoque`);
+        return prev;
+      }
+      
+      return { ...prev, [variantId]: next };
+    });
   };
 
   const handleAddToCart = () => {
     if (!product) return;
     
-    if (product.colors && product.colors.length > 0 && !selectedColor) {
-      toast.error('Por favor, selecione uma cor');
+    const selectedVariants = Object.entries(quantities).filter(([_, qty]) => qty > 0);
+    
+    if (selectedVariants.length === 0) {
+      toast.error('Por favor, selecione pelo menos uma variação');
       return;
     }
 
-    if (product.sizes && product.sizes.length > 0 && !selectedSize) {
-      toast.error('Por favor, selecione um tamanho');
-      return;
-    }
+    selectedVariants.forEach(([variantId, qty]) => {
+      const variant = variants.find(v => v.id === variantId);
+      if (variant) {
+        addItem(product, qty, variant.size, variant.color);
+      }
+    });
 
-    const variant = variants.find(v => v.color === (selectedColor || '') && v.size === (selectedSize || ''));
-    if (variant && variant.stock <= 0) {
-      toast.error('Este produto está esgotado nesta combinação');
-      return;
-    }
-
-    addItem(product, 1, selectedSize || undefined, selectedColor || undefined);
-    toast.success('Produto adicionado ao carrinho');
+    setQuantities({});
+    toast.success('Produtos adicionados ao carrinho');
   };
 
   if (loading) {
