@@ -245,31 +245,43 @@ export default function ProductPage() {
 
                   {/* Color Selection */}
                   {product.colors && product.colors.length > 0 && (
-                    <div className="mb-6">
-                      <label className="text-sm font-semibold mb-3 block">Cor:</label>
-                      <div className="flex flex-wrap gap-3">
+                    <div className="mb-8">
+                      <div className="flex justify-between items-center mb-3">
+                        <label className="text-sm font-bold uppercase tracking-tight">
+                          Cor: <span className="text-muted-foreground font-normal ml-1">{selectedColor || 'Selecione'}</span>
+                        </label>
+                      </div>
+                      <div className="flex flex-wrap gap-4">
                         {product.colors.map((color) => {
                           const available = isColorAvailable(color);
+                          const isSelected = selectedColor === color;
                           return (
                             <button
                               key={color}
                               onClick={() => available && setSelectedColor(color)}
-                              className={`w-10 h-10 rounded-full border-2 transition-all flex items-center justify-center p-0.5 ${
-                                selectedColor === color 
-                                  ? 'border-[#800020] scale-110' 
-                                  : 'border-transparent hover:border-gray-300'
-                              } ${!available ? 'opacity-20 cursor-not-allowed' : ''}`}
-                              title={available ? color : `${color} (Esgotado)`}
+                              className={`group relative flex flex-col items-center gap-2 transition-all ${
+                                !available ? 'cursor-not-allowed' : 'cursor-pointer'
+                              }`}
                             >
                               <div 
-                                className="w-full h-full rounded-full shadow-inner relative" 
-                                style={{ backgroundColor: color }}
+                                className={`w-12 h-12 rounded-full border-2 p-0.5 transition-all flex items-center justify-center ${
+                                  isSelected 
+                                    ? 'border-[#800020] scale-105 shadow-md' 
+                                    : 'border-transparent group-hover:border-gray-300'
+                                }`}
                               >
-                                {!available && (
-                                  <div className="absolute inset-0 flex items-center justify-center">
-                                    <div className="w-full h-[1px] bg-white rotate-45" />
-                                  </div>
-                                )}
+                                <div 
+                                  className={`w-full h-full rounded-full shadow-inner relative overflow-hidden ${
+                                    !available ? 'opacity-30' : ''
+                                  }`} 
+                                  style={{ backgroundColor: color }}
+                                >
+                                  {!available && (
+                                    <div className="absolute inset-0 flex items-center justify-center">
+                                      <div className="w-[120%] h-[1px] bg-black rotate-45 opacity-60" />
+                                    </div>
+                                  )}
+                                </div>
                               </div>
                             </button>
                           );
@@ -280,28 +292,33 @@ export default function ProductPage() {
 
                   <div className="mb-8">
                     <div className="flex justify-between items-center mb-3">
-                      <label className="text-sm font-semibold">Tamanho:</label>
-                      <button className="text-xs text-[#800020] flex items-center gap-1 hover:underline">
+                      <label className="text-sm font-bold uppercase tracking-tight">
+                        Tamanho: <span className="text-muted-foreground font-normal ml-1">{selectedSize || 'Selecione'}</span>
+                      </label>
+                      <button className="text-xs text-[#800020] flex items-center gap-1 hover:underline font-medium">
                         <Ruler size={14} /> Tabela de medidas
                       </button>
                     </div>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-3">
                       {(product.sizes || []).map((size) => {
                         const available = isSizeAvailable(size);
+                        const isSelected = selectedSize === size;
                         return (
                           <button
                             key={size}
                             onClick={() => available && setSelectedSize(size)}
-                            className={`h-12 w-12 flex items-center justify-center rounded-md border text-sm font-medium transition-all relative overflow-hidden ${
-                              selectedSize === size 
-                                ? 'bg-foreground text-background border-foreground' 
-                                : 'border-input hover:border-foreground'
-                            } ${!available ? 'opacity-30 cursor-not-allowed bg-secondary/30' : ''}`}
+                            className={`h-12 min-w-[3rem] px-4 flex items-center justify-center rounded-md border text-sm font-bold transition-all relative overflow-hidden ${
+                              isSelected 
+                                ? 'bg-[#800020] text-white border-[#800020]' 
+                                : available 
+                                  ? 'border-gray-200 hover:border-[#800020] text-foreground hover:text-[#800020]' 
+                                  : 'border-gray-100 text-gray-300 bg-gray-50/50 cursor-not-allowed'
+                            }`}
                           >
                             {size}
                             {!available && (
                               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                                <div className="w-[140%] h-[1px] bg-muted-foreground/50 rotate-45" />
+                                <div className="w-[140%] h-[1px] bg-gray-300 rotate-45" />
                               </div>
                             )}
                           </button>
