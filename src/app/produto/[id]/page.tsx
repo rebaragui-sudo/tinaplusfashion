@@ -297,10 +297,10 @@ export default function ProductPage() {
                               <div className="flex flex-col items-center gap-2">
                                 <div 
                                   className="w-10 h-10 rounded-full border shadow-inner"
-                                  style={{ backgroundColor: color }}
+                                  style={{ backgroundColor: getColorValue(color) }}
                                 />
                                 <span className="text-[10px] font-medium text-center leading-tight uppercase">
-                                  {color}
+                                  {getColorName(color)}
                                 </span>
                               </div>
                             </td>
