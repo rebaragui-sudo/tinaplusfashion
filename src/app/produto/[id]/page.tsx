@@ -20,6 +20,14 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 
+interface Variant {
+  id: string;
+  product_id: string;
+  color: string;
+  size: string;
+  stock: number;
+}
+
 interface Product {
   id: string;
   name: string;
@@ -36,25 +44,36 @@ export default function ProductPage() {
   const { id } = useParams();
   const { addItem } = useCart();
   const [product, setProduct] = useState<Product | null>(null);
+  const [variants, setVariants] = useState<Variant[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
 
   useEffect(() => {
-    async function fetchProduct() {
+    async function fetchProductAndVariants() {
       try {
         setLoading(true);
-        const { data, error } = await supabase
-          .from('products')
-          .select('*')
-          .eq('id', id)
-          .single();
+        const [productRes, variantsRes] = await Promise.all([
+          supabase
+            .from('products')
+            .select('*')
+            .eq('id', id)
+            .single(),
+          supabase
+            .from('product_variants')
+            .select('*')
+            .eq('product_id', id)
+        ]);
 
-        if (error) throw error;
-        setProduct(data);
-        if (data.colors && data.colors.length > 0) {
-          setSelectedColor(data.colors[0]);
+        if (productRes.error) throw productRes.error;
+        if (variantsRes.error) throw variantsRes.error;
+
+        setProduct(productRes.data);
+        setVariants(variantsRes.data || []);
+        
+        if (productRes.data.colors && productRes.data.colors.length > 0) {
+          setSelectedColor(productRes.data.colors[0]);
         }
       } catch (error: any) {
         console.error('Error fetching product:', error);
@@ -64,8 +83,26 @@ export default function ProductPage() {
       }
     }
 
-    if (id) fetchProduct();
+    if (id) fetchProductAndVariants();
   }, [id]);
+
+  const isSizeAvailable = (size: string) => {
+    if (!selectedColor) {
+      // If no color selected, check if there's ANY variant of this size with stock
+      return variants.some(v => v.size === size && v.stock > 0);
+    }
+    // Check if the specific color/size combination has stock
+    return variants.some(v => v.size === size && v.color === selectedColor && v.stock > 0);
+  };
+
+  const isColorAvailable = (color: string) => {
+    if (!selectedSize) {
+      // If no size selected, check if there's ANY variant of this color with stock
+      return variants.some(v => v.color === color && v.stock > 0);
+    }
+    // Check if the specific color/size combination has stock
+    return variants.some(v => v.size === selectedSize && v.color === color && v.stock > 0);
+  };
 
   const handleAddToCart = () => {
     if (!product) return;
@@ -80,7 +117,14 @@ export default function ProductPage() {
       return;
     }
 
+    const variant = variants.find(v => v.color === selectedColor && v.size === selectedSize);
+    if (variant && variant.stock <= 0) {
+      toast.error('Este produto está esgotado nesta combinação');
+      return;
+    }
+
     addItem(product, 1, selectedSize || undefined, selectedColor || undefined);
+    toast.success('Produto adicionado ao carrinho');
   };
 
   if (loading) {
