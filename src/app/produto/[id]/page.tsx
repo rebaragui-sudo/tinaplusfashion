@@ -87,37 +87,37 @@ export default function ProductPage() {
   }, [id]);
 
   const isSizeAvailable = (size: string) => {
+    // If no color selected, check if there's ANY color that has this size in stock
     if (!selectedColor) {
-      // If no color selected, check if there's ANY variant of this size with stock
       return variants.some(v => v.size === size && v.stock > 0);
     }
-    // Check if the specific color/size combination has stock
+    // If color is selected, check if THAT specific combination has stock
     return variants.some(v => v.size === size && v.color === selectedColor && v.stock > 0);
   };
 
   const isColorAvailable = (color: string) => {
+    // If no size selected, check if there's ANY size that has this color in stock
     if (!selectedSize) {
-      // If no size selected, check if there's ANY variant of this color with stock
       return variants.some(v => v.color === color && v.stock > 0);
     }
-    // Check if the specific color/size combination has stock
+    // If size is selected, check if THAT specific combination has stock
     return variants.some(v => v.size === selectedSize && v.color === color && v.stock > 0);
   };
 
   const handleAddToCart = () => {
     if (!product) return;
     
-    if (product.sizes && product.sizes.length > 0 && !selectedSize) {
-      toast.error('Por favor, selecione um tamanho');
-      return;
-    }
-    
     if (product.colors && product.colors.length > 0 && !selectedColor) {
       toast.error('Por favor, selecione uma cor');
       return;
     }
 
-    const variant = variants.find(v => v.color === selectedColor && v.size === selectedSize);
+    if (product.sizes && product.sizes.length > 0 && !selectedSize) {
+      toast.error('Por favor, selecione um tamanho');
+      return;
+    }
+
+    const variant = variants.find(v => v.color === (selectedColor || '') && v.size === (selectedSize || ''));
     if (variant && variant.stock <= 0) {
       toast.error('Este produto está esgotado nesta combinação');
       return;
