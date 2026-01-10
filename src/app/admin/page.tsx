@@ -241,27 +241,60 @@ export default function AdminPage() {
           .update(productData)
           .eq('id', isEditing);
         if (error) throw error;
+        productId = isEditing;
         toast.success('Produto atualizado!');
       } else {
-        const { error } = await supabase
+        const { data, error } = await supabase
           .from('products')
-          .insert([productData]);
+          .insert([productData])
+          .select()
+          .single();
         if (error) throw error;
+        productId = data.id;
         toast.success('Produto criado!');
       }
 
-        setFormData({
-          name: '',
-          description: '',
-          price: '',
-          category: '',
-          image_url: '',
-          images: [],
-          is_featured: false,
-          is_new_arrival: false,
-          colors: [],
-          sizes: ['G1', 'G2', 'G3'],
-        });
+      // Update Variants Stock
+      // 1. Delete old variants
+      await supabase
+        .from('product_variants')
+        .delete()
+        .eq('product_id', productId);
+
+      // 2. Insert current variants
+      const variantsToInsert = [];
+      for (const color of formData.colors) {
+        for (const size of formData.sizes) {
+          const stock = parseInt(variantStock[`${color}|${size}`] || '0');
+          variantsToInsert.push({
+            product_id: productId,
+            color,
+            size,
+            stock
+          });
+        }
+      }
+
+      if (variantsToInsert.length > 0) {
+        const { error: variantError } = await supabase
+          .from('product_variants')
+          .insert(variantsToInsert);
+        if (variantError) throw variantError;
+      }
+
+      setFormData({
+        name: '',
+        description: '',
+        price: '',
+        category: '',
+        image_url: '',
+        images: [],
+        is_featured: false,
+        is_new_arrival: false,
+        colors: [],
+        sizes: ['G1', 'G2', 'G3'],
+      });
+      setVariantStock({});
       setIsEditing(null);
       fetchProducts();
     } catch (error: any) {
