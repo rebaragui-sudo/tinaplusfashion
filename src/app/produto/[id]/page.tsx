@@ -266,54 +266,63 @@ export default function ProductPage() {
                               </div>
                             </td>
                             {(product.sizes || []).map(size => {
-                              const variant = variants.find(v => v.color === color && v.size === size);
-                              const quantity = quantities[variant?.id || ''] || 0;
-                              const inStock = variant && variant.stock > 0;
+                               const variant = variants.find(v => 
+                                 (v.color === color || getColorValue(v.color) === getColorValue(color)) && 
+                                 v.size === size
+                               );
+                               const quantity = quantities[variant?.id || ''] || 0;
+                               const inStock = variant && variant.stock > 0;
 
-                              return (
-                                <td 
-                                  key={size} 
-                                  className={`p-2 text-center min-w-[100px] transition-colors ${
-                                    !inStock ? 'bg-gray-100/50' : 'hover:bg-gray-50'
-                                  }`}
-                                >
-                                  {inStock ? (
-                                    <div className="flex items-center justify-center">
-                                      {quantity > 0 ? (
-                                        <div className="flex items-center gap-2 bg-white border rounded-full p-1 shadow-sm">
-                                          <button 
-                                            onClick={() => updateQuantity(variant.id, -1, variant.stock)}
-                                            className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-[#800020] transition-colors"
-                                          >
-                                            <Minus size={14} />
-                                          </button>
-                                          <span className="w-6 font-bold text-[#800020]">{quantity}</span>
-                                          <button 
-                                            onClick={() => updateQuantity(variant.id, 1, variant.stock)}
-                                            className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-[#800020] transition-colors"
-                                          >
-                                            <Plus size={14} />
-                                          </button>
-                                        </div>
-                                      ) : (
-                                        <button 
-                                          onClick={() => updateQuantity(variant.id, 1, variant.stock)}
-                                          className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-dashed border-gray-300 text-gray-400 hover:border-[#800020] hover:text-[#800020] hover:bg-white transition-all group"
-                                        >
-                                          <Plus size={20} className="group-hover:scale-110 transition-transform" />
-                                        </button>
-                                      )}
-                                    </div>
-                                  ) : (
-                                    <div className="flex items-center justify-center h-full opacity-20">
-                                      <div className="w-8 h-8 border-2 border-gray-300 rounded-full flex items-center justify-center">
-                                        <div className="w-full h-[2px] bg-gray-300 rotate-45" />
-                                      </div>
-                                    </div>
-                                  )}
-                                </td>
-                              );
-                            })}
+                               return (
+                                 <td 
+                                   key={size} 
+                                   className={`p-2 text-center min-w-[100px] transition-colors ${
+                                     !inStock ? 'bg-gray-100/50' : 'hover:bg-gray-50'
+                                   }`}
+                                 >
+                                   {inStock ? (
+                                     <div className="flex flex-col items-center justify-center gap-1">
+                                       {quantity > 0 ? (
+                                         <div className="flex items-center gap-2 bg-white border rounded-full p-1 shadow-sm">
+                                           <button 
+                                             onClick={() => updateQuantity(variant.id, -1, variant.stock)}
+                                             className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-[#800020] transition-colors"
+                                           >
+                                             <Minus size={14} />
+                                           </button>
+                                           <span className="w-6 font-bold text-[#800020]">{quantity}</span>
+                                           <button 
+                                             onClick={() => updateQuantity(variant.id, 1, variant.stock)}
+                                             className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-[#800020] transition-colors"
+                                           >
+                                             <Plus size={14} />
+                                           </button>
+                                         </div>
+                                       ) : (
+                                         <button 
+                                           onClick={() => updateQuantity(variant.id, 1, variant.stock)}
+                                           className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-dashed border-gray-300 text-gray-400 hover:border-[#800020] hover:text-[#800020] hover:bg-white transition-all group"
+                                         >
+                                           <Plus size={20} className="group-hover:scale-110 transition-transform" />
+                                         </button>
+                                       )}
+                                       <span className="text-[9px] text-gray-400 font-medium">
+                                         {variant.stock} disponíveis
+                                       </span>
+                                     </div>
+                                   ) : (
+                                     <div className="flex flex-col items-center justify-center gap-1 opacity-20">
+                                       <div className="w-8 h-8 border-2 border-gray-300 rounded-full flex items-center justify-center">
+                                         <div className="w-full h-[2px] bg-gray-300 rotate-45" />
+                                       </div>
+                                       <span className="text-[9px] text-gray-400 font-medium">
+                                         Esgotado
+                                       </span>
+                                     </div>
+                                   )}
+                                 </td>
+                               );
+                             })}
                           </tr>
                         ))}
                       </tbody>
