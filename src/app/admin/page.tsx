@@ -387,58 +387,56 @@ export default function AdminPage() {
               <div className="space-y-2">
                 <label className="text-sm font-medium text-gray-700">Cores do Produto</label>
                 <div className="space-y-3">
-                  <div className="flex gap-2">
-                    <div className="relative flex-grow flex items-center">
+                  <div className="flex flex-col gap-2">
+                    <div className="flex gap-2">
                       <input
                         type="text"
-                        className="w-full p-2 pl-10 border rounded-md focus:ring-2 focus:ring-[#800020] outline-none font-mono text-sm"
-                        value={colorInput}
-                        onChange={(e) => setColorInput(e.target.value)}
-                        placeholder="#000000"
+                        className="flex-grow p-2 border rounded-md focus:ring-2 focus:ring-[#800020] outline-none text-sm"
+                        value={colorNameInput}
+                        onChange={(e) => setColorNameInput(e.target.value)}
+                        placeholder="Nome da cor (ex: Azul Marinho)"
                       />
-                      <div 
-                        className="absolute left-2 w-6 h-6 rounded border shadow-sm"
-                        style={{ backgroundColor: colorInput }}
-                      />
+                      <div className="flex items-center gap-1 border rounded-md p-1 bg-white">
+                        <input
+                          type="color"
+                          className="w-8 h-8 p-0 border-0 cursor-pointer rounded overflow-hidden"
+                          value={colorInput}
+                          onChange={(e) => setColorInput(e.target.value)}
+                        />
+                        <button
+                          type="button"
+                          onClick={openEyeDropper}
+                          title="Usar conta-gotas"
+                          className="p-1 hover:bg-gray-100 rounded transition-colors text-gray-600"
+                        >
+                          <Pipette size={18} />
+                        </button>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={addColor}
+                        className="px-4 bg-[#800020] text-white rounded-md hover:bg-[#600018] transition-colors flex items-center gap-1 text-sm font-bold"
+                      >
+                        <Plus size={16} /> Add
+                      </button>
                     </div>
-                    <input
-                      type="color"
-                      className="w-12 h-10 p-1 border rounded-md cursor-pointer"
-                      value={colorInput}
-                      onChange={(e) => setColorInput(e.target.value)}
-                    />
-                    <button
-                      type="button"
-                      onClick={openEyeDropper}
-                      title="Usar conta-gotas"
-                      className="p-2 border rounded-md hover:bg-gray-50 transition-colors text-gray-600"
-                    >
-                      <Pipette size={20} />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={addColor}
-                      className="px-3 bg-gray-900 text-white rounded-md hover:bg-black transition-colors flex items-center gap-1 text-sm font-bold"
-                    >
-                      <Plus size={16} /> Add
-                    </button>
                   </div>
                   
                   {formData.colors.length > 0 && (
                     <div className="flex flex-wrap gap-2 p-3 bg-gray-50 rounded-lg border border-dashed">
                       {formData.colors.map((color, idx) => (
-                        <div key={idx} className="group relative">
+                        <div key={idx} className="group relative flex items-center gap-2 bg-white px-2 py-1 rounded-full border shadow-sm">
                           <div 
-                            className="w-8 h-8 rounded-full border shadow-sm cursor-help"
-                            style={{ backgroundColor: color }}
-                            title={color}
+                            className="w-4 h-4 rounded-full border shadow-sm"
+                            style={{ backgroundColor: getColorValue(color) }}
                           />
+                          <span className="text-xs font-medium text-gray-700">{getColorName(color)}</span>
                           <button
                             type="button"
                             onClick={() => removeColor(color)}
-                            className="absolute -top-1 -right-1 p-0.5 bg-red-600 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                            className="p-0.5 hover:bg-red-50 text-gray-400 hover:text-red-600 rounded-full transition-colors"
                           >
-                            <X size={10} />
+                            <X size={12} />
                           </button>
                         </div>
                       ))}
