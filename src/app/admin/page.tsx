@@ -667,8 +667,8 @@ export default function AdminPage() {
                                 <div 
                                   key={idx}
                                   className="w-4 h-4 rounded-full border border-gray-200 shadow-sm"
-                                  style={{ backgroundColor: color }}
-                                  title={color}
+                                  style={{ backgroundColor: getColorValue(color) }}
+                                  title={getColorName(color)}
                                 />
                               ))}
                               {(!product.colors || product.colors.length === 0) && (
