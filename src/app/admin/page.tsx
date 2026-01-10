@@ -286,7 +286,7 @@ export default function AdminPage() {
     }
   }
 
-  function handleEdit(product: Product) {
+  async function handleEdit(product: Product) {
     setIsEditing(product.id);
     setFormData({
       name: product.name,
@@ -300,6 +300,23 @@ export default function AdminPage() {
       colors: product.colors || [],
       sizes: product.sizes || ['G1', 'G2', 'G3'],
     });
+
+    // Fetch variants stock
+    const { data: variants } = await supabase
+      .from('product_variants')
+      .select('*')
+      .eq('product_id', product.id);
+
+    if (variants) {
+      const stock: Record<string, string> = {};
+      variants.forEach(v => {
+        stock[`${v.color}|${v.size}`] = v.stock.toString();
+      });
+      setVariantStock(stock);
+    } else {
+      setVariantStock({});
+    }
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
