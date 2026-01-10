@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowRight, ShoppingBag, Eye, Heart, Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { getColorValue } from '@/lib/colors';
 
 interface Product {
   id: string;
