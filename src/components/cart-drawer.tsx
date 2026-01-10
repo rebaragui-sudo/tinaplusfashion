@@ -19,6 +19,7 @@ import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
+import { getColorName } from '@/lib/colors';
 
 const CartDrawer = () => {
   const router = useRouter();
