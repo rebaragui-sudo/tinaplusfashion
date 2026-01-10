@@ -235,88 +235,88 @@ export default function ProductPage() {
                 </div>
               </div>
 
-                  {/* Color Selection */}
-                  {product.colors && product.colors.length > 0 && (
-                    <div className="mb-8">
-                      <div className="flex justify-between items-center mb-3">
-                        <label className="text-sm font-bold uppercase tracking-tight">
-                          Cor: <span className="text-muted-foreground font-normal ml-1">{selectedColor || 'Selecione'}</span>
-                        </label>
-                      </div>
-                      <div className="flex flex-wrap gap-4">
-                        {product.colors.map((color) => {
-                          const available = isColorAvailable(color);
-                          const isSelected = selectedColor === color;
-                          return (
-                            <button
-                              key={color}
-                              onClick={() => available && setSelectedColor(color)}
-                              className={`group relative flex flex-col items-center gap-2 transition-all ${
-                                !available ? 'cursor-not-allowed' : 'cursor-pointer'
-                              }`}
-                            >
-                              <div 
-                                className={`w-12 h-12 rounded-full border-2 p-0.5 transition-all flex items-center justify-center ${
-                                  isSelected 
-                                    ? 'border-[#800020] scale-105 shadow-md' 
-                                    : 'border-transparent group-hover:border-gray-300'
-                                }`}
-                              >
+                  {/* Variants Grid Table */}
+                  <div className="mb-8 overflow-x-auto border rounded-lg">
+                    <table className="w-full text-sm border-collapse">
+                      <thead>
+                        <tr className="bg-gray-50">
+                          <th className="p-4 border-b border-r text-left font-bold uppercase tracking-tight w-40">
+                            Cor
+                          </th>
+                          {(product.sizes || []).map(size => (
+                            <th key={size} className="p-4 border-b text-center font-bold uppercase tracking-tight">
+                              {size}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {(product.colors || []).map(color => (
+                          <tr key={color} className="border-b last:border-0">
+                            <td className="p-4 border-r">
+                              <div className="flex flex-col items-center gap-2">
                                 <div 
-                                  className={`w-full h-full rounded-full shadow-inner relative overflow-hidden ${
-                                    !available ? 'opacity-30' : ''
-                                  }`} 
+                                  className="w-10 h-10 rounded-full border shadow-inner"
                                   style={{ backgroundColor: color }}
+                                />
+                                <span className="text-[10px] font-medium text-center leading-tight uppercase">
+                                  {color}
+                                </span>
+                              </div>
+                            </td>
+                            {(product.sizes || []).map(size => {
+                              const variant = variants.find(v => v.color === color && v.size === size);
+                              const quantity = quantities[variant?.id || ''] || 0;
+                              const inStock = variant && variant.stock > 0;
+
+                              return (
+                                <td 
+                                  key={size} 
+                                  className={`p-2 text-center min-w-[100px] transition-colors ${
+                                    !inStock ? 'bg-gray-100/50' : 'hover:bg-gray-50'
+                                  }`}
                                 >
-                                  {!available && (
-                                    <div className="absolute inset-0 flex items-center justify-center">
-                                      <div className="w-[120%] h-[1px] bg-black rotate-45 opacity-60" />
+                                  {inStock ? (
+                                    <div className="flex items-center justify-center">
+                                      {quantity > 0 ? (
+                                        <div className="flex items-center gap-2 bg-white border rounded-full p-1 shadow-sm">
+                                          <button 
+                                            onClick={() => updateQuantity(variant.id, -1, variant.stock)}
+                                            className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-[#800020] transition-colors"
+                                          >
+                                            <Minus size={14} />
+                                          </button>
+                                          <span className="w-6 font-bold text-[#800020]">{quantity}</span>
+                                          <button 
+                                            onClick={() => updateQuantity(variant.id, 1, variant.stock)}
+                                            className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-[#800020] transition-colors"
+                                          >
+                                            <Plus size={14} />
+                                          </button>
+                                        </div>
+                                      ) : (
+                                        <button 
+                                          onClick={() => updateQuantity(variant.id, 1, variant.stock)}
+                                          className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-dashed border-gray-300 text-gray-400 hover:border-[#800020] hover:text-[#800020] hover:bg-white transition-all group"
+                                        >
+                                          <Plus size={20} className="group-hover:scale-110 transition-transform" />
+                                        </button>
+                                      )}
+                                    </div>
+                                  ) : (
+                                    <div className="flex items-center justify-center h-full opacity-20">
+                                      <div className="w-8 h-8 border-2 border-gray-300 rounded-full flex items-center justify-center">
+                                        <div className="w-full h-[2px] bg-gray-300 rotate-45" />
+                                      </div>
                                     </div>
                                   )}
-                                </div>
-                              </div>
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="mb-8">
-                    <div className="flex justify-between items-center mb-3">
-                      <label className="text-sm font-bold uppercase tracking-tight">
-                        Tamanho: <span className="text-muted-foreground font-normal ml-1">{selectedSize || 'Selecione'}</span>
-                      </label>
-                      <button className="text-xs text-[#800020] flex items-center gap-1 hover:underline font-medium">
-                        <Ruler size={14} /> Tabela de medidas
-                      </button>
-                    </div>
-                    <div className="flex flex-wrap gap-3">
-                      {(product.sizes || []).map((size) => {
-                        const available = isSizeAvailable(size);
-                        const isSelected = selectedSize === size;
-                        return (
-                          <button
-                            key={size}
-                            onClick={() => available && setSelectedSize(size)}
-                            className={`h-12 min-w-[3rem] px-4 flex items-center justify-center rounded-md border text-sm font-bold transition-all relative overflow-hidden ${
-                              isSelected 
-                                ? 'bg-[#800020] text-white border-[#800020]' 
-                                : available 
-                                  ? 'border-gray-200 hover:border-[#800020] text-foreground hover:text-[#800020]' 
-                                  : 'border-gray-100 text-gray-300 bg-gray-50/50 cursor-not-allowed'
-                            }`}
-                          >
-                            {size}
-                            {!available && (
-                              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                                <div className="w-[140%] h-[1px] bg-gray-300 rotate-45" />
-                              </div>
-                            )}
-                          </button>
-                        );
-                      })}
-                    </div>
+                                </td>
+                              );
+                            })}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
 
               <div className="flex flex-col gap-3 mb-8">
