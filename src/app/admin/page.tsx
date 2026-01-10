@@ -154,14 +154,20 @@ export default function AdminPage() {
   };
 
   const addColor = () => {
-    if (formData.colors.includes(colorInput)) {
+    if (!colorNameInput.trim()) {
+      toast.error('Por favor, dê um nome para a cor');
+      return;
+    }
+    const colorEntry = `${colorNameInput.trim()}:${colorInput}`;
+    if (formData.colors.includes(colorEntry)) {
       toast.error('Esta cor já foi adicionada');
       return;
     }
     setFormData(prev => ({
       ...prev,
-      colors: [...prev.colors, colorInput]
+      colors: [...prev.colors, colorEntry]
     }));
+    setColorNameInput('');
   };
 
   const removeColor = (color: string) => {
