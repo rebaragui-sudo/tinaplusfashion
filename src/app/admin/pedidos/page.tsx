@@ -376,10 +376,11 @@ export default function AdminOrdersPage() {
                             </div>
                             <div className="flex-grow min-w-0">
                               <p className="text-xs font-bold text-gray-900 truncate">{item.name}</p>
-                              <div className="flex gap-2 mt-1">
-                                <span className="text-[10px] bg-gray-100 px-1.5 py-0.5 rounded font-bold text-gray-600">{item.size}</span>
-                                <div className="w-3.5 h-3.5 rounded-full border border-gray-200" style={{ backgroundColor: item.color }} />
-                              </div>
+                                <div className="flex items-center gap-2 mt-1">
+                                  <span className="text-[10px] bg-gray-100 px-1.5 py-0.5 rounded font-bold text-gray-600">{item.size}</span>
+                                  <div className="w-3.5 h-3.5 rounded-full border border-gray-200" style={{ backgroundColor: getColorValue(item.color) }} />
+                                  <span className="text-[10px] font-bold text-gray-500 uppercase">{getColorName(item.color)}</span>
+                                </div>
                               <p className="text-[10px] text-gray-500 mt-1 font-medium">{item.quantity}x • {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.price)}</p>
                             </div>
                           </div>
