@@ -243,53 +243,72 @@ export default function ProductPage() {
                 </div>
               </div>
 
-                {/* Color Selection */}
-                {product.colors && product.colors.length > 0 && (
-                  <div className="mb-6">
-                    <label className="text-sm font-semibold mb-3 block">Cor:</label>
-                    <div className="flex flex-wrap gap-3">
-                      {product.colors.map((color) => (
-                        <button
-                          key={color}
-                          onClick={() => setSelectedColor(color)}
-                          className={`w-10 h-10 rounded-full border-2 transition-all flex items-center justify-center p-0.5 ${
-                            selectedColor === color ? 'border-[#800020] scale-110' : 'border-transparent hover:border-gray-300'
-                          }`}
-                          title={color}
-                        >
-                          <div 
-                            className="w-full h-full rounded-full shadow-inner" 
-                            style={{ backgroundColor: color }}
-                          />
-                        </button>
-                      ))}
+                  {/* Color Selection */}
+                  {product.colors && product.colors.length > 0 && (
+                    <div className="mb-6">
+                      <label className="text-sm font-semibold mb-3 block">Cor:</label>
+                      <div className="flex flex-wrap gap-3">
+                        {product.colors.map((color) => {
+                          const available = isColorAvailable(color);
+                          return (
+                            <button
+                              key={color}
+                              onClick={() => available && setSelectedColor(color)}
+                              className={`w-10 h-10 rounded-full border-2 transition-all flex items-center justify-center p-0.5 ${
+                                selectedColor === color 
+                                  ? 'border-[#800020] scale-110' 
+                                  : 'border-transparent hover:border-gray-300'
+                              } ${!available ? 'opacity-20 cursor-not-allowed' : ''}`}
+                              title={available ? color : `${color} (Esgotado)`}
+                            >
+                              <div 
+                                className="w-full h-full rounded-full shadow-inner relative" 
+                                style={{ backgroundColor: color }}
+                              >
+                                {!available && (
+                                  <div className="absolute inset-0 flex items-center justify-center">
+                                    <div className="w-full h-[1px] bg-white rotate-45" />
+                                  </div>
+                                )}
+                              </div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="mb-8">
+                    <div className="flex justify-between items-center mb-3">
+                      <label className="text-sm font-semibold">Tamanho:</label>
+                      <button className="text-xs text-[#800020] flex items-center gap-1 hover:underline">
+                        <Ruler size={14} /> Tabela de medidas
+                      </button>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {(product.sizes || []).map((size) => {
+                        const available = isSizeAvailable(size);
+                        return (
+                          <button
+                            key={size}
+                            onClick={() => available && setSelectedSize(size)}
+                            className={`h-12 w-12 flex items-center justify-center rounded-md border text-sm font-medium transition-all relative overflow-hidden ${
+                              selectedSize === size 
+                                ? 'bg-foreground text-background border-foreground' 
+                                : 'border-input hover:border-foreground'
+                            } ${!available ? 'opacity-30 cursor-not-allowed bg-secondary/30' : ''}`}
+                          >
+                            {size}
+                            {!available && (
+                              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                <div className="w-[140%] h-[1px] bg-muted-foreground/50 rotate-45" />
+                              </div>
+                            )}
+                          </button>
+                        );
+                      })}
                     </div>
                   </div>
-                )}
-
-                <div className="mb-8">
-                  <div className="flex justify-between items-center mb-3">
-                    <label className="text-sm font-semibold">Tamanho:</label>
-                    <button className="text-xs text-[#800020] flex items-center gap-1 hover:underline">
-                      <Ruler size={14} /> Tabela de medidas
-                    </button>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {(product.sizes || []).map((size) => (
-                      <button
-                        key={size}
-                        onClick={() => setSelectedSize(size)}
-                        className={`h-12 w-12 flex items-center justify-center rounded-md border text-sm font-medium transition-all ${
-                          selectedSize === size 
-                            ? 'bg-foreground text-background border-foreground' 
-                            : 'border-input hover:border-foreground'
-                        }`}
-                      >
-                        {size}
-                      </button>
-                    ))}
-                  </div>
-                </div>
 
               <div className="flex flex-col gap-3 mb-8">
                 <button 
