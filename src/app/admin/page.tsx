@@ -230,6 +230,7 @@ export default function AdminPage() {
     e.preventDefault();
     try {
       setLoading(true);
+      let productId: string;
       const productData = {
         ...formData,
         price: parseFloat(formData.price),
