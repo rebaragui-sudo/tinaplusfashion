@@ -596,10 +596,48 @@ export default function AdminPage() {
                       {size}
                     </button>
                   ))}
+                  </div>
                 </div>
-              </div>
 
-              <div className="flex gap-6 py-2">
+                {formData.colors.length > 0 && formData.sizes.length > 0 && (
+                  <div className="space-y-4 p-4 bg-gray-50 rounded-xl border border-gray-100">
+                    <label className="text-sm font-bold text-[#800020] uppercase tracking-wider flex items-center gap-2">
+                      <Package size={16} />
+                      Estoque por Cor e Tamanho
+                    </label>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                      {formData.colors.map(color => (
+                        formData.sizes.map(size => (
+                          <div key={`${color}-${size}`} className="flex items-center gap-3 bg-white p-2 rounded-lg border shadow-sm">
+                            <div 
+                              className="w-6 h-6 rounded-full border shrink-0"
+                              style={{ backgroundColor: getColorValue(color) }}
+                              title={getColorName(color)}
+                            />
+                            <div className="flex-grow">
+                              <span className="text-[10px] font-bold text-gray-400 block uppercase leading-none mb-1">
+                                {getColorName(color)} - {size}
+                              </span>
+                              <input
+                                type="number"
+                                min="0"
+                                className="w-full p-1 text-sm border rounded focus:ring-1 focus:ring-[#800020] outline-none"
+                                placeholder="Qtd"
+                                value={variantStock[`${color}|${size}`] || ''}
+                                onChange={(e) => setVariantStock(prev => ({
+                                  ...prev,
+                                  [`${color}|${size}`]: e.target.value
+                                }))}
+                              />
+                            </div>
+                          </div>
+                        ))
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <div className="flex gap-6 py-2">
               <label className="flex items-center gap-2 cursor-pointer group">
                 <input
                   type="checkbox"
