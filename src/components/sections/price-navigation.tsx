@@ -25,11 +25,11 @@ const PriceNavigation = () => {
       alt: "2 Conjuntos"
     },
     {
-      title: "3 Blazers",
-      price: "299",
-      href: "/blazers",
-      image: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/ea02e2c1-3719-4f3c-b449-729e57b40008-hubpmg-com-br/assets/images/blazer-bege-1--ZXdRYvY-1.png",
-      alt: "3 Blazers"
+      title: "3 Calças Pantalonas",
+      price: "100",
+      href: "/calcas",
+      image: "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/0.0982356958825551.jpg",
+      alt: "3 Calças Pantalonas"
     }
   ];
 
