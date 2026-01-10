@@ -167,7 +167,7 @@ const CartDrawer = () => {
                       </p>
                     </div>
                     <p className="mt-1 text-xs text-[#71717a]">
-                      {item.size && `Tam: ${item.size}`} {item.color && `| Cor: ${item.color}`}
+                      {item.size && `Tam: ${item.size}`} {item.color && `| Cor: ${getColorName(item.color)}`}
                     </p>
                   </div>
                   <div className="flex flex-1 items-end justify-between text-sm">
