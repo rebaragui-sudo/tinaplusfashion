@@ -155,10 +155,11 @@ export default function PedidosPage() {
                                 </div>
                                 <div className="flex flex-col justify-center">
                                   <p className="text-sm font-medium text-[#121812] line-clamp-1">{item.name}</p>
-                                  <p className="text-xs text-[#71717a]">
-                                    {item.quantity}x {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.price)}
-                                    {item.size && ` | Tam: ${item.size}`}
-                                  </p>
+                                    <p className="text-xs text-[#71717a]">
+                                      {item.quantity}x {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.price)}
+                                      {item.size && ` | Tam: ${item.size}`}
+                                      {item.color && ` | Cor: ${getColorName(item.color)}`}
+                                    </p>
                                 </div>
                               </div>
                             ))}
