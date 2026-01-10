@@ -22,6 +22,7 @@ import {
 
 import { toast } from 'sonner';
 import Link from 'next/link';
+import { getColorName, getColorValue } from '@/lib/colors';
 
 interface Product {
   id: string;
