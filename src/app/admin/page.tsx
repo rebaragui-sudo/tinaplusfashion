@@ -60,6 +60,7 @@ export default function AdminPage() {
     colors: [] as string[],
     sizes: ['G1', 'G2', 'G3'],
   });
+  const [variantStock, setVariantStock] = useState<Record<string, string>>({});
 
   const availableSizes = ['P', 'M', 'G', 'GG', 'G1', 'G2', 'G3', 'G4'];
 
