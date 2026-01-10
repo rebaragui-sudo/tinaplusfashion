@@ -30,11 +30,17 @@ export const COLOR_MAP: Record<string, string> = {
 
 export const getColorName = (color: string) => {
   if (!color) return '';
+  if (color.includes(':')) {
+    return color.split(':')[0];
+  }
   return COLOR_MAP[color.toLowerCase()] || color;
 };
 
 export const getColorValue = (color: string) => {
   if (!color) return '';
+  if (color.includes(':')) {
+    return color.split(':')[1];
+  }
   if (color.startsWith('#')) return color;
   // Reverse lookup if it's a name
   const entry = Object.entries(COLOR_MAP).find(([_, name]) => name.toLowerCase() === color.toLowerCase());
