@@ -87,11 +87,11 @@ const ProductCard = ({ product }: { product: Product }) => {
           {/* Color dots */}
           <div className="flex gap-1">
             {(product.colors || []).slice(0, 3).map((color, idx) => (
-              <div 
-                key={idx}
-                className="w-2.5 h-2.5 rounded-full border border-gray-200"
-                style={{ backgroundColor: color }}
-              />
+                <div 
+                  key={idx}
+                  className="w-2.5 h-2.5 rounded-full border border-gray-200"
+                  style={{ backgroundColor: getColorValue(color) }}
+                />
             ))}
             {(product.colors?.length || 0) > 3 && (
               <span className="text-[8px] text-muted-foreground">+{product.colors.length - 3}</span>
