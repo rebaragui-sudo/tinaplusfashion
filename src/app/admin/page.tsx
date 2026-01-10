@@ -46,6 +46,7 @@ export default function AdminPage() {
   const [uploading, setUploading] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [colorInput, setColorInput] = useState('#000000');
+  const [colorNameInput, setColorNameInput] = useState('');
   const [formData, setFormData] = useState({
     name: '',
     description: '',
