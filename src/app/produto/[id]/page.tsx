@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Header from "@/components/sections/header";
 import Footer from "@/components/sections/footer";
+import ShippingCalculator from "@/components/shipping-calculator";
 import { supabase } from '@/lib/supabase';
 import { useCart } from '@/hooks/use-cart';
 import { 
