@@ -211,42 +211,80 @@ function ComboSelectionContent() {
             <Loader2 className="animate-spin text-[#800020]" size={40} />
           </div>
         ) : products.length > 0 ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-            {products.map((product) => {
-              const selectionCount = selectedItems.filter(item => item.id === product.id).length;
-              const isSelected = selectionCount > 0;
-              
-              return (
-                <div 
-                  key={product.id}
-                  onClick={() => toggleProduct(product)}
-                  className={`relative cursor-pointer group rounded-lg overflow-hidden border-2 transition-all ${
-                    isSelected ? 'border-[#800020]' : 'border-transparent hover:border-muted'
-                  }`}
-                >
-                  <div className="aspect-[3/4] bg-secondary">
-                    <img
-                      src={product.image_url}
-                      alt={product.name}
-                      className="w-full h-full object-cover"
-                    />
-                    {selectionCount > 0 && (
-                      <div className="absolute top-2 right-2 bg-[#800020] text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shadow-md">
-                        {selectionCount}
+          <div className="flex flex-col lg:flex-row gap-8">
+            <div className="flex-grow grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
+              {products.map((product) => {
+                const selectionCount = selectedItems.filter(item => item.id === product.id).length;
+                
+                return (
+                  <div 
+                    key={product.id}
+                    onClick={() => openSelectionModal(product)}
+                    className={`relative cursor-pointer group rounded-lg overflow-hidden border-2 transition-all ${
+                      selectionCount > 0 ? 'border-[#800020]' : 'border-transparent hover:border-muted'
+                    }`}
+                  >
+                    <div className="aspect-[3/4] bg-secondary">
+                      <img
+                        src={product.image_url}
+                        alt={product.name}
+                        className="w-full h-full object-cover"
+                      />
+                      {selectionCount > 0 && (
+                        <div className="absolute top-2 right-2 bg-[#800020] text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shadow-md">
+                          {selectionCount}
+                        </div>
+                      )}
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <Plus className="text-white" size={32} />
                       </div>
-                    )}
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                      <Plus className="text-white" size={32} />
+                    </div>
+                    <div className="p-3 bg-white">
+                      <h3 className="text-xs font-medium text-foreground line-clamp-1 mb-1">
+                        {product.name}
+                      </h3>
+                      <div className="flex gap-1">
+                        {product.colors?.slice(0, 3).map((color, i) => (
+                          <div key={i} className="w-3 h-3 rounded-full border border-gray-200" style={{ backgroundColor: color.toLowerCase() }} />
+                        ))}
+                        {product.colors && product.colors.length > 3 && <span className="text-[10px] text-muted-foreground">+{product.colors.length - 3}</span>}
+                      </div>
                     </div>
                   </div>
-                  <div className="p-3 bg-white">
-                    <h3 className="text-xs font-medium text-foreground line-clamp-1 mb-1">
-                      {product.name}
-                    </h3>
+                );
+              })}
+            </div>
+
+            {/* Selected Items Summary */}
+            <div className="w-full lg:w-80 shrink-0">
+              <div className="bg-white border rounded-lg p-4 sticky top-40">
+                <h3 className="font-bold mb-4 border-b pb-2">Itens Selecionados ({selectedItems.length}/{quantityRequired})</h3>
+                {selectedItems.length === 0 ? (
+                  <p className="text-sm text-muted-foreground text-center py-8">Nenhum item selecionado</p>
+                ) : (
+                  <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2">
+                    {selectedItems.map((item) => (
+                      <div key={item.tempId} className="flex gap-3 items-center group">
+                        <img src={item.image_url} className="w-12 h-16 object-cover rounded" />
+                        <div className="flex-grow">
+                          <p className="text-xs font-medium line-clamp-1">{item.name}</p>
+                          <div className="flex gap-2 text-[10px] text-muted-foreground">
+                            {item.color && <span>Cor: {item.color}</span>}
+                            {item.size && <span>Tam: {item.size}</span>}
+                          </div>
+                        </div>
+                        <button 
+                          onClick={() => removeSelectedItem(item.tempId)}
+                          className="text-muted-foreground hover:text-red-500 transition-colors"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    ))}
                   </div>
-                </div>
-              );
-            })}
+                )}
+              </div>
+            </div>
           </div>
         ) : (
           <div className="py-24 text-center">
@@ -254,6 +292,100 @@ function ComboSelectionContent() {
             <p className="text-muted-foreground">Tente buscar por outra categoria ou volte mais tarde.</p>
           </div>
         )}
+
+        {/* Selection Dialog */}
+        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Escolha as opções</DialogTitle>
+            </DialogHeader>
+            {currentProduct && (
+              <div className="grid gap-6 py-4">
+                <div className="flex gap-4">
+                  <img src={currentProduct.image_url} alt={currentProduct.name} className="w-24 h-32 object-cover rounded-md" />
+                  <div>
+                    <h4 className="font-bold text-lg">{currentProduct.name}</h4>
+                    <p className="text-sm text-muted-foreground">Adicione ao seu combo</p>
+                  </div>
+                </div>
+
+                {currentProduct.colors && currentProduct.colors.length > 0 && (
+                  <div className="grid gap-2">
+                    <Label>Cor disponível</Label>
+                    <RadioGroup value={selectedColor} onValueChange={setSelectedColor} className="flex flex-wrap gap-2">
+                      {currentProduct.colors.map((color) => (
+                        <div key={color} className="flex items-center space-x-2">
+                          <RadioGroupItem value={color} id={`color-${color}`} className="sr-only" />
+                          <Label
+                            htmlFor={`color-${color}`}
+                            className={`px-3 py-1.5 rounded-full border cursor-pointer text-sm transition-all ${
+                              selectedColor === color ? 'bg-[#800020] text-white border-[#800020]' : 'hover:bg-muted'
+                            }`}
+                          >
+                            {color}
+                          </Label>
+                        </div>
+                      ))}
+                    </RadioGroup>
+                  </div>
+                )}
+
+                {currentProduct.sizes && currentProduct.sizes.length > 0 && (
+                  <div className="grid gap-2">
+                    <Label>Tamanho</Label>
+                    <RadioGroup value={selectedSize} onValueChange={setSelectedSize} className="flex flex-wrap gap-2">
+                      {currentProduct.sizes.map((size) => (
+                        <div key={size} className="flex items-center space-x-2">
+                          <RadioGroupItem value={size} id={`size-${size}`} className="sr-only" />
+                          <Label
+                            htmlFor={`size-${size}`}
+                            className={`w-10 h-10 rounded-full border flex items-center justify-center cursor-pointer text-sm transition-all ${
+                              selectedSize === size ? 'bg-[#800020] text-white border-[#800020]' : 'hover:bg-muted'
+                            }`}
+                          >
+                            {size}
+                          </Label>
+                        </div>
+                      ))}
+                    </RadioGroup>
+                  </div>
+                )}
+
+                <div className="grid gap-2">
+                  <Label>Quantidade</Label>
+                  <div className="flex items-center gap-4">
+                    <Button 
+                      variant="outline" 
+                      size="icon" 
+                      onClick={() => setItemQuantity(Math.max(1, itemQuantity - 1))}
+                    >
+                      <Minus size={16} />
+                    </Button>
+                    <span className="font-bold text-lg w-8 text-center">{itemQuantity}</span>
+                    <Button 
+                      variant="outline" 
+                      size="icon" 
+                      onClick={() => {
+                        const remaining = quantityRequired - selectedItems.length;
+                        setItemQuantity(Math.min(remaining, itemQuantity + 1));
+                      }}
+                    >
+                      <Plus size={16} />
+                    </Button>
+                    <span className="text-xs text-muted-foreground ml-auto">
+                      Restam {quantityRequired - selectedItems.length} espaços
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+            <DialogFooter>
+              <Button onClick={handleConfirmSelection} className="w-full bg-[#800020] hover:bg-[#600018] text-white">
+                Confirmar Escolha
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </main>
   );
