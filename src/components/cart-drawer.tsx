@@ -153,7 +153,7 @@ const CartDrawer = () => {
     setIsSubmitting(true);
     
       try {
-        const { data, error } = await supabase
+        const { data: orderData, error } = await supabase
           .from('orders')
           .insert([
             {
@@ -165,18 +165,45 @@ const CartDrawer = () => {
               status: 'pending'
             }
           ])
-          .select();
+          .select()
+          .single();
 
         if (error) throw error;
+
+        // Call InfinitePay API
+        const response = await fetch('/api/checkout/infinitepay', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            orderId: orderData.id,
+            items: items,
+            customer: shippingData,
+            totalPrice: totalPrice,
+            shippingPrice: shippingPrice,
+            redirectUrl: `${window.location.origin}/pedidos?orderId=${orderData.id}`
+          }),
+        });
+
+        const paymentData = await response.json();
+
+        if (!response.ok) {
+          throw new Error(paymentData.error || 'Erro ao gerar link de pagamento');
+        }
         
-        toast.success('Pedido recebido! Entraremos em contato.');
+        toast.success('Pedido recebido! Redirecionando para o pagamento...');
         clearCart();
         setIsOpen(false);
         setIsCheckout(false);
-        router.push('/pedidos');
-      } catch (error) {
-        console.error('Error saving order:', error);
-        toast.error('Erro ao processar pedido.');
+
+        // Redirect to InfinitePay checkout link
+        if (paymentData.url) {
+          window.location.href = paymentData.url;
+        } else {
+          router.push('/pedidos');
+        }
+      } catch (error: any) {
+        console.error('Error saving order or generating payment:', error);
+        toast.error(error.message || 'Erro ao processar pedido.');
       } finally {
         setIsSubmitting(false);
       }
