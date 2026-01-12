@@ -16,13 +16,13 @@ const categories = [
       href: '/conjuntos',
       alt: 'Conjuntos Plus Size'
     },
-  {
-    title: 'Estampados',
-    offer: 'LANÇAMENTOS',
-    image: 'https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/IMG-20251007-WA0233-1767804459374.jpg?width=8000&height=8000&resize=contain',
-    href: '/estampados',
-    alt: 'Looks Estampados'
-  }
+    {
+      title: 'Estampados',
+      offer: 'LANÇAMENTOS',
+      image: 'https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/0.8132676989476282.jpg',
+      href: '/estampados',
+      alt: 'Looks Estampados'
+    }
 ];
 
 const CategoryGrid = () => {
