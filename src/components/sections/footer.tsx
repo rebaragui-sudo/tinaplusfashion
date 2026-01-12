@@ -32,16 +32,16 @@ const Footer = () => {
                 <a href="#" className="p-2 bg-white rounded-full text-[#000000] hover:text-[#D4AF37] transition-colors shadow-sm">
                   <Facebook size={18} />
                 </a>
-                  <a 
-                    href="https://wa.me/5585991144212" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="p-2 bg-white rounded-full text-[#000000] hover:text-[#D4AF37] transition-colors shadow-sm"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      window.parent.postMessage({ type: "OPEN_EXTERNAL_URL", data: { url: "https://wa.me/5585991144212" } }, "*");
-                    }}
-                  >
+                    <a 
+                      href="https://wa.me/5511953714884" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="p-2 bg-white rounded-full text-[#000000] hover:text-[#D4AF37] transition-colors shadow-sm"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        window.parent.postMessage({ type: "OPEN_EXTERNAL_URL", data: { url: "https://wa.me/5511953714884" } }, "*");
+                      }}
+                    >
                     <MessageCircle size={18} />
                   </a>
               </div>
@@ -79,16 +79,16 @@ const Footer = () => {
               <ul className="space-y-4">
                     <li className="flex items-start gap-2">
                       <MessageCircle size={16} className="text-[#D4AF37] mt-0.5 shrink-0" />
-                      <a 
-                        href="https://wa.me/5585991144212" 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          window.parent.postMessage({ type: "OPEN_EXTERNAL_URL", data: { url: "https://wa.me/5585991144212" } }, "*");
-                        }}
-                      >
+                        <a 
+                          href="https://wa.me/5511953714884" 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            window.parent.postMessage({ type: "OPEN_EXTERNAL_URL", data: { url: "https://wa.me/5511953714884" } }, "*");
+                          }}
+                        >
                         WhatsApp Atendimento
                       </a>
                     </li>
