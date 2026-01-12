@@ -159,17 +159,31 @@ const CartDrawer = () => {
                 </div>
 
                 <div className="flex flex-1 flex-col">
-                  <div>
-                    <div className="flex justify-between text-sm font-medium text-[#121812]">
-                      <h3 className="line-clamp-1">{item.name || 'Produto'}</h3>
-                      <p className="ml-4">
-                        {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.price || 0)}
-                      </p>
+                    <div>
+                      <div className="flex justify-between text-sm font-medium text-[#121812]">
+                        <h3 className="line-clamp-1">{item.name || 'Produto'}</h3>
+                        <p className="ml-4">
+                          {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.price || 0)}
+                        </p>
+                      </div>
+                      {item.isCombo ? (
+                        <div className="mt-1 space-y-1">
+                          <p className="text-[10px] font-bold text-[#800020] uppercase tracking-wider">Itens inclusos:</p>
+                          <div className="flex flex-wrap gap-1">
+                            {item.subItems?.map((subItem, idx) => (
+                              <div key={idx} className="bg-secondary px-1.5 py-0.5 rounded text-[9px] text-muted-foreground border">
+                                {subItem.name}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ) : (
+                        <p className="mt-1 text-xs text-[#71717a]">
+                          {item.size && `Tam: ${item.size}`} {item.color && `| Cor: ${getColorName(item.color)}`}
+                        </p>
+                      )}
                     </div>
-                    <p className="mt-1 text-xs text-[#71717a]">
-                      {item.size && `Tam: ${item.size}`} {item.color && `| Cor: ${getColorName(item.color)}`}
-                    </p>
-                  </div>
+
                   <div className="flex flex-1 items-end justify-between text-sm">
                     <div className="flex items-center border border-gray-200 rounded-md">
                         <button
