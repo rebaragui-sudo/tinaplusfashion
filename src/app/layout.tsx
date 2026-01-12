@@ -5,6 +5,7 @@ import ErrorReporter from "@/components/ErrorReporter";
 import Script from "next/script";
 import { CartProvider } from "@/hooks/use-cart";
 import { Toaster } from "@/components/ui/sonner";
+import WhatsAppButton from "@/components/whatsapp-button";
 
 export const metadata: Metadata = {
   title: "Tina Plus | Moda Feminina Plus Size",
@@ -38,6 +39,7 @@ export default function RootLayout({
         />
         <CartProvider>
           {children}
+          <WhatsAppButton />
           <Toaster position="top-center" richColors />
         </CartProvider>
         <VisualEditsMessenger />
