@@ -36,8 +36,8 @@ const PriceNavigation = () => {
   return (
     <section className="py-12 bg-[#f5f3f1]/30">
       <div className="container mx-auto px-4">
-        <h2 className="text-center text-[24px] md:text-[32px] font-bold mb-8 text-[#000000] font-serif">
-          Navegue por Preços
+        <h2 className="text-center text-[24px] md:text-[32px] font-bold mb-8 text-[#000000] font-serif">Promoções
+
         </h2>
         
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
