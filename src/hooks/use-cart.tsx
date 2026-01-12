@@ -185,23 +185,52 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const totalItems = items.reduce((total, item) => total + (item.quantity || 0), 0);
   const totalPrice = items.reduce((total, item) => total + ((item.price || 0) * (item.quantity || 0)), 0);
 
-  return (
-    <CartContext.Provider
-      value={{
-        items,
-        addItem,
-        removeItem,
-        updateQuantity,
-        clearCart,
-        totalItems,
-        totalPrice,
-        isOpen,
-        setIsOpen,
-      }}
-    >
-      {children}
-    </CartContext.Provider>
-  );
+    const addCombo = useCallback((combo: { name: string; price: number; subItems: any[] }) => {
+      const cartId = `combo-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+      
+      setItems((prevItems) => [
+        ...prevItems,
+        {
+          id: 'combo',
+          name: combo.name,
+          price: combo.price,
+          image_url: combo.subItems[0]?.image_url || '',
+          quantity: 1,
+          cartId,
+          isCombo: true,
+          subItems: combo.subItems.map(item => ({
+            id: item.id,
+            name: item.name,
+            image_url: item.image_url,
+            size: item.size,
+            color: item.color
+          }))
+        }
+      ]);
+      
+      toast.success(`${combo.name} adicionado ao carrinho`);
+      setIsOpen(true);
+    }, []);
+
+    return (
+      <CartContext.Provider
+        value={{
+          items,
+          addItem,
+          addCombo,
+          removeItem,
+          updateQuantity,
+          clearCart,
+          totalItems,
+          totalPrice,
+          isOpen,
+          setIsOpen,
+        }}
+      >
+        {children}
+      </CartContext.Provider>
+    );
+
 };
 
 export const useCart = () => {
