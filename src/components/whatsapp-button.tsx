@@ -20,8 +20,12 @@ export default function WhatsAppButton() {
       },
     ];
 
-  const handleOpenLink = (url: string) => {
-    window.parent.postMessage({ type: "OPEN_EXTERNAL_URL", data: { url } }, "*");
+  const handleOpenLink = (e: React.MouseEvent, url: string) => {
+    e.preventDefault();
+    if (typeof window !== 'undefined') {
+      // Use postMessage for external URLs in the Orchids environment
+      window.parent.postMessage({ type: "OPEN_EXTERNAL_URL", data: { url } }, "*");
+    }
     setIsOpen(false);
   };
 
@@ -36,19 +40,22 @@ export default function WhatsAppButton() {
             className="flex flex-col gap-2"
           >
             {contacts.map((contact, index) => (
-              <motion.button
+              <motion.a
                 key={index}
+                href={contact.url}
+                target="_blank"
+                rel="noopener noreferrer"
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.1 }}
-                onClick={() => handleOpenLink(contact.url)}
-                className="flex items-center gap-3 rounded-full bg-white px-6 py-3 text-sm font-semibold text-gray-800 shadow-xl transition-all hover:bg-gray-50 active:scale-95"
+                onClick={(e) => handleOpenLink(e, contact.url)}
+                className="flex items-center gap-3 rounded-full bg-white px-6 py-3 text-sm font-semibold text-gray-800 shadow-xl transition-all hover:bg-gray-50 active:scale-95 cursor-pointer"
               >
                 <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-100 text-green-600">
                   {contact.icon}
                 </div>
                 <span>{contact.name}</span>
-              </motion.button>
+              </motion.a>
             ))}
           </motion.div>
         )}
