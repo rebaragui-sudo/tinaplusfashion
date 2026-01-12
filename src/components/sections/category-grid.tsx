@@ -57,7 +57,7 @@ const CategoryGrid = () => {
                   {category.title}
                 </span>
                 
-                <h3 className="text-white font-display text-3xl md:text-4xl font-bold uppercase tracking-wide mb-1 leading-tight !whitespace-pre-line">
+                <h3 className="text-white font-display text-3xl md:text-4xl font-bold uppercase tracking-wide mb-1 leading-tight !whitespace-pre-line !whitespace-pre-line">
                   {category.offer}
                 </h3>
 
