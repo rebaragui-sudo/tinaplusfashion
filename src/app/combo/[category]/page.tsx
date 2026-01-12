@@ -17,7 +17,29 @@ interface Product {
   name: string;
   price: number;
   image_url: string;
+  colors?: string[];
+  sizes?: string[];
 }
+
+interface SelectedItem {
+  id: string;
+  name: string;
+  image_url: string;
+  color?: string;
+  size?: string;
+  tempId: string; // To handle duplicate products with different options
+}
+
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Minus, Trash2 } from 'lucide-react';
 
 function ComboSelectionContent() {
   const params = useParams();
@@ -31,7 +53,14 @@ function ComboSelectionContent() {
   
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedItems, setSelectedItems] = useState<Product[]>([]);
+  const [selectedItems, setSelectedItems] = useState<SelectedItem[]>([]);
+  
+  // Selection Modal State
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentProduct, setCurrentProduct] = useState<Product | null>(null);
+  const [selectedColor, setSelectedColor] = useState<string>("");
+  const [selectedSize, setSelectedSize] = useState<string>("");
+  const [itemQuantity, setItemQuantity] = useState(1);
 
   useEffect(() => {
     async function fetchProducts() {
@@ -60,24 +89,46 @@ function ComboSelectionContent() {
     }
   }, [categorySlug]);
 
-  const toggleProduct = (product: Product) => {
-    setSelectedItems(prev => {
-      const index = prev.findIndex(item => item.id === product.id);
-      if (index > -1) {
-        // Remove item (actually remove the first occurrence of this product)
-        const newItems = [...prev];
-        newItems.splice(index, 1);
-        return newItems;
-      } else {
-        // Add item
-        if (prev.length < quantityRequired) {
-          return [...prev, product];
-        } else {
-          toast.error(`Você já selecionou o limite de ${quantityRequired} itens.`);
-          return prev;
-        }
-      }
-    });
+  const openSelectionModal = (product: Product) => {
+    if (selectedItems.length >= quantityRequired) {
+      toast.error(`Você já selecionou o limite de ${quantityRequired} itens.`);
+      return;
+    }
+    setCurrentProduct(product);
+    setSelectedColor(product.colors?.[0] || "");
+    setSelectedSize(product.sizes?.[0] || "");
+    setItemQuantity(1);
+    setIsModalOpen(true);
+  };
+
+  const handleConfirmSelection = () => {
+    if (!currentProduct) return;
+    
+    const remainingSlots = quantityRequired - selectedItems.length;
+    const finalQuantity = Math.min(itemQuantity, remainingSlots);
+
+    const newItems: SelectedItem[] = [];
+    for (let i = 0; i < finalQuantity; i++) {
+      newItems.push({
+        id: currentProduct.id,
+        name: currentProduct.name,
+        image_url: currentProduct.image_url,
+        color: selectedColor,
+        size: selectedSize,
+        tempId: `${currentProduct.id}-${Date.now()}-${i}-${Math.random().toString(36).substring(2, 5)}`
+      });
+    }
+
+    setSelectedItems(prev => [...prev, ...newItems]);
+    setIsModalOpen(false);
+    
+    if (finalQuantity < itemQuantity) {
+      toast.warning(`Apenas ${finalQuantity} itens foram adicionados para não exceder o limite do combo.`);
+    }
+  };
+
+  const removeSelectedItem = (tempId: string) => {
+    setSelectedItems(prev => prev.filter(item => item.tempId !== tempId));
   };
 
   const handleAddCombo = () => {
@@ -89,7 +140,13 @@ function ComboSelectionContent() {
     addCombo({
       name: `Combo ${quantityRequired} ${categorySlug.charAt(0).toUpperCase() + categorySlug.slice(1)}`,
       price: totalPrice,
-      subItems: selectedItems
+      subItems: selectedItems.map(item => ({
+        id: item.id,
+        name: item.name,
+        image_url: item.image_url,
+        color: item.color,
+        size: item.size
+      }))
     });
 
     router.push('/');
