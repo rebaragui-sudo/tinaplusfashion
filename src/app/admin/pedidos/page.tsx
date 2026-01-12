@@ -32,6 +32,7 @@ interface OrderItem {
 
 interface ShippingData {
   nome: string;
+  cpf?: string;
   estado: string;
   cidade: string;
   celular: string;
