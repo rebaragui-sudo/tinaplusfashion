@@ -11,7 +11,7 @@ const categories = [
 },
 {
   title: 'Conjuntos',
-  offer: 'NOVIDADES',
+  offer: "",
   image: 'https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/IMG-20251117-WA0363-1767868040959.jpg?width=8000&height=8000&resize=contain',
   href: '/conjuntos',
   alt: 'Conjuntos Plus Size'
