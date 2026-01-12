@@ -48,7 +48,13 @@ export default function WhatsAppButton() {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.1 }}
-                onClick={(e) => handleOpenLink(e, contact.url)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (typeof window !== 'undefined') {
+                    window.parent.postMessage({ type: "OPEN_EXTERNAL_URL", data: { url: contact.url } }, "*");
+                  }
+                  setIsOpen(false);
+                }}
                 className="flex items-center gap-3 rounded-full bg-white px-6 py-3 text-sm font-semibold text-gray-800 shadow-xl transition-all hover:bg-gray-50 active:scale-95 cursor-pointer"
               >
                 <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-100 text-green-600">
