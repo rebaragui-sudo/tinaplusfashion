@@ -67,7 +67,7 @@ const PriceNavigation = () => {
                   <span className="text-[#000000] text-sm md:text-base font-sans">
                     R$
                   </span>
-                  <span className="text-[#000000] text-4xl md:text-6xl font-bold leading-none font-sans tracking-tighter !whitespace-pre-line !whitespace-pre-line !whitespace-pre-line !whitespace-pre-line">
+                  <span className="text-[#000000] text-4xl md:text-6xl font-bold leading-none font-sans tracking-tighter !whitespace-pre-line !whitespace-pre-line !whitespace-pre-line !whitespace-pre-line !whitespace-pre-line">
                     {card.price}
                   </span>
                 </div>
