@@ -320,10 +320,14 @@ export default function AdminOrdersPage() {
                       <div className="bg-gray-100 p-2 rounded-lg text-gray-600">
                         <User size={18} />
                       </div>
-                      <div className="flex flex-col">
-                        <span className="text-xs text-gray-500 font-medium">Cliente</span>
-                        <span className="text-sm font-bold text-gray-900">{selectedOrder.shipping_data?.nome}</span>
-                      </div>
+                        <div className="flex flex-col">
+                          <span className="text-xs text-gray-500 font-medium">Cliente</span>
+                          <span className="text-sm font-bold text-gray-900">{selectedOrder.shipping_data?.nome}</span>
+                          {selectedOrder.shipping_data?.cpf && (
+                            <span className="text-[10px] text-gray-500 font-mono">CPF: {selectedOrder.shipping_data?.cpf}</span>
+                          )}
+                        </div>
+
                     </div>
                     
                     <div className="flex items-start gap-3">
