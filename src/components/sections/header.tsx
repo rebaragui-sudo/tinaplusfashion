@@ -123,11 +123,12 @@ const Header = () => {
               )}
             </button>
 
-            <a href="/login">
-              <button className="inline-flex items-center justify-center rounded-md h-10 w-10 hover:bg-[#f5f3f1] transition-colors text-[#121812]">
-                <User className="h-5 w-5" />
-              </button>
-            </a>
+              <a href={user ? "/minha-conta" : "/login"}>
+                <button className="inline-flex items-center justify-center rounded-md h-10 w-10 hover:bg-[#f5f3f1] transition-colors text-[#121812]">
+                  <User className="h-5 w-5" />
+                </button>
+              </a>
+
           </div>
         </div>
       </div>
