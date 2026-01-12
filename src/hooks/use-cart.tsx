@@ -12,11 +12,20 @@ export interface CartItem {
   size?: string;
   color?: string;
   cartId: string;
+  isCombo?: boolean;
+  subItems?: {
+    id: string;
+    name: string;
+    image_url: string;
+    size?: string;
+    color?: string;
+  }[];
 }
 
 interface CartContextType {
   items: CartItem[];
   addItem: (product: any, quantity?: number, size?: string, color?: string) => void;
+  addCombo: (combo: { name: string; price: number; subItems: any[] }) => void;
   removeItem: (cartId: string) => void;
   updateQuantity: (cartId: string, quantity: number) => void;
   clearCart: () => void;
