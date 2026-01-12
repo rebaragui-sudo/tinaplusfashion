@@ -33,7 +33,7 @@ export async function POST(request: Request) {
         to: {
           postal_code: cleanTo,
         },
-        services: "1,2,17",
+        services: "1,2,17,31",
         package: {
           weight: pkg.weight || 0.5,
           height: pkg.height || 10,
