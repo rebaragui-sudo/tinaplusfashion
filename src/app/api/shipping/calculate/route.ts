@@ -26,21 +26,21 @@ export async function POST(request: Request) {
       );
     }
 
-    const payload = {
-      from: {
-        postal_code: cleanFrom,
-      },
-      to: {
-        postal_code: cleanTo,
-      },
-      services: "PAC,SEDEX,MINI_ENVIOS",
-      package: {
-        weight: pkg.weight || 0.5,
-        height: pkg.height || 10,
-        width: pkg.width || 15,
-        length: pkg.length || 20,
-      },
-    };
+      const payload = {
+        from: {
+          postal_code: cleanFrom,
+        },
+        to: {
+          postal_code: cleanTo,
+        },
+        services: "1,2,17",
+        package: {
+          weight: pkg.weight || 0.5,
+          height: pkg.height || 10,
+          width: pkg.width || 15,
+          length: pkg.length || 20,
+        },
+      };
 
     const response = await fetch('https://api.superfrete.com/api/v0/calculator', {
       method: 'POST',
