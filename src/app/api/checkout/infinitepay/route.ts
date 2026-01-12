@@ -7,11 +7,13 @@ export async function POST(req: Request) {
 
     const infiniteTag = process.env.INFINITEPAY_TAG;
 
+    // Se o tag não estiver configurado ou for o padrão, retornamos um link de simulação para permitir testes
     if (!infiniteTag || infiniteTag === 'seu-usuario-sem-o-cifrao') {
-      return NextResponse.json(
-        { error: 'INFINITEPAY_TAG não configurado no servidor.' },
-        { status: 500 }
-      );
+      console.warn('INFINITEPAY_TAG não configurado. Usando modo de simulação.');
+      return NextResponse.json({
+        url: `${redirectUrl}&mock=true`,
+        isMock: true
+      });
     }
 
     // InfinitePay expects price in cents (centavos)
