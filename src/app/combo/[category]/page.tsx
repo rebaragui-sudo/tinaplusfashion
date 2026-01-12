@@ -313,17 +313,29 @@ function ComboSelectionContent() {
                 {currentProduct.colors && currentProduct.colors.length > 0 && (
                   <div className="grid gap-2">
                     <Label>Cor disponível</Label>
-                    <RadioGroup value={selectedColor} onValueChange={setSelectedColor} className="flex flex-wrap gap-2">
+                    <RadioGroup value={selectedColor} onValueChange={setSelectedColor} className="flex flex-wrap gap-4">
                       {currentProduct.colors.map((color) => (
-                        <div key={color} className="flex items-center space-x-2">
+                        <div key={color} className="flex flex-col items-center gap-1">
                           <RadioGroupItem value={color} id={`color-${color}`} className="sr-only" />
                           <Label
                             htmlFor={`color-${color}`}
-                            className={`px-3 py-1.5 rounded-full border cursor-pointer text-sm transition-all ${
-                              selectedColor === color ? 'bg-[#800020] text-white border-[#800020]' : 'hover:bg-muted'
-                            }`}
+                            className="flex flex-col items-center gap-1 cursor-pointer group"
                           >
-                            {color}
+                            <div 
+                              className={`w-10 h-10 rounded-full border-2 transition-all flex items-center justify-center ${
+                                selectedColor === color ? 'border-[#800020] scale-110 shadow-md' : 'border-transparent hover:border-gray-300'
+                              }`}
+                            >
+                              <div 
+                                className="w-8 h-8 rounded-full border border-gray-100" 
+                                style={{ backgroundColor: getColorValue(color) }} 
+                              />
+                            </div>
+                            <span className={`text-[10px] font-medium uppercase text-center w-16 leading-tight ${
+                              selectedColor === color ? 'text-[#800020]' : 'text-muted-foreground'
+                            }`}>
+                              {getColorName(color)}
+                            </span>
                           </Label>
                         </div>
                       ))}
