@@ -30,16 +30,30 @@ const CartDrawer = () => {
   const [shippingPrice, setShippingPrice] = useState(0);
   const [isCalculating, setIsCalculating] = useState(false);
   const [calculatedOptions, setCalculatedOptions] = useState<{id: string, label: string, price: number, days: string}[]>([]);
-  const [shippingData, setShippingData] = useState({
-    nome: '',
-    estado: '',
-    cidade: '',
-    celular: '',
-    cep: '',
-    endereco: '',
-    numero: '',
-    bairro: ''
-  });
+    const [shippingData, setShippingData] = useState({
+      nome: '',
+      cpf: '',
+      estado: '',
+      cidade: '',
+      celular: '',
+      cep: '',
+      endereco: '',
+      numero: '',
+      bairro: ''
+    });
+
+    const formatCPF = (value: string) => {
+      const clean = value.replace(/\D/g, '');
+      if (clean.length <= 11) {
+        return clean
+          .replace(/(\d{3})(\d)/, '$1.$2')
+          .replace(/(\d{3})(\d)/, '$1.$2')
+          .replace(/(\d{3})(\d{1,2})/, '$1-$2')
+          .replace(/(-\d{2})\d+?$/, '$1');
+      }
+      return clean;
+    };
+
 
   // Calculate shipping based on volume (quantity) and method
   React.useEffect(() => {
