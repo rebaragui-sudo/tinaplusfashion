@@ -71,22 +71,49 @@ const CartDrawer = () => {
 
   const handleCalculateShipping = async (cep: string) => {
     setIsCalculating(true);
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 800));
     
-    // Mock calculation based on total items
-    const basePac = 22.90;
-    const baseSedex = 45.50;
-    const perItem = 3.50;
-    
-    const pacPrice = basePac + (totalItems * perItem);
-    const sedexPrice = baseSedex + (totalItems * perItem * 1.2);
+    try {
+      // Calculate package based on items
+      // Using default values from DB as most products share them
+      const totalWeight = items.reduce((sum, item) => sum + (0.3 * (item.quantity || 1)), 0);
+      const totalHeight = items.reduce((sum, item) => sum + (2 * (item.quantity || 1)), 0);
+      
+      const response = await fetch('/api/shipping/calculate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          to: cep,
+          package: {
+            weight: totalWeight,
+            height: Math.max(10, totalHeight), // Min height for box
+            width: 20,
+            length: 30,
+          }
+        }),
+      });
 
-    setCalculatedOptions([
-      { id: 'pac', label: 'PAC (Correios)', price: pacPrice, days: '8-12 dias úteis' },
-      { id: 'sedex', label: 'SEDEX (Correios)', price: sedexPrice, days: '2-4 dias úteis' }
-    ]);
-    setIsCalculating(false);
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Erro ao calcular frete');
+      }
+
+      if (Array.isArray(data)) {
+        const options = data.map((opt: any) => ({
+          id: opt.name.toLowerCase().replace(/\s+/g, '-'),
+          label: opt.name,
+          price: opt.price,
+          days: `Entrega em até ${opt.delivery_time} ${opt.delivery_time === 1 ? 'dia útil' : 'dias úteis'}`
+        }));
+        setCalculatedOptions(options);
+      }
+    } catch (error: any) {
+      console.error('Cart shipping calculation error:', error);
+      toast.error('Erro ao calcular frete. Verifique o CEP.');
+      setCalculatedOptions([]);
+    } finally {
+      setIsCalculating(false);
+    }
   };
 
   const handleFinish = async () => {
