@@ -105,7 +105,7 @@ const Header = () => {
               <Maximize className="h-5 w-5" />
             </button>
 
-            <a href="/favoritos" className="hidden md:block">
+            <a href="/minha-conta" className="hidden md:block">
               <button className="inline-flex items-center justify-center rounded-md h-10 w-10 hover:bg-[#f5f3f1] transition-colors text-[#121812]">
                 <Heart className="h-5 w-5" />
               </button>
