@@ -130,18 +130,25 @@ const CartDrawer = () => {
     }
   };
 
-  const handleFinish = async () => {
-    if (shippingMethod === 'onibus') {
-      if (!shippingData.nome || !shippingData.estado || !shippingData.cidade || !shippingData.celular) {
-        toast.error('Por favor, preencha todos os dados de envio');
+    const handleFinish = async () => {
+      if (shippingMethod === 'onibus') {
+        if (!shippingData.nome || !shippingData.cpf || !shippingData.estado || !shippingData.cidade || !shippingData.celular) {
+          toast.error('Por favor, preencha todos os dados de envio');
+          return;
+        }
+      } else {
+        if (!shippingData.nome || !shippingData.cpf || !shippingData.cep || !shippingData.endereco || !shippingData.numero || !shippingData.celular) {
+          toast.error('Por favor, preencha os dados de entrega');
+          return;
+        }
+      }
+
+      const cleanCpf = shippingData.cpf.replace(/\D/g, '');
+      if (cleanCpf.length !== 11) {
+        toast.error('CPF inválido');
         return;
       }
-    } else {
-      if (!shippingData.nome || !shippingData.cep || !shippingData.endereco || !shippingData.numero || !shippingData.celular) {
-        toast.error('Por favor, preencha os dados de entrega');
-        return;
-      }
-    }
+
 
     setIsSubmitting(true);
     
