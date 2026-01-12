@@ -42,6 +42,10 @@ interface Product {
   category: string;
   colors: string[];
   sizes: string[];
+  weight?: number;
+  height?: number;
+  width?: number;
+  length?: number;
 }
 
 export default function ProductPage() {
