@@ -89,7 +89,22 @@ const Footer = () => {
                             window.parent.postMessage({ type: "OPEN_EXTERNAL_URL", data: { url: "https://wa.me/5511953714884" } }, "*");
                           }}
                         >
-                        WhatsApp Atendimento
+                        Atendimento 1
+                      </a>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <MessageCircle size={16} className="text-[#D4AF37] mt-0.5 shrink-0" />
+                        <a 
+                          href="https://wa.me/5511915291840" 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            window.parent.postMessage({ type: "OPEN_EXTERNAL_URL", data: { url: "https://wa.me/5511915291840" } }, "*");
+                          }}
+                        >
+                        Atendimento 2
                       </a>
                     </li>
                   <li className="flex items-start gap-2">
