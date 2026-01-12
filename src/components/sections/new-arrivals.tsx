@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { ArrowRight, Heart, ShoppingBag, Eye, Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { useCart } from '@/hooks/use-cart';
 import { getColorValue } from '@/lib/colors';
@@ -19,11 +20,18 @@ interface Product {
 
 const ProductCard = ({ product }: { product: Product }) => {
   const { addItem } = useCart();
+  const router = useRouter();
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     addItem(product);
+  };
+
+  const handleView = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    router.push(`/produto/${product.id}`);
   };
 
   return (
@@ -62,7 +70,7 @@ const ProductCard = ({ product }: { product: Product }) => {
             </button>
             <button 
               className="w-10 h-10 bg-white/80 backdrop-blur-sm rounded-md flex items-center justify-center hover:bg-white transition-all"
-              onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+              onClick={handleView}
             >
               <Eye size={18} />
             </button>
