@@ -10,6 +10,7 @@ import { useCart } from '@/hooks/use-cart';
 import { Loader2, Check, ShoppingBag, ArrowLeft, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { getColorName, getColorValue } from '@/lib/colors';
 
 interface Product {
   id: string;
