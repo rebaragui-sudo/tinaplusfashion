@@ -61,31 +61,34 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
           const migratedItems: CartItem[] = [];
           const seenIds = new Set<string>();
           
-          parsed.forEach((item: any) => {
-            const productId = item.id || item.productId;
-            if (!productId) return;
+            parsed.forEach((item: any) => {
+              const productId = item.id || item.productId;
+              if (!productId) return;
 
-            const cartId = generateCartId(productId, item.size, item.color);
-            
-            if (!seenIds.has(cartId)) {
-              seenIds.add(cartId);
-              migratedItems.push({
-                id: productId,
-                name: item.name || 'Produto',
-                price: typeof item.price === 'number' ? item.price : 0,
-                image_url: item.image_url || '',
-                quantity: typeof item.quantity === 'number' ? item.quantity : 1,
-                size: item.size || undefined,
-                color: item.color || undefined,
-                cartId: cartId
-              });
-            } else {
-              const existingIndex = migratedItems.findIndex(i => i.cartId === cartId);
-              if (existingIndex > -1) {
-                migratedItems[existingIndex].quantity += (typeof item.quantity === 'number' ? item.quantity : 1);
+              const cartId = item.cartId || generateCartId(productId, item.size, item.color);
+              
+              if (!seenIds.has(cartId)) {
+                seenIds.add(cartId);
+                migratedItems.push({
+                  id: productId,
+                  name: item.name || 'Produto',
+                  price: typeof item.price === 'number' ? item.price : 0,
+                  image_url: item.image_url || '',
+                  quantity: typeof item.quantity === 'number' ? item.quantity : 1,
+                  size: item.size || undefined,
+                  color: item.color || undefined,
+                  cartId: cartId,
+                  isCombo: item.isCombo || false,
+                  subItems: item.subItems || undefined
+                });
+              } else {
+                const existingIndex = migratedItems.findIndex(i => i.cartId === cartId);
+                if (existingIndex > -1) {
+                  migratedItems[existingIndex].quantity += (typeof item.quantity === 'number' ? item.quantity : 1);
+                }
               }
-            }
-          });
+            });
+
           
           setItems(migratedItems);
         }
