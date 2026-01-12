@@ -348,7 +348,11 @@ export default function ProductPage() {
                 <h3 className="text-sm font-bold uppercase mb-2">Descrição</h3>
                 <p className="text-muted-foreground leading-relaxed whitespace-pre-line">
                   {product.description || "Este produto não possui descrição detalhada."}
-                </p>
+                  </p>
+              </div>
+
+              <div className="mb-8">
+                <ShippingCalculator product={product} />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-6 border-t border-b">
