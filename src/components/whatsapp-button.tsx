@@ -15,7 +15,7 @@ export default function WhatsAppButton() {
       },
       {
         name: "Atendimento 2",
-        url: "https://wa.me/5511932463776",
+        url: "https://wa.me/5511915291840",
         icon: <User className="h-5 w-5" />,
       },
     ];
