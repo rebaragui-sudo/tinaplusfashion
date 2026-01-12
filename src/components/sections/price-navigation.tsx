@@ -12,7 +12,7 @@ const PriceNavigation = () => {
   },
   {
     title: "3 Bermudas",
-    price: "129",
+    price: "100",
     href: "/bermudas",
     image: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/ea02e2c1-3719-4f3c-b449-729e57b40008-hubpmg-com-br/assets/images/bermuda-bege-1-DL2gWBgs-5.png",
     alt: "3 Bermudas"
