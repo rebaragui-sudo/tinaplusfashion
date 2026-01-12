@@ -5,7 +5,7 @@ const PriceNavigation = () => {
   const priceCards = [
   {
     title: "7 Regatas",
-    price: "9",
+    price: "100",
     href: "/regatas",
     image: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/ea02e2c1-3719-4f3c-b449-729e57b40008-hubpmg-com-br/assets/images/regata-branca-BmI6_eQT-4.png",
     alt: "7 Regatas"
