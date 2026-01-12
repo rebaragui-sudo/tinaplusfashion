@@ -51,7 +51,12 @@ export default function WhatsAppButton() {
                 onClick={(e) => {
                   e.preventDefault();
                   if (typeof window !== 'undefined') {
+                    console.log("Opening WhatsApp:", contact.url);
                     window.parent.postMessage({ type: "OPEN_EXTERNAL_URL", data: { url: contact.url } }, "*");
+                    // Fallback to window.open if postMessage doesn't work in 500ms
+                    const timeout = setTimeout(() => {
+                      window.open(contact.url, "_blank");
+                    }, 500);
                   }
                   setIsOpen(false);
                 }}
