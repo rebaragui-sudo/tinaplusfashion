@@ -9,8 +9,13 @@ export default function WhatsAppButton() {
 
     const contacts = [
       {
-        name: "Atendimento WhatsApp",
-        url: "https://wa.me/qr/XNIQZ2DIKXGME1",
+        name: "Vendas 01",
+        url: "https://wa.me/5585991144212",
+        icon: <User className="h-5 w-5" />,
+      },
+      {
+        name: "Vendas 02",
+        url: "https://wa.me/5585994247291",
         icon: <User className="h-5 w-5" />,
       },
     ];
