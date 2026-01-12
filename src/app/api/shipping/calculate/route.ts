@@ -27,8 +27,12 @@ export async function POST(request: Request) {
     }
 
     const payload = {
-      from: cleanFrom,
-      to: cleanTo,
+      from: {
+        postal_code: cleanFrom,
+      },
+      to: {
+        postal_code: cleanTo,
+      },
       services: "PAC,SEDEX,MINI_ENVIOS",
       package: {
         weight: pkg.weight || 0.5,
