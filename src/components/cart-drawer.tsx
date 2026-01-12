@@ -282,16 +282,26 @@ const CartDrawer = () => {
             <User className="h-4 w-4 text-[#800020]" />
             Dados Pessoais
           </h3>
-          <div className="grid gap-3">
-            <div className="space-y-1">
-              <Label htmlFor="nome_entrega" className="text-xs">Nome Completo</Label>
-              <Input 
-                id="nome_entrega" 
-                placeholder="Seu nome completo" 
-                value={shippingData.nome}
-                onChange={(e) => setShippingData({...shippingData, nome: e.target.value})}
-              />
-            </div>
+            <div className="grid gap-3">
+              <div className="space-y-1">
+                <Label htmlFor="nome_entrega" className="text-xs">Nome Completo</Label>
+                <Input 
+                  id="nome_entrega" 
+                  placeholder="Seu nome completo" 
+                  value={shippingData.nome}
+                  onChange={(e) => setShippingData({...shippingData, nome: e.target.value})}
+                />
+              </div>
+              <div className="space-y-1">
+                <Label htmlFor="cpf" className="text-xs">CPF</Label>
+                <Input 
+                  id="cpf" 
+                  placeholder="000.000.000-00" 
+                  value={shippingData.cpf}
+                  onChange={(e) => setShippingData({...shippingData, cpf: formatCPF(e.target.value)})}
+                />
+              </div>
+
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1">
                 <Label htmlFor="cep" className="text-xs">CEP</Label>
