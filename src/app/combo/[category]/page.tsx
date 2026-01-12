@@ -246,7 +246,7 @@ function ComboSelectionContent() {
                       </h3>
                       <div className="flex gap-1">
                         {product.colors?.slice(0, 3).map((color, i) => (
-                          <div key={i} className="w-3 h-3 rounded-full border border-gray-200" style={{ backgroundColor: color.toLowerCase() }} />
+                          <div key={i} className="w-3 h-3 rounded-full border border-gray-200" style={{ backgroundColor: getColorValue(color) }} title={getColorName(color)} />
                         ))}
                         {product.colors && product.colors.length > 3 && <span className="text-[10px] text-muted-foreground">+{product.colors.length - 3}</span>}
                       </div>
