@@ -76,13 +76,14 @@ const Header = () => {
                   <span className="absolute -bottom-1 left-0 h-0.5 bg-[#D4AF37] transition-all w-0 group-hover:w-full"></span>
                 </a>
 
-                <a 
-                  className="text-sm font-medium transition-colors relative group text-[#121812] hover:text-[#D4AF37]" 
-                  href="/pedidos"
-                >
-                  Meus Pedidos
-                  <span className="absolute -bottom-1 left-0 h-0.5 bg-[#D4AF37] transition-all w-0 group-hover:w-full"></span>
-                </a>
+                  <a 
+                    className="text-sm font-medium transition-colors relative group text-[#121812] hover:text-[#D4AF37]" 
+                    href="/minha-conta"
+                  >
+                    Meus Pedidos
+                    <span className="absolute -bottom-1 left-0 h-0.5 bg-[#D4AF37] transition-all w-0 group-hover:w-full"></span>
+                  </a>
+
 
                 <a 
                   className="text-sm font-medium transition-colors relative group text-[#800020]" 
