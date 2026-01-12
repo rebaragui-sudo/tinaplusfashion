@@ -185,8 +185,8 @@ const CartDrawer = () => {
     const isShippingSelected = shippingMethod !== '';
     const canFinishCheckout = isShippingSelected && (
       shippingMethod === 'onibus' 
-        ? (shippingData.nome && shippingData.estado && shippingData.cidade && shippingData.celular)
-        : (shippingData.nome && shippingData.cep && shippingData.endereco && shippingData.numero && shippingData.celular)
+        ? (shippingData.nome && shippingData.cpf && shippingData.estado && shippingData.cidade && shippingData.celular)
+        : (shippingData.nome && shippingData.cpf && shippingData.cep && shippingData.endereco && shippingData.numero && shippingData.celular)
     );
 
     const renderCartItems = () => (
