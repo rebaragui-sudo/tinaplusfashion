@@ -4,7 +4,7 @@ import Image from 'next/image';
 const categories = [
   {
     title: 'Vestidos',
-    offer: 'ATÉ 40% OFF',
+    offer: '',
     image: 'https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/IMG-20250926-WA0044-resized-1767804410315.jpg?width=8000&height=8000&resize=contain',
     href: '/vestidos',
     alt: 'Vestidos Plus Size'
