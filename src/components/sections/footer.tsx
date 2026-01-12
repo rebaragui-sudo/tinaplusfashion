@@ -33,13 +33,13 @@ const Footer = () => {
                   <Facebook size={18} />
                 </a>
                   <a 
-                    href="https://wa.me/qr/XNIQZ2DIKXGME1" 
+                    href="https://wa.me/5585991144212" 
                     target="_blank" 
                     rel="noopener noreferrer" 
                     className="p-2 bg-white rounded-full text-[#000000] hover:text-[#D4AF37] transition-colors shadow-sm"
                     onClick={(e) => {
                       e.preventDefault();
-                      window.parent.postMessage({ type: "OPEN_EXTERNAL_URL", data: { url: "https://wa.me/qr/XNIQZ2DIKXGME1" } }, "*");
+                      window.parent.postMessage({ type: "OPEN_EXTERNAL_URL", data: { url: "https://wa.me/5585991144212" } }, "*");
                     }}
                   >
                     <MessageCircle size={18} />
