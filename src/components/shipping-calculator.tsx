@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Truck, Search, Loader2 } from 'lucide-react';
+import { Truck, Loader2, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
@@ -9,13 +9,24 @@ import { toast } from 'sonner';
 interface ShippingOption {
   name: string;
   price: number;
-  days: string;
+  discount: number;
+  delivery_time: number;
+  error?: string;
 }
 
-export function ShippingCalculator() {
+interface ShippingCalculatorProps {
+  product: {
+    weight?: number;
+    height?: number;
+    width?: number;
+    length?: number;
+  };
+}
+
+export default function ShippingCalculator({ product }: ShippingCalculatorProps) {
   const [cep, setCep] = useState('');
   const [loading, setLoading] = useState(false);
-  const [options, setOptions] = useState<ShippingOption[] | null>(null);
+  const [results, setResults] = useState<ShippingOption[] | null>(null);
 
   const formatCEP = (value: string) => {
     return value
@@ -25,82 +36,104 @@ export function ShippingCalculator() {
   };
 
   const handleCalculate = async () => {
-    const rawCep = cep.replace(/\D/g, '');
-    
-    if (rawCep.length !== 8) {
-      toast.error('Por favor, informe um CEP válido (8 dígitos)');
+    const cleanCep = cep.replace(/\D/g, '');
+    if (cleanCep.length !== 8) {
+      toast.error('Informe um CEP válido');
       return;
     }
 
-    setLoading(true);
-    setOptions(null);
-
     try {
-      // Mock calculation for demonstration
-      // In a real app, you would call a shipping API
-      await new Promise(resolve => setTimeout(resolve, 800));
-      
-        const results: ShippingOption[] = [
-          { name: 'PAC', price: 15.90, days: '7 a 10 dias úteis' },
-          { name: 'SEDEX', price: 29.90, days: '2 a 4 dias úteis' },
-          { name: 'Entrega Expressa', price: 45.00, days: '1 a 2 dias úteis' },
-          { name: 'Ônibus / Transportadora', price: 0, days: 'A combinar' }
-        ];
+      setLoading(true);
+      setResults(null);
 
-      setOptions(results);
-    } catch (error) {
-      toast.error('Erro ao calcular o frete');
+      const response = await fetch('/api/shipping/calculate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          to: cleanCep,
+          package: {
+            weight: product.weight || 0.5,
+            height: product.height || 10,
+            width: product.width || 15,
+            length: product.length || 20,
+          }
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Erro ao calcular frete');
+      }
+
+      // SuperFrete response can be an array or an object depending on the version/service
+      // Assuming it's an array based on standard patterns
+      setResults(Array.isArray(data) ? data : []);
+    } catch (error: any) {
+      console.error('Calculate shipping error:', error);
+      toast.error(error.message);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="mt-6 p-4 border rounded-xl bg-gray-50/50">
+    <div className="bg-secondary/30 rounded-xl p-5 border border-secondary/50">
       <div className="flex items-center gap-2 mb-4">
-        <Truck className="text-[#800020]" size={18} />
-        <h4 className="text-sm font-bold uppercase tracking-tight">Calcular Frete</h4>
+        <Truck size={20} className="text-[#800020]" />
+        <h3 className="font-bold text-sm uppercase tracking-tight">Calcular Frete e Prazo</h3>
       </div>
-      
-      <div className="flex gap-2">
+
+      <div className="flex gap-2 mb-4">
         <Input
           placeholder="00000-000"
           value={cep}
           onChange={(e) => setCep(formatCEP(e.target.value))}
-          className="bg-white"
-          maxLength={9}
+          className="flex-grow bg-white border-secondary h-10"
         />
         <Button 
-          onClick={handleCalculate}
-          disabled={loading}
-          className="bg-[#800020] hover:bg-[#600018] text-white shrink-0"
+          onClick={handleCalculate} 
+          disabled={loading || cep.length < 9}
+          className="bg-[#800020] hover:bg-[#600018] h-10 px-4"
         >
-          {loading ? <Loader2 className="animate-spin" size={18} /> : 'Calcular'}
+          {loading ? <Loader2 className="animate-spin" size={18} /> : <Search size={18} />}
         </Button>
       </div>
 
-      <a 
-        href="https://buscacepinter.correios.com.br/app/endereco/index.php" 
-        target="_blank" 
-        rel="noopener noreferrer"
-        className="text-[10px] text-muted-foreground hover:underline mt-2 inline-block"
-      >
-        Não sei meu CEP
-      </a>
-
-      {options && (
-        <div className="mt-4 space-y-2 border-t pt-4">
-          {options.map((option, idx) => (
-            <div key={idx} className="flex justify-between items-center p-2 rounded-lg bg-white border border-gray-100 shadow-sm">
+      {results && results.length > 0 && (
+        <div className="space-y-3 mt-4 animate-in fade-in slide-in-from-top-2 duration-300">
+          {results.map((option, index) => (
+            <div 
+              key={index} 
+              className="flex items-center justify-between p-3 bg-white rounded-lg border border-secondary/50 shadow-sm"
+            >
               <div>
-                <span className="text-xs font-bold block">{option.name}</span>
-                <span className="text-[10px] text-muted-foreground">{option.days}</span>
-              </div>
-                <span className="text-sm font-bold text-[#800020]">
-                  {option.price === 0 ? 'A combinar' : new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(option.price)}
+                <span className="text-xs font-bold text-[#800020] uppercase block">{option.name}</span>
+                <span className="text-[10px] text-muted-foreground">
+                  Entrega em até {option.delivery_time} {option.delivery_time === 1 ? 'dia útil' : 'dias úteis'}
                 </span>
+              </div>
+              <div className="text-right">
+                <span className="text-sm font-bold block">
+                  {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(option.price)}
+                </span>
+                {option.discount > 0 && (
+                  <span className="text-[9px] text-green-600 font-bold bg-green-50 px-1 rounded">
+                    ECONOMIA DE {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(option.discount)}
+                  </span>
+                )}
+              </div>
             </div>
           ))}
+          <p className="text-[9px] text-center text-muted-foreground mt-2">
+            Valores e prazos fornecidos pelo SuperFrete.
+          </p>
+        </div>
+      )}
+
+      {results && results.length === 0 && !loading && (
+        <div className="text-center py-2">
+          <p className="text-xs text-muted-foreground">Nenhuma opção de frete disponível para este CEP.</p>
         </div>
       )}
     </div>
