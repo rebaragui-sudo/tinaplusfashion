@@ -2,35 +2,36 @@ import React from 'react';
 import Image from 'next/image';
 
 const PriceNavigation = () => {
-  const priceCards = [
-  {
-    title: "7 Regatas",
-    price: "100",
-    href: "/regatas",
-    image: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/ea02e2c1-3719-4f3c-b449-729e57b40008-hubpmg-com-br/assets/images/regata-branca-BmI6_eQT-4.png",
-    alt: "7 Regatas"
-  },
-  {
-    title: "3 Bermudas",
-    price: "100",
-    href: "/bermudas",
-    image: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/ea02e2c1-3719-4f3c-b449-729e57b40008-hubpmg-com-br/assets/images/bermuda-bege-1-DL2gWBgs-5.png",
-    alt: "3 Bermudas"
-  },
-  {
-    title: "2 Conjuntos",
-    price: "140",
-    href: "/conjuntos",
-    image: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/IMG-20251023-WA0135-resized-1767868166881.jpg?width=8000&height=8000&resize=contain",
-    alt: "2 Conjuntos"
-  },
-  {
-    title: "3 Calças Pantalonas",
-    price: "100",
-    href: "/calcas",
-    image: "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/0.0982356958825551.jpg",
-    alt: "3 Calças Pantalonas"
-  }];
+    const priceCards = [
+    {
+      title: "7 Regatas",
+      price: "100",
+      href: "/combo/regatas?q=7&p=100",
+      image: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/ea02e2c1-3719-4f3c-b449-729e57b40008-hubpmg-com-br/assets/images/regata-branca-BmI6_eQT-4.png",
+      alt: "7 Regatas"
+    },
+    {
+      title: "3 Bermudas",
+      price: "100",
+      href: "/combo/bermudas?q=3&p=100",
+      image: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/ea02e2c1-3719-4f3c-b449-729e57b40008-hubpmg-com-br/assets/images/bermuda-bege-1-DL2gWBgs-5.png",
+      alt: "3 Bermudas"
+    },
+    {
+      title: "2 Conjuntos",
+      price: "140",
+      href: "/combo/conjuntos?q=2&p=140",
+      image: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/IMG-20251023-WA0135-resized-1767868166881.jpg?width=8000&height=8000&resize=contain",
+      alt: "2 Conjuntos"
+    },
+    {
+      title: "3 Calças Pantalonas",
+      price: "100",
+      href: "/combo/calcas?q=3&p=100",
+      image: "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/0.0982356958825551.jpg",
+      alt: "3 Calças Pantalonas"
+    }];
+
 
 
   return (
