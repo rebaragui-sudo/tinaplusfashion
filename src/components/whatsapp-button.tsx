@@ -7,18 +7,18 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function WhatsAppButton() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const contacts = [
-    {
-      name: "Atendimento 1",
-      url: "https://wa.me/5511953714884",
-      icon: <User className="h-5 w-5" />,
-    },
-    {
-      name: "Atendimento Tina Plus",
-      url: "https://w.app/tinaplus",
-      icon: <User className="h-5 w-5" />,
-    },
-  ];
+    const contacts = [
+      {
+        name: "Atendimento Tina Plus 1",
+        url: "https://wa.me/5511953714884",
+        icon: <User className="h-5 w-5" />,
+      },
+      {
+        name: "Atendimento Tina Plus 2",
+        url: "https://w.app/tinaplus",
+        icon: <User className="h-5 w-5" />,
+      },
+    ];
 
   const handleOpenLink = (url: string) => {
     window.parent.postMessage({ type: "OPEN_EXTERNAL_URL", data: { url } }, "*");
