@@ -18,10 +18,10 @@ const categories = [
     },
     {
       title: 'Estampados',
-      offer: 'LANÇAMENTOS',
+      offer: 'Vestido de Alçinha',
       image: 'https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/0.8132676989476282.jpg',
       href: '/estampados',
-      alt: 'Looks Estampados'
+      alt: 'Vestido de Alçinha Plus'
     }
 ];
 
