@@ -53,7 +53,7 @@ const CategoryGrid = () => {
 
               {/* Content Overlay */}
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 z-10">
-                <span className="text-white font-serif text-lg md:text-xl tracking-wider uppercase mb-2 font-bold !w-[42.1%] !h-[140px]">
+                <span className="text-white font-serif text-lg md:text-xl tracking-wider uppercase mb-2 font-bold !w-[42.1%] !h-[46px]">
                   {category.title}
                 </span>
                 
