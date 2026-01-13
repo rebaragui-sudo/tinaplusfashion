@@ -47,7 +47,7 @@ const NewsletterModal = () => {
           <div className="relative mb-6 h-[100px] w-full max-w-[150px]">
             <Image
               src={logoAsset}
-              alt="Tina Plus"
+              alt="Tina Plus Fashion"
               fill
               style={{ objectFit: "contain" }}
               priority
