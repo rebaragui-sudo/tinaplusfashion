@@ -1,7 +1,8 @@
 "use client";
 
 import React from 'react';
-import { Mail, Instagram, MessageCircle, Clock, Phone } from 'lucide-react';
+import { Mail, Instagram, MessageCircle, Clock, Phone, MapPin } from 'lucide-react';
+import Link from 'next/link';
 
 const Footer = () => {
   return (
@@ -59,7 +60,7 @@ const Footer = () => {
                 Institucional
               </h3>
               <ul className="space-y-3">
-                <li><a href="#" className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors">Sobre nós</a></li>
+                <li><Link href="/sobre-nos" className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors">Sobre nós</Link></li>
                 <li><a href="#" className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors">Trocas e Devoluções</a></li>
                 <li><a href="#" className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors">Entregas</a></li>
                 <li><a href="#" className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors">Privacidade</a></li>
@@ -72,7 +73,7 @@ const Footer = () => {
                 Acesso Rápido
               </h3>
                 <ul className="space-y-3">
-                  <li><a href="#" className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors">Minha Conta</a></li>
+                  <li><a href="/minha-conta" className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors">Minha Conta</a></li>
                 </ul>
             </div>
 
@@ -99,6 +100,14 @@ const Footer = () => {
                     <Clock size={16} className="text-[#D4AF37] mt-0.5 shrink-0" />
                     <div className="text-sm text-[#71717a]">
                       <p>Seg a Sex: 7h às 15h</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-2 border-t border-[#e4e4e7] pt-4 mt-2">
+                    <MapPin size={16} className="text-[#D4AF37] mt-0.5 shrink-0" />
+                    <div className="text-sm text-[#71717a]">
+                      <p className="font-medium text-[#121812]">Nosso endereço:</p>
+                      <p>Rua Alexandrino Pedroso, 43</p>
+                      <p>Canindé, São Paulo - SP</p>
                     </div>
                   </li>
               </ul>
