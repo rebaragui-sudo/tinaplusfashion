@@ -11,6 +11,20 @@ import { ClientOnly } from "@/components/client-only";
 export const metadata: Metadata = {
   title: "Tina Plus Fashion | Moda Feminina Plus Size",
   description: "A melhor moda plus size feminina com elegância e sofisticação. Encontre conjuntos, macacões, chemises e muito mais.",
+  keywords: ["moda plus size", "roupas femininas plus size", "Tina Plus Fashion", "conjuntos plus size", "vestidos plus size"],
+  authors: [{ name: "Tina Plus Fashion" }],
+  openGraph: {
+    title: "Tina Plus Fashion | Moda Feminina Plus Size",
+    description: "A melhor moda plus size feminina com elegância e sofisticação.",
+    url: "https://tinaplusfashion.com.br",
+    siteName: "Tina Plus Fashion",
+    locale: "pt_BR",
+    type: "website",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
