@@ -25,11 +25,20 @@ const Footer = () => {
               <p className="text-sm leading-relaxed text-[#71717a] mb-6">
                 Moda plus size com elegância, conforto e caimento perfeito para todas as mulheres.
               </p>
-              <div className="flex items-center gap-4">
-                <a href="#" className="p-2 bg-white rounded-full text-[#000000] hover:text-[#D4AF37] transition-colors shadow-sm">
-                  <Instagram size={18} />
-                </a>
-                <a href="#" className="p-2 bg-white rounded-full text-[#000000] hover:text-[#D4AF37] transition-colors shadow-sm">
+                <div className="flex items-center gap-4">
+                  <a 
+                    href="https://www.instagram.com/tinaplus_?igsh=MXBsazJiNnQ1eWU0dw==" 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2 bg-white rounded-full text-[#000000] hover:text-[#D4AF37] transition-colors shadow-sm"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      window.parent.postMessage({ type: "OPEN_EXTERNAL_URL", data: { url: "https://www.instagram.com/tinaplus_?igsh=MXBsazJiNnQ1eWU0dw==" } }, "*");
+                    }}
+                  >
+                    <Instagram size={18} />
+                  </a>
+                  <a href="#" className="p-2 bg-white rounded-full text-[#000000] hover:text-[#D4AF37] transition-colors shadow-sm">
                   <Facebook size={18} />
                 </a>
                       <a 
