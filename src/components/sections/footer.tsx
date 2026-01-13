@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { Mail, Instagram, MessageCircle, Clock } from 'lucide-react';
+import { Mail, Instagram, MessageCircle, Clock, Phone } from 'lucide-react';
 
 const Footer = () => {
   return (
