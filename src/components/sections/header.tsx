@@ -56,9 +56,9 @@ const Header = () => {
               alt="Tina Plus Logo" 
               className="h-10 w-10 md:h-12 md:w-12 rounded-full object-cover border border-[#D4AF37]"
             />
-            <h1 className="font-serif text-2xl md:text-[32px] font-bold text-[#121812] flex">
-              Tina<span className="text-[#D4AF37]"> Plus</span>
-            </h1>
+              <h1 className="font-serif text-2xl md:text-[32px] font-bold text-[#121812] flex">
+                Tina<span className="text-[#D4AF37]"> Plus Fashion</span>
+              </h1>
           </a>
 
             {/* Navigation Menu */}
