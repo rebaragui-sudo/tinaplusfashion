@@ -13,11 +13,11 @@ const Footer = () => {
               {/* Brand Column */}
               <div className="lg:col-span-4">
                 <div className="flex items-center gap-3 mb-6">
-                  <img 
-                    src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/274740645_329754545882127_7954351337395034502_n-1767805261577.jpg?width=8000&height=8000&resize=contain" 
-                    alt="Tina Plus Logo" 
-                    className="h-12 w-12 rounded-full object-cover border border-[#D4AF37]"
-                  />
+                  <img
+                src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/274740645_329754545882127_7954351337395034502_n-1767805261577.jpg?width=8000&height=8000&resize=contain"
+                alt="Tina Plus Logo"
+                className="h-12 w-12 rounded-full object-cover border border-[#D4AF37]" />
+
                   <h2 className="font-serif text-3xl font-bold text-[#000000]">
                     Tina<span className="text-[#D4AF37]"> Plus</span>
                   </h2>
@@ -26,28 +26,28 @@ const Footer = () => {
                 Moda plus size com elegância, conforto e caimento perfeito para todas as mulheres.
               </p>
                 <div className="flex items-center gap-4">
-                  <a 
-                    href="https://www.instagram.com/tinaplus_?igsh=MXBsazJiNnQ1eWU0dw==" 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-2 bg-white rounded-full text-[#000000] hover:text-[#D4AF37] transition-colors shadow-sm"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      window.parent.postMessage({ type: "OPEN_EXTERNAL_URL", data: { url: "https://www.instagram.com/tinaplus_?igsh=MXBsazJiNnQ1eWU0dw==" } }, "*");
-                    }}
-                  >
+                  <a
+                href="https://www.instagram.com/tinaplus_?igsh=MXBsazJiNnQ1eWU0dw=="
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 bg-white rounded-full text-[#000000] hover:text-[#D4AF37] transition-colors shadow-sm"
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.parent.postMessage({ type: "OPEN_EXTERNAL_URL", data: { url: "https://www.instagram.com/tinaplus_?igsh=MXBsazJiNnQ1eWU0dw==" } }, "*");
+                }}>
+
                     <Instagram size={18} />
                     </a>
-                    <a 
-                      href="https://wa.me/5511915291840" 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="p-2 bg-white rounded-full text-[#000000] hover:text-[#D4AF37] transition-colors shadow-sm"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        window.parent.postMessage({ type: "OPEN_EXTERNAL_URL", data: { url: "https://wa.me/5511915291840" } }, "*");
-                      }}
-                    >
+                    <a
+                href="https://wa.me/5511915291840"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 bg-white rounded-full text-[#000000] hover:text-[#D4AF37] transition-colors shadow-sm"
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.parent.postMessage({ type: "OPEN_EXTERNAL_URL", data: { url: "https://wa.me/5511915291840" } }, "*");
+                }}>
+
                       <MessageCircle size={18} />
                     </a>
               </div>
@@ -85,31 +85,31 @@ const Footer = () => {
               <ul className="space-y-4">
                       <li className="flex items-start gap-2">
                         <MessageCircle size={16} className="text-[#D4AF37] mt-0.5 shrink-0" />
-                          <a 
-                            href="https://wa.me/5511915291840" 
-                            target="_blank" 
-                            rel="noopener noreferrer" 
-                            className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              window.parent.postMessage({ type: "OPEN_EXTERNAL_URL", data: { url: "https://wa.me/5511915291840" } }, "*");
-                            }}
-                          >
+                          <a
+                  href="https://wa.me/5511915291840"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors !w-[93px] !h-full"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.parent.postMessage({ type: "OPEN_EXTERNAL_URL", data: { url: "https://wa.me/5511915291840" } }, "*");
+                  }}>
+
                           Atendimento 1
                         </a>
                       </li>
                     <li className="flex items-start gap-2">
                       <MessageCircle size={16} className="text-[#D4AF37] mt-0.5 shrink-0" />
-                        <a 
-                          href="https://wa.me/5511915291840" 
-                          target="_blank" 
-                          rel="noopener noreferrer" 
-                          className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            window.parent.postMessage({ type: "OPEN_EXTERNAL_URL", data: { url: "https://wa.me/5511915291840" } }, "*");
-                          }}
-                        >
+                        <a
+                  href="https://wa.me/5511915291840"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.parent.postMessage({ type: "OPEN_EXTERNAL_URL", data: { url: "https://wa.me/5511915291840" } }, "*");
+                  }}>
+
                         Atendimento 2
                       </a>
                     </li>
@@ -142,8 +142,8 @@ const Footer = () => {
           </div>
         </div>
       </div>
-    </footer>
-  );
+    </footer>);
+
 };
 
 export default Footer;
