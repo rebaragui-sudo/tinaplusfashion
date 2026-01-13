@@ -9,7 +9,7 @@ import WhatsAppButton from "@/components/whatsapp-button";
 import { ClientOnly } from "@/components/client-only";
 
 export const metadata: Metadata = {
-  title: "Tina Plus | Moda Feminina Plus Size",
+  title: "Tina Plus Fashion | Moda Feminina Plus Size",
   description: "A melhor moda plus size feminina com elegância e sofisticação. Encontre conjuntos, macacões, chemises e muito mais.",
 };
 
