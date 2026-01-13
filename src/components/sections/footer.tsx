@@ -89,7 +89,7 @@ const Footer = () => {
                   href="https://wa.me/5511915291840"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors !w-[93px] !h-full"
+                  className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors !w-[93px] !h-full !whitespace-pre-line"
                   onClick={(e) => {
                     e.preventDefault();
                     window.parent.postMessage({ type: "OPEN_EXTERNAL_URL", data: { url: "https://wa.me/5511915291840" } }, "*");
