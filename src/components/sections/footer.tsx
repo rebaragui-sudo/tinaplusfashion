@@ -71,10 +71,9 @@ const Footer = () => {
               <h3 className="font-sans font-bold text-sm uppercase tracking-wider text-[#000000] mb-6">
                 Acesso Rápido
               </h3>
-              <ul className="space-y-3">
-                <li><a href="#" className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors">Minha Conta</a></li>
-                  <li><a href="/admin" className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors">Administrador do Site</a></li>
-              </ul>
+                <ul className="space-y-3">
+                  <li><a href="#" className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors">Minha Conta</a></li>
+                </ul>
             </div>
 
             {/* Contact Column */}
