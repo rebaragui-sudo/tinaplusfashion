@@ -9,21 +9,46 @@ import WhatsAppButton from "@/components/whatsapp-button";
 import { ClientOnly } from "@/components/client-only";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://tinaplusfashion.com.br"),
   title: "Tina Plus Fashion | Moda Feminina Plus Size",
   description: "A melhor moda plus size feminina com elegância e sofisticação. Encontre conjuntos, macacões, chemises e muito mais.",
-  keywords: ["moda plus size", "roupas femininas plus size", "Tina Plus Fashion", "conjuntos plus size", "vestidos plus size"],
+  keywords: ["moda plus size", "roupas femininas plus size", "Tina Plus Fashion", "conjuntos plus size", "vestidos plus size", "moda plus size feminina"],
   authors: [{ name: "Tina Plus Fashion" }],
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title: "Tina Plus Fashion | Moda Feminina Plus Size",
     description: "A melhor moda plus size feminina com elegância e sofisticação.",
     url: "https://tinaplusfashion.com.br",
     siteName: "Tina Plus Fashion",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Tina Plus Fashion",
+      },
+    ],
     locale: "pt_BR",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Tina Plus Fashion | Moda Feminina Plus Size",
+    description: "A melhor moda plus size feminina com elegância e sofisticação.",
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 
