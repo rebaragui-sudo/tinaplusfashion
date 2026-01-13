@@ -47,7 +47,7 @@ export default function Entregas() {
               Se preferir, você pode retirar seu pedido em nossa loja física sem custo de frete:
             </p>
             <div className="bg-white p-4 rounded-lg border border-[#e4e4e7] mt-2">
-              <p className="font-bold text-[#121812]">Tina Plus</p>
+              <p className="font-bold text-[#121812]">Tina Plus Fashion</p>
               <p>Rua Alexandrino Pedroso, 43</p>
               <p>Canindé, São Paulo - SP</p>
               <p className="text-sm mt-2">Segunda a Sexta: 7h às 15h</p>
