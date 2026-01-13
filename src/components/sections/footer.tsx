@@ -62,7 +62,7 @@ const Footer = () => {
                 <ul className="space-y-3">
                   <li><Link href="/sobre-nos" className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors">Sobre nós</Link></li>
                   <li><Link href="/trocas-e-devolucoes" className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors">Trocas e Devoluções</Link></li>
-                  <li><a href="#" className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors">Entregas</a></li>
+                    <li><Link href="/entregas" className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors">Entregas</Link></li>
                 <li><a href="#" className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors">Privacidade</a></li>
               </ul>
             </div>
