@@ -108,7 +108,7 @@ const Footer = () => {
                     </li>
                   <li className="flex items-start gap-2">
                       <Mail size={16} className="text-[#D4AF37] mt-0.5 shrink-0" />
-                    <span className="text-sm text-[#71717a]">contato@tinaplus.com.br</span>
+                    <span className="text-sm text-[#71717a]">contato@tinaplusfashion.com.br</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <Clock size={16} className="text-[#D4AF37] mt-0.5 shrink-0" />
