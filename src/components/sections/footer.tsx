@@ -32,10 +32,12 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 bg-white rounded-full text-[#000000] hover:text-[#D4AF37] transition-colors shadow-sm"
-                onClick={(e) => {
-                  e.preventDefault();
-                  window.parent.postMessage({ type: "OPEN_EXTERNAL_URL", data: { url: "https://www.instagram.com/tinaplus_?igsh=MXBsazJiNnQ1eWU0dw==" } }, "*");
-                }}>
+                  onClick={(e) => {
+                    if (typeof window !== 'undefined' && window.self !== window.top) {
+                      e.preventDefault();
+                      window.parent.postMessage({ type: "OPEN_EXTERNAL_URL", data: { url: "https://www.instagram.com/tinaplus_?igsh=MXBsazJiNnQ1eWU0dw==" } }, "*");
+                    }
+                  }}>
 
                     <Instagram size={18} />
                     </a>
