@@ -59,10 +59,10 @@ const Footer = () => {
               <h3 className="font-sans font-bold text-sm uppercase tracking-wider text-[#000000] mb-6">
                 Institucional
               </h3>
-              <ul className="space-y-3">
-                <li><Link href="/sobre-nos" className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors">Sobre nós</Link></li>
-                <li><a href="#" className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors">Trocas e Devoluções</a></li>
-                <li><a href="#" className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors">Entregas</a></li>
+                <ul className="space-y-3">
+                  <li><Link href="/sobre-nos" className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors">Sobre nós</Link></li>
+                  <li><Link href="/trocas-e-devolucoes" className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors">Trocas e Devoluções</Link></li>
+                  <li><a href="#" className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors">Entregas</a></li>
                 <li><a href="#" className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors">Privacidade</a></li>
               </ul>
             </div>
