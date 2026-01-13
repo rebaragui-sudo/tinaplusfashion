@@ -65,6 +65,11 @@ export default function AdminPage() {
     sizes: ['G1', 'G2', 'G3'],
   });
   const [variantStock, setVariantStock] = useState<Record<string, string>>({});
+  const [stats, setStats] = useState({
+    totalOrders: 0,
+    totalRevenue: 0,
+    activeProducts: 0
+  });
 
   const availableSizes = ['P', 'M', 'G', 'GG', 'G1', 'G2', 'G3', 'G4'];
 
@@ -73,10 +78,29 @@ export default function AdminPage() {
     if (auth === 'true') {
       setIsAdmin(true);
       fetchProducts();
+      fetchStats();
     } else {
       setLoading(false);
     }
   }, []);
+
+  async function fetchStats() {
+    try {
+      const { data: orders } = await supabase.from('orders').select('total_amount, status');
+      const { count: productCount } = await supabase.from('products').select('*', { count: 'exact', head: true });
+      
+      if (orders) {
+        const total = orders.reduce((acc, order) => acc + (order.total_amount || 0), 0);
+        setStats({
+          totalOrders: orders.length,
+          totalRevenue: total,
+          activeProducts: productCount || 0
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching stats:', error);
+    }
+  }
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
