@@ -19,9 +19,9 @@ const Footer = () => {
                 alt="Tina Plus Logo"
                 className="h-12 w-12 rounded-full object-cover border border-[#D4AF37]" />
 
-                  <h2 className="font-serif text-3xl font-bold text-[#000000]">
-                    Tina<span className="text-[#D4AF37]"> Plus</span>
-                  </h2>
+                    <h2 className="font-serif text-3xl font-bold text-[#000000]">
+                      Tina<span className="text-[#D4AF37]"> Plus Fashion</span>
+                    </h2>
                 </div>
               <p className="text-sm leading-relaxed text-[#71717a] mb-6">
                 Moda plus size com elegância, conforto e caimento perfeito para todas as mulheres.
