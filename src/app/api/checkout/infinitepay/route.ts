@@ -49,6 +49,7 @@ export async function POST(req: Request) {
         complement: customer.complemento || '',
       } : undefined,
       redirect_url: redirectUrl,
+      webhook_url: redirectUrl.split('/pedidos')[0] + '/api/webhooks/infinitepay',
     };
 
     const response = await fetch('https://api.infinitepay.io/invoices/public/checkout/links', {
