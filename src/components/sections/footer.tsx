@@ -16,7 +16,7 @@ const Footer = () => {
                 <div className="flex items-center gap-3 mb-6">
                   <img
                 src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/274740645_329754545882127_7954351337395034502_n-1767805261577.jpg?width=8000&height=8000&resize=contain"
-                alt="Tina Plus Logo"
+                alt="Tina Plus Fashion Logo"
                 className="h-12 w-12 rounded-full object-cover border border-[#D4AF37]" />
 
                     <h2 className="font-serif text-3xl font-bold text-[#000000]">
