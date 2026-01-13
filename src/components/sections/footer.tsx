@@ -83,9 +83,7 @@ const Footer = () => {
                 Atendimento
               </h3>
               <ul className="space-y-4">
-
-
-                  <li className="flex items-start gap-2">
+                <li className="flex items-start gap-2">
                     <Mail size={16} className="text-[#D4AF37] mt-0.5 shrink-0" />
                     <span className="text-sm text-[#71717a]">contato@tinaplus.com.br</span>
                   </li>
