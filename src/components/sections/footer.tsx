@@ -87,14 +87,24 @@ const Footer = () => {
                 Atendimento
               </h3>
                 <ul className="space-y-4">
-                  <li className="flex items-start gap-2">
-                      <Phone size={16} className="text-[#D4AF37] mt-0.5 shrink-0" />
-                      <a 
-                        href="tel:+5511953714884" 
-                        className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors"
-                      >
-                        telefone 11 95371-4884
-                      </a>
+                    <li className="flex flex-col gap-2">
+                      <div className="flex items-start gap-2">
+                        <Phone size={16} className="text-[#D4AF37] mt-0.5 shrink-0" />
+                        <a 
+                          href="tel:+5511953714884" 
+                          className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors"
+                        >
+                          11 95371-4884
+                        </a>
+                      </div>
+                      <div className="flex items-start gap-2 ml-6">
+                        <a 
+                          href="tel:+5511915291840" 
+                          className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors"
+                        >
+                          11 91529-1840
+                        </a>
+                      </div>
                     </li>
                   <li className="flex items-start gap-2">
                       <Mail size={16} className="text-[#D4AF37] mt-0.5 shrink-0" />
