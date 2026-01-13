@@ -9,8 +9,10 @@ const WhatsAppButton = () => {
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
   
     const handleClick = (e: React.MouseEvent) => {
-      e.preventDefault();
-      window.parent.postMessage({ type: "OPEN_EXTERNAL_URL", data: { url: whatsappUrl } }, "*");
+      if (typeof window !== 'undefined' && window.self !== window.top) {
+        e.preventDefault();
+        window.parent.postMessage({ type: "OPEN_EXTERNAL_URL", data: { url: whatsappUrl } }, "*");
+      }
     };
   
     return (
