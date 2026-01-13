@@ -34,7 +34,8 @@ export async function POST(req: Request) {
 
     const payload = {
       handle: infiniteTag,
-      itens: infinitePayItems,
+      items: infinitePayItems,
+      itens: infinitePayItems, // Tentando os dois nomes de campo já que a documentação diz 'itens' mas o erro diz 'items'
       order_nsu: orderId,
       customer: {
         name: customer.nome,
@@ -51,6 +52,8 @@ export async function POST(req: Request) {
       redirect_url: redirectUrl,
       webhook_url: redirectUrl.split('/pedidos')[0] + '/api/webhooks/infinitepay',
     };
+
+    console.log('Enviando payload para InfinitePay:', JSON.stringify(payload, null, 2));
 
     const response = await fetch('https://api.infinitepay.io/invoices/public/checkout/links', {
       method: 'POST',
