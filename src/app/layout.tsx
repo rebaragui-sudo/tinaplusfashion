@@ -40,10 +40,14 @@ export default function RootLayout({
           />
           <CartProvider>
             {children}
-            <WhatsAppButton />
-            <Toaster position="top-center" richColors />
+            <ClientOnly>
+              <WhatsAppButton />
+              <Toaster position="top-center" richColors />
+            </ClientOnly>
           </CartProvider>
-          <VisualEditsMessenger />
+          <ClientOnly>
+            <VisualEditsMessenger />
+          </ClientOnly>
         </body>
       </html>
     );
