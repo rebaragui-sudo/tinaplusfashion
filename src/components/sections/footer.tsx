@@ -83,21 +83,7 @@ const Footer = () => {
                 Atendimento
               </h3>
               <ul className="space-y-4">
-                      <li className="flex items-start gap-2">
-                        <MessageCircle size={16} className="text-[#D4AF37] mt-0.5 shrink-0" />
-                          <a
-                  href="https://wa.me/5511915291840"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors !w-[93px] !h-full !whitespace-pre-line"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    window.parent.postMessage({ type: "OPEN_EXTERNAL_URL", data: { url: "https://wa.me/5511915291840" } }, "*");
-                  }}>
 
-
-                </a>
-                      </li>
 
                   <li className="flex items-start gap-2">
                     <Mail size={16} className="text-[#D4AF37] mt-0.5 shrink-0" />
