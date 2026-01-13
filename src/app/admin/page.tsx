@@ -419,9 +419,43 @@ export default function AdminPage() {
                 </div>
               </div>
 
-          </header>
+            </header>
 
-        {/* Form Section */}
+          {/* Quick Stats */}
+          <section className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4">
+              <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center">
+                <ShoppingBag size={24} />
+              </div>
+              <div>
+                <p className="text-sm text-gray-500 font-medium">Total de Pedidos</p>
+                <h3 className="text-2xl font-bold text-gray-900">{stats.totalOrders}</h3>
+              </div>
+            </div>
+            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4">
+              <div className="w-12 h-12 bg-green-50 text-green-600 rounded-lg flex items-center justify-center">
+                <DollarSign size={24} />
+              </div>
+              <div>
+                <p className="text-sm text-gray-500 font-medium">Receita Total</p>
+                <h3 className="text-2xl font-bold text-gray-900">
+                  {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(stats.totalRevenue)}
+                </h3>
+              </div>
+            </div>
+            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4">
+              <div className="w-12 h-12 bg-purple-50 text-purple-600 rounded-lg flex items-center justify-center">
+                <Package size={24} />
+              </div>
+              <div>
+                <p className="text-sm text-gray-500 font-medium">Produtos Ativos</p>
+                <h3 className="text-2xl font-bold text-gray-900">{stats.activeProducts}</h3>
+              </div>
+            </div>
+          </section>
+
+          {/* Form Section */}
+
         <section className="bg-white rounded-xl shadow-sm p-6 mb-8 border border-gray-100">
           <h2 className="text-xl font-semibold mb-6 flex items-center gap-2">
             {isEditing ? <Edit size={20} /> : <Plus size={20} />}
