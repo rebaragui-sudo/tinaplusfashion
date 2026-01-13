@@ -3,22 +3,26 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { 
-  Plus, 
-  Trash2, 
-  Edit, 
-  Package, 
-  DollarSign, 
-  Image as ImageIcon, 
-  Loader2,
-    ShoppingBag,
-    Save,
-    X,
-    ExternalLink,
-    ChevronLeft,
-    Pipette,
-    Palette,
-    Upload
-  } from 'lucide-react';
+    Plus, 
+    Trash2, 
+    Edit, 
+    Package, 
+    DollarSign, 
+    Image as ImageIcon, 
+    Loader2,
+      ShoppingBag,
+      Save,
+      X,
+      ExternalLink,
+      ChevronLeft,
+      Pipette,
+      Palette,
+      Upload,
+      TrendingUp,
+      Clock,
+      Users
+    } from 'lucide-react';
+
 
 import { toast } from 'sonner';
 import Link from 'next/link';
