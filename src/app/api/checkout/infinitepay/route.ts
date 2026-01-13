@@ -33,14 +33,13 @@ export async function POST(req: Request) {
     }
 
     const payload = {
-      infinite_tag: infiniteTag,
-      items: infinitePayItems,
+      handle: infiniteTag,
+      itens: infinitePayItems,
       order_nsu: orderId,
       customer: {
         name: customer.nome,
-        email: customer.email || 'cliente@exemplo.com', // fallback if email not provided
-        phone: customer.celular.replace(/\D/g, ''),
-        document: customer.cpf.replace(/\D/g, ''),
+        email: customer.email || 'cliente@exemplo.com',
+        phone_number: customer.celular.replace(/\D/g, ''),
       },
       redirect_url: redirectUrl,
     };
