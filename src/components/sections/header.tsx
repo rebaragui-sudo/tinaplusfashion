@@ -16,6 +16,7 @@ const Header = () => {
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-[#e4e4e7]">
       <CartDrawer />
+      <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
       {/* Brand top-bar strip */}
       <div className="h-1 bg-[#D4AF37] w-full" />
 
