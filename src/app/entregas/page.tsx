@@ -37,7 +37,7 @@ export default function Entregas() {
             </p>
             
             <h3 className="text-2xl font-bold text-[#121812]">Métodos de Envio</h3>
-            <p className="!whitespace-pre-line">Trabalhamos com os Correios e transportadoras parceiras para garantir que sua encomenda chegue em perfeito estado. Você pode simular o frete e o prazo diretamente na sacola de compras, ou para compras em grande quantidade entregamos nos onibus de excursão.
+            <p className="!whitespace-pre-line">Trabalhamos com os Correios e transportadoras parceiras para garantir que sua encomenda chegue em perfeito estado. Você pode simular o frete e o prazo diretamente na sacola de compras, ou para compras em grande quantidade entregamos nos ônibus de excursão, entre em contato com a gente pelo WhatsApp.
 
 
             </p>
