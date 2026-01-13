@@ -14,7 +14,7 @@ export default function SobreNos() {
           
           <div className="prose prose-lg max-w-none text-[#71717a] space-y-6">
             <p>
-              A <strong>Tina Plus</strong> nasceu do desejo de proporcionar moda plus size com elegância, 
+              A <strong>Tina Plus Fashion</strong> nasceu do desejo de proporcionar moda plus size com elegância, 
               conforto e o caimento perfeito que toda mulher merece. Acreditamos que o estilo não tem 
               tamanho e que cada peça deve celebrar a beleza única de quem a veste.
             </p>
