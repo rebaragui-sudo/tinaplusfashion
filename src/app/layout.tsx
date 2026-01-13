@@ -6,6 +6,7 @@ import Script from "next/script";
 import { CartProvider } from "@/hooks/use-cart";
 import { Toaster } from "@/components/ui/sonner";
 import WhatsAppButton from "@/components/whatsapp-button";
+import { ClientOnly } from "@/components/client-only";
 
 export const metadata: Metadata = {
   title: "Tina Plus | Moda Feminina Plus Size",
