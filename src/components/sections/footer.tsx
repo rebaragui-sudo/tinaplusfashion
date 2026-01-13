@@ -95,8 +95,8 @@ const Footer = () => {
                     window.parent.postMessage({ type: "OPEN_EXTERNAL_URL", data: { url: "https://wa.me/5511915291840" } }, "*");
                   }}>
 
-                          Atendimento 1
-                        </a>
+
+                </a>
                       </li>
                     <li className="flex items-start gap-2">
                       <MessageCircle size={16} className="text-[#D4AF37] mt-0.5 shrink-0" />
