@@ -33,9 +33,9 @@ const Header = () => {
                     Troca fácil até 7 dias
                   </span>
                   <span className="h-1 w-1 rounded-full bg-[#D4AF37]" />
-                  <span className="px-8 text-xs md:text-sm font-medium tracking-wide">
-                    Até 12x sem juros
-                  </span>
+                    <span className="px-8 text-xs md:text-sm font-medium tracking-wide">
+                      Até 12x no crédito
+                    </span>
                   <span className="h-1 w-1 rounded-full bg-[#D4AF37]" />
                 </div>
               ))}
