@@ -41,6 +41,13 @@ export async function POST(req: Request) {
         email: customer.email || 'cliente@exemplo.com',
         phone_number: customer.celular.replace(/\D/g, ''),
       },
+      address: body.shippingMethod !== 'onibus' ? {
+        cep: customer.cep.replace(/\D/g, ''),
+        street: customer.endereco,
+        neighborhood: customer.bairro,
+        number: customer.numero,
+        complement: customer.complemento || '',
+      } : undefined,
       redirect_url: redirectUrl,
     };
 
