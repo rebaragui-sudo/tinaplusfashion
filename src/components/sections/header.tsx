@@ -98,11 +98,15 @@ const Header = () => {
               </a>
             </nav>
 
-          {/* Functional Icons */}
-          <div className="flex items-center gap-1 md:gap-2">
-            <button className="inline-flex items-center justify-center rounded-md h-10 w-10 hover:bg-[#f5f3f1] transition-colors text-[#121812]">
-              <Search className="h-5 w-5" />
-            </button>
+            {/* Functional Icons */}
+            <div className="flex items-center gap-1 md:gap-2">
+              <button 
+                onClick={() => setIsSearchOpen(true)}
+                className="inline-flex items-center justify-center rounded-md h-10 w-10 hover:bg-[#f5f3f1] transition-colors text-[#121812]"
+              >
+                <Search className="h-5 w-5" />
+              </button>
+
             
             <button className="hidden md:inline-flex items-center justify-center rounded-md h-10 w-10 hover:bg-[#f5f3f1] transition-colors text-[#121812]">
               <Maximize className="h-5 w-5" />
