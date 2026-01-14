@@ -168,7 +168,7 @@ const MobileMenu = ({ isOpen, onClose, onOpenSearch }: MobileMenuProps) => {
 
             {/* Social footer */}
             <div className="pt-8 text-center pb-8">
-              <p className="text-[10px] text-[#71717a]">© 2024 Tina Plus Fashion</p>
+              <p className="text-[10px] text-[#71717a]">© 2025 Tina Plus Fashion</p>
               <p className="text-[10px] text-[#71717a]">Sinta-se linda em qualquer tamanho.</p>
             </div>
           </div>
