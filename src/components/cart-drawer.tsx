@@ -727,7 +727,7 @@ import { getColorName } from '@/lib/colors';
               )}
             </div>
           </SheetFooter>
-        </SheetContent>
+      </SheetContent>
     </Sheet>
   );
 };
