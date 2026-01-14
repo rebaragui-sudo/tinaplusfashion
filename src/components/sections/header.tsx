@@ -6,17 +6,24 @@ import { useCart } from '@/hooks/use-cart';
 import { useAuth } from '@/hooks/use-auth';
 import CartDrawer from '@/components/cart-drawer';
 import SearchModal from '@/components/search-modal';
+import MobileMenu from '@/components/mobile-menu';
 import Link from 'next/link';
 
 const Header = () => {
   const { totalItems, setIsOpen } = useCart();
   const { user } = useAuth();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-[#e4e4e7]">
       <CartDrawer />
       <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+      <MobileMenu 
+        isOpen={isMenuOpen} 
+        onClose={() => setIsMenuOpen(false)} 
+        onOpenSearch={() => setIsSearchOpen(true)}
+      />
       {/* Brand top-bar strip */}
       <div className="h-1 bg-[#D4AF37] w-full" />
 
