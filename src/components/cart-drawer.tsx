@@ -22,26 +22,56 @@ import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import { getColorName } from '@/lib/colors';
 
-const CartDrawer = () => {
-  const router = useRouter();
-  const { items, removeItem, updateQuantity, totalPrice, totalItems, isOpen, setIsOpen, clearCart } = useCart();
-  const [isCheckout, setIsCheckout] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [shippingMethod, setShippingMethod] = useState('');
-  const [shippingPrice, setShippingPrice] = useState(0);
-  const [isCalculating, setIsCalculating] = useState(false);
-  const [calculatedOptions, setCalculatedOptions] = useState<{id: string, label: string, price: number, days: string}[]>([]);
-    const [shippingData, setShippingData] = useState({
-      nome: '',
-      cpf: '',
-      estado: '',
-      cidade: '',
-      celular: '',
-      cep: '',
-      endereco: '',
-      numero: '',
-      bairro: ''
-    });
+  const CartDrawer = () => {
+    const router = useRouter();
+    const { items, removeItem, updateQuantity, totalPrice, totalItems, isOpen, setIsOpen, clearCart } = useCart();
+    const { user } = useAuth();
+    const [isCheckout, setIsCheckout] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [shippingMethod, setShippingMethod] = useState('');
+    const [shippingPrice, setShippingPrice] = useState(0);
+    const [isCalculating, setIsCalculating] = useState(false);
+    const [calculatedOptions, setCalculatedOptions] = useState<{id: string, label: string, price: number, days: string}[]>([]);
+      const [shippingData, setShippingData] = useState({
+        nome: '',
+        cpf: '',
+        estado: '',
+        cidade: '',
+        celular: '',
+        cep: '',
+        endereco: '',
+        numero: '',
+        bairro: ''
+      });
+
+    // Load profile data if user is logged in
+    React.useEffect(() => {
+      if (user) {
+        const fetchProfile = async () => {
+          const { data, error } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', user.id)
+            .single();
+
+          if (data && !error) {
+            setShippingData(prev => ({
+              ...prev,
+              nome: data.full_name || '',
+              cpf: data.cpf || '',
+              celular: data.phone || '',
+              cep: data.address?.cep || '',
+              endereco: data.address?.street || '',
+              numero: data.address?.number || '',
+              bairro: data.address?.neighborhood || '',
+              cidade: data.address?.city || '',
+              estado: data.address?.state || '',
+            }));
+          }
+        };
+        fetchProfile();
+      }
+    }, [user]);
 
     const formatCPF = (value: string) => {
       const clean = value.replace(/\D/g, '');
