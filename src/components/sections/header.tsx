@@ -51,10 +51,14 @@ const Header = () => {
 
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
-          {/* Mobile Menu Button */}
-          <button className="inline-flex items-center justify-center rounded-md h-10 w-10 md:hidden hover:bg-[#f5f3f1] transition-colors">
-            <Menu className="h-6 w-6 text-[#121812]" />
-          </button>
+            {/* Mobile Menu Button */}
+            <button 
+              onClick={() => setIsMenuOpen(true)}
+              className="inline-flex items-center justify-center rounded-md h-10 w-10 md:hidden hover:bg-[#f5f3f1] transition-colors"
+            >
+              <Menu className="h-6 w-6 text-[#121812]" />
+            </button>
+
 
           {/* Logo Section */}
           <a className="flex items-center gap-3 group md:-ml-8" href="/">
