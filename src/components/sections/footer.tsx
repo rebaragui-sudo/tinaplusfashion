@@ -132,7 +132,7 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-[#e4e4e7] flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
-          <p className="text-xs text-[#71717a]">© 2026 Tina Plus Fashion. Todos os direitos reservados.
+          <p className="text-xs text-[#71717a] !whitespace-pre-line">© 2026 Tina Plus Fashion. Todos os direitos reservados.
 
           </p>
           <div className="flex items-center gap-6">
