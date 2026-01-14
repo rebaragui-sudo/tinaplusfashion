@@ -188,13 +188,14 @@ import { getColorName } from '@/lib/colors';
           .from('orders')
           .insert([
             {
-              total_price: totalPrice + shippingPrice,
-              shipping_method: shippingMethod,
-              shipping_price: shippingPrice,
-              items: items,
-              shipping_data: shippingData,
-              status: 'pending'
-            }
+                total_price: totalPrice + shippingPrice,
+                shipping_method: shippingMethod,
+                shipping_price: shippingPrice,
+                items: items,
+                shipping_data: shippingData,
+                status: 'pending',
+                user_id: user?.id
+              }
           ])
           .select()
           .single();
