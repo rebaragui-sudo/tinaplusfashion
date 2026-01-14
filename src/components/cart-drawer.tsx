@@ -333,14 +333,52 @@ import { getColorName } from '@/lib/colors';
       </ScrollArea>
     );
 
-  const renderCheckout = () => (
-    <ScrollArea className="h-full">
-      <div className="p-4 space-y-6">
-        <div className="space-y-4">
-          <h3 className="text-sm font-bold uppercase flex items-center gap-2">
-            <User className="h-4 w-4 text-[#800020]" />
-            Dados Pessoais
-          </h3>
+  const renderCheckout = () => {
+    if (!user) {
+      return (
+        <div className="h-full flex flex-col items-center justify-center p-8 text-center space-y-6">
+          <div className="w-16 h-16 bg-[#f5f3f1] rounded-full flex items-center justify-center">
+            <LogIn className="h-8 w-8 text-[#800020]" />
+          </div>
+          <div className="space-y-2">
+            <p className="text-lg font-bold text-[#121812]">Identificação Necessária</p>
+            <p className="text-sm text-[#71717a]">
+              Para sua segurança e para acompanhar seu pedido, você precisa estar logado.
+            </p>
+          </div>
+          <div className="w-full space-y-3">
+            <Button 
+              onClick={() => {
+                setIsOpen(false);
+                router.push('/login?redirect=checkout');
+              }}
+              className="w-full bg-[#121812] hover:bg-[#800020] text-white py-6"
+            >
+              Fazer Login
+            </Button>
+            <Button 
+              variant="outline"
+              onClick={() => {
+                setIsOpen(false);
+                router.push('/cadastro?redirect=checkout');
+              }}
+              className="w-full border-[#121812] text-[#121812] py-6"
+            >
+              Criar uma Conta
+            </Button>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <ScrollArea className="h-full">
+        <div className="p-4 space-y-6">
+          <div className="space-y-4">
+            <h3 className="text-sm font-bold uppercase flex items-center gap-2">
+              <User className="h-4 w-4 text-[#800020]" />
+              Dados Pessoais
+            </h3>
             <div className="grid gap-3">
               <div className="space-y-1">
                 <Label htmlFor="nome_entrega" className="text-xs">Nome Completo</Label>
