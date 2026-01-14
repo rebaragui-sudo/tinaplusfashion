@@ -109,7 +109,7 @@ const Header = () => {
               </a>
             </nav>
 
-            {/* Functional Icons */}
+            {/* Functional Icons - Updated */}
             <div className="flex items-center gap-1 md:gap-2">
               <button 
                 onClick={() => setIsSearchOpen(true)}
