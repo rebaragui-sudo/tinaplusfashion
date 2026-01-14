@@ -22,11 +22,23 @@ import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import { getColorName } from '@/lib/colors';
 
-  const CartDrawer = () => {
+    const CartDrawer = () => {
     const router = useRouter();
+    const searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
     const { items, removeItem, updateQuantity, totalPrice, totalItems, isOpen, setIsOpen, clearCart } = useCart();
     const { user } = useAuth();
     const [isCheckout, setIsCheckout] = useState(false);
+
+    // Auto-open drawer if redirecting from login/register checkout
+    React.useEffect(() => {
+      if (searchParams?.get('checkout') === 'true') {
+        setIsOpen(true);
+        setIsCheckout(true);
+        // Clean up URL
+        window.history.replaceState({}, '', window.location.pathname);
+      }
+    }, [searchParams]);
+
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [shippingMethod, setShippingMethod] = useState('');
     const [shippingPrice, setShippingPrice] = useState(0);
