@@ -32,12 +32,12 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 bg-white rounded-full text-[#000000] hover:text-[#D4AF37] transition-colors shadow-sm"
-                  onClick={(e) => {
-                    if (typeof window !== 'undefined' && window.self !== window.top) {
-                      e.preventDefault();
-                      window.parent.postMessage({ type: "OPEN_EXTERNAL_URL", data: { url: "https://www.instagram.com/tinaplus_?igsh=MXBsazJiNnQ1eWU0dw==" } }, "*");
-                    }
-                  }}>
+                onClick={(e) => {
+                  if (typeof window !== 'undefined' && window.self !== window.top) {
+                    e.preventDefault();
+                    window.parent.postMessage({ type: "OPEN_EXTERNAL_URL", data: { url: "https://www.instagram.com/tinaplus_?igsh=MXBsazJiNnQ1eWU0dw==" } }, "*");
+                  }
+                }}>
 
                     <Instagram size={18} />
                     </a>
@@ -46,12 +46,12 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 bg-white rounded-full text-[#000000] hover:text-[#D4AF37] transition-colors shadow-sm"
-                  onClick={(e) => {
-                    if (typeof window !== 'undefined' && window.self !== window.top) {
-                      e.preventDefault();
-                      window.parent.postMessage({ type: "OPEN_EXTERNAL_URL", data: { url: "https://wa.me/5511953714884" } }, "*");
-                    }
-                  }}>
+                onClick={(e) => {
+                  if (typeof window !== 'undefined' && window.self !== window.top) {
+                    e.preventDefault();
+                    window.parent.postMessage({ type: "OPEN_EXTERNAL_URL", data: { url: "https://wa.me/5511953714884" } }, "*");
+                  }
+                }}>
 
                       <MessageCircle size={18} />
                     </a>
@@ -90,18 +90,18 @@ const Footer = () => {
                     <li className="flex flex-col gap-2">
                       <div className="flex items-start gap-2">
                         <Phone size={16} className="text-[#D4AF37] mt-0.5 shrink-0" />
-                        <a 
-                          href="tel:+5511953714884" 
-                          className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors"
-                        >
+                        <a
+                    href="tel:+5511953714884"
+                    className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors">
+
                           11 95371-4884
                         </a>
                       </div>
                       <div className="flex items-start gap-2 ml-6">
-                        <a 
-                          href="tel:+5511915291840" 
-                          className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors"
-                        >
+                        <a
+                    href="tel:+5511915291840"
+                    className="text-sm text-[#71717a] hover:text-[#D4AF37] transition-colors">
+
                           11 91529-1840
                         </a>
                       </div>
@@ -132,8 +132,8 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-[#e4e4e7] flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
-          <p className="text-xs text-[#71717a]">
-            © 2024 Tina Plus Fashion. Todos os direitos reservados.
+          <p className="text-xs text-[#71717a]">© 2026 Tina Plus Fashion. Todos os direitos reservados.
+
           </p>
           <div className="flex items-center gap-6">
             <img src="https://img.icons8.com/color/36/000000/visa.png" alt="Visa" className="grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all h-6" />
