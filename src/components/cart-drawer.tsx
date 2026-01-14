@@ -733,3 +733,4 @@ import { getColorName } from '@/lib/colors';
 };
 
 export default CartDrawer;
+}
