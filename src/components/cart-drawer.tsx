@@ -554,7 +554,7 @@ const CartDrawer = () => {
                       id="cidade" 
                       placeholder="Ex: São Paulo" 
                       value={shippingData.cidade}
-                        onChange={(e) => setShippingData({...shippingData, cidade: e.target.value})}
+                      onChange={(e) => setShippingData({...shippingData, cidade: e.target.value})}
                     />
                   </div>
                 </div>
