@@ -116,14 +116,6 @@ export default function ExportarPage() {
     const text = rows.join('\n');
     setExportText(text);
     setShowTextArea(true);
-    
-    try {
-      navigator.clipboard.writeText(text);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 3000);
-    } catch {
-      setCopied(false);
-    }
   }
 
   if (loading) {
