@@ -14,6 +14,10 @@ export const metadata: Metadata = {
   description: "A melhor moda plus size feminina com elegância e sofisticação. Encontre conjuntos, macacões, chemises e muito mais.",
   keywords: ["moda plus size", "roupas femininas plus size", "Tina Plus Fashion", "conjuntos plus size", "vestidos plus size", "moda plus size feminina"],
   authors: [{ name: "Tina Plus Fashion" }],
+  icons: {
+    icon: "/icon.png",
+    apple: "/icon.png",
+  },
   verification: {
     google: "pXAv0XEJpYoGhBYjbVADOTGU-kvMd7p1-zY64j_W6xo",
   },
