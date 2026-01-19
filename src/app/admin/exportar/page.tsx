@@ -135,7 +135,7 @@ export default function ExportarPage() {
             </li>
             <li className="flex gap-3">
               <span className="flex-shrink-0 w-7 h-7 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold text-sm">2</span>
-              <span>Abra o Excel e vá na aba <strong>"Criar Produtos"</strong></span>
+              <span>Abra o Excel e vá na aba <strong>"Modelo"</strong></span>
             </li>
             <li className="flex gap-3">
               <span className="flex-shrink-0 w-7 h-7 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold text-sm">3</span>
