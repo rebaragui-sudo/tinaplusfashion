@@ -70,8 +70,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
     return (
-      <html lang="pt-BR" suppressHydrationWarning>
-        <body className="antialiased">
+        <html lang="pt-BR" suppressHydrationWarning>
+          <head>
+            <link rel="icon" href="/favicon.ico?v=3" sizes="any" />
+            <link rel="icon" href="/favicon-32x32.png?v=3" type="image/png" sizes="32x32" />
+            <link rel="icon" href="/favicon-16x16.png?v=3" type="image/png" sizes="16x16" />
+            <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3" sizes="180x180" />
+          </head>
+          <body className="antialiased">
           <Script
             id="orchids-browser-logs"
             src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/scripts/orchids-browser-logs.js"
