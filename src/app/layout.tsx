@@ -15,8 +15,8 @@ export const metadata: Metadata = {
   keywords: ["moda plus size", "roupas femininas plus size", "Tina Plus Fashion", "conjuntos plus size", "vestidos plus size", "moda plus size feminina"],
   authors: [{ name: "Tina Plus Fashion" }],
   icons: {
-    icon: "/icon.png",
-    apple: "/icon.png",
+    icon: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/274740645_329754545882127_7954351337395034502_n-1767805261577.jpg?width=64&height=64&resize=contain",
+    apple: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/274740645_329754545882127_7954351337395034502_n-1767805261577.jpg?width=180&height=180&resize=contain",
   },
   verification: {
     google: "pXAv0XEJpYoGhBYjbVADOTGU-kvMd7p1-zY64j_W6xo",
