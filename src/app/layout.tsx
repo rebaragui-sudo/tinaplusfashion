@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   keywords: ["moda plus size", "roupas femininas plus size", "Tina Plus Fashion", "conjuntos plus size", "vestidos plus size", "moda plus size feminina"],
   authors: [{ name: "Tina Plus Fashion" }],
   icons: {
-    icon: "/favicon.jpg",
+    icon: "/favicon.ico",
     apple: "/apple-icon.jpg",
   },
   verification: {
