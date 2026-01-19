@@ -114,9 +114,16 @@ export default function ExportarPage() {
     });
     
     const text = rows.join('\n');
-    navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 3000);
+    setExportText(text);
+    setShowTextArea(true);
+    
+    try {
+      navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 3000);
+    } catch {
+      setCopied(false);
+    }
   }
 
   if (loading) {
