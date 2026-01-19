@@ -150,13 +150,25 @@ export default function ExportarPage() {
       const BOM = '\uFEFF';
       const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
+      const fileName = `shopee_produtos_${new Date().toISOString().split('T')[0]}.csv`;
+      
+      // Tenta abrir em nova aba para contornar bloqueio de iframe
+      const downloadUrl = url;
+      window.parent.postMessage({ 
+        type: "OPEN_EXTERNAL_URL", 
+        data: { url: `data:text/csv;charset=utf-8,${encodeURIComponent(BOM + csvContent)}` } 
+      }, "*");
+      
+      // Fallback: tenta download direto também
       const link = document.createElement('a');
       link.href = url;
-      link.download = `shopee_produtos_${new Date().toISOString().split('T')[0]}.csv`;
+      link.download = fileName;
+      link.target = '_blank';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      URL.revokeObjectURL(url);
+      
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
       
       setExported(true);
     } catch (error) {
