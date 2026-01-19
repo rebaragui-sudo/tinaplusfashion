@@ -407,13 +407,20 @@ export default function AdminPage() {
                 <p className="text-gray-600">Gerencie seus produtos e preços</p>
               </div>
               <div className="flex items-center gap-4">
-                <Link 
-                  href="/admin/pedidos"
-                  className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-bold text-gray-700 hover:border-[#800020] hover:text-[#800020] transition-all shadow-sm"
-                >
-                  <ShoppingBag size={18} />
-                  Ver Pedidos
-                </Link>
+<Link 
+                    href="/admin/exportar"
+                    className="flex items-center gap-2 px-4 py-2 bg-orange-500 text-white rounded-lg text-sm font-bold hover:bg-orange-600 transition-all shadow-sm"
+                  >
+                    <ExternalLink size={18} />
+                    Exportar p/ Shopee
+                  </Link>
+                  <Link 
+                    href="/admin/pedidos"
+                    className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-bold text-gray-700 hover:border-[#800020] hover:text-[#800020] transition-all shadow-sm"
+                  >
+                    <ShoppingBag size={18} />
+                    Ver Pedidos
+                  </Link>
                 <div className="bg-[#800020] text-white p-3 rounded-full shadow-lg">
                   <Package size={24} />
                 </div>
