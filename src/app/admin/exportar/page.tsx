@@ -191,7 +191,7 @@ export default function ExportarPage() {
             </li>
             <li className="flex gap-3">
               <span className="flex-shrink-0 w-7 h-7 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold text-sm">4</span>
-              <span>No Excel, clique na célula <strong>A5</strong> (primeira linha de dados) e cole (<strong>Ctrl+V</strong>)</span>
+              <span>No Excel, clique na célula <strong>A5</strong> (primeira linha de dados, coluna A) e cole (<strong>Ctrl+V</strong>)</span>
             </li>
             <li className="flex gap-3">
               <span className="flex-shrink-0 w-7 h-7 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold text-sm">5</span>
