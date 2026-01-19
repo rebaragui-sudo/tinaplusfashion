@@ -180,8 +180,34 @@ export default function ExportarPage() {
                 Copiar Todos os Produtos
               </>
             )}
-          </button>
-        </div>
+            </button>
+          </div>
+
+          {showTextArea && (
+            <div className="bg-white rounded-2xl shadow-lg border p-6 mb-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-bold text-gray-900">Dados para Copiar</h3>
+                <button
+                  onClick={() => setShowTextArea(false)}
+                  className="text-gray-400 hover:text-gray-600"
+                >
+                  Fechar
+                </button>
+              </div>
+              <p className="text-sm text-gray-600 mb-3">
+                Selecione todo o texto abaixo (<strong>Ctrl+A</strong>) e copie (<strong>Ctrl+C</strong>):
+              </p>
+              <textarea
+                readOnly
+                value={exportText}
+                onClick={(e) => (e.target as HTMLTextAreaElement).select()}
+                className="w-full h-48 p-3 border rounded-lg font-mono text-xs bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange-500"
+              />
+              <p className="text-sm text-green-600 mt-2 font-medium">
+                Depois cole no Excel na célula A5
+              </p>
+            </div>
+          )}
 
         <div className="bg-orange-50 border border-orange-200 rounded-xl p-6 mb-6">
           <h3 className="font-bold text-orange-800 mb-4">Como usar:</h3>
