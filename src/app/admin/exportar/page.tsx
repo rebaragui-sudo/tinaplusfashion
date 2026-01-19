@@ -205,9 +205,9 @@ export default function ExportarPage() {
         </div>
 
         <div className="bg-white rounded-xl border p-6">
-          <h3 className="font-semibold text-gray-900 mb-3">Colunas que serão copiadas:</h3>
+          <h3 className="font-semibold text-gray-900 mb-3">Colunas que serão preenchidas (A até AD):</h3>
           <div className="flex flex-wrap gap-2">
-            {['Nome', 'Descrição', 'Preço', 'Estoque', 'Peso', 'Comprimento', 'Largura', 'Altura', 'Imagem'].map((col) => (
+            {['Nome (B)', 'Descrição (C)', 'Preço (K)', 'Estoque (L)', 'Imagem capa (R)', 'Imagens 1-8 (S-Z)', 'Peso (AA)', 'Dimensões (AB-AD)'].map((col) => (
               <span key={col} className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">
                 {col}
               </span>
