@@ -15,8 +15,12 @@ export const metadata: Metadata = {
   keywords: ["moda plus size", "roupas femininas plus size", "Tina Plus Fashion", "conjuntos plus size", "vestidos plus size", "moda plus size feminina"],
   authors: [{ name: "Tina Plus Fashion" }],
   icons: {
-    icon: "/favicon.ico",
-    apple: "/apple-icon.jpg",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: "/apple-touch-icon.png",
   },
   verification: {
     google: "pXAv0XEJpYoGhBYjbVADOTGU-kvMd7p1-zY64j_W6xo",
