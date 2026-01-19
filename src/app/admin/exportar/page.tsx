@@ -49,16 +49,64 @@ export default function ExportarPage() {
 
   function copyAllForShopee() {
     const rows = products.map(p => {
+      // Colunas do template Shopee (aba Modelo):
+      // A: Categoria (deixar vazio - preencher manual)
+      // B: Nome do Produto
+      // C: Descrição do Produto
+      // D: SKU principal
+      // E: Número de Integração de Variação
+      // F: Nome da Variação 1
+      // G: Opção para Variação 1
+      // H: Imagem por Variação
+      // I: Nome da Variação 2
+      // J: Opção para Variação 2
+      // K: Preço
+      // L: Estoque
+      // M: SKU da Variação
+      // N: Template da Tabela de Medidas
+      // O: Imagem de Tamanhos
+      // P: GTIN (EAN)
+      // Q: IDs de compatibilidade
+      // R: Imagem de capa
+      // S-Z: Imagem do produto 1-8
+      // AA: Peso
+      // AB: Comprimento
+      // AC: Largura
+      // AD: Altura
+      
+      const allImages = [p.image_url, ...(p.images || [])].filter(Boolean);
+      
       const cols = [
-        p.name || '',
-        formatDescription(p.description),
-        String(p.price || 0),
-        '10',
-        String(p.weight || 0.3),
-        String(p.length || 30),
-        String(p.width || 20),
-        String(p.height || 5),
-        p.image_url || ''
+        '', // A: Categoria (preencher manual)
+        p.name || '', // B: Nome do Produto
+        formatDescription(p.description), // C: Descrição
+        '', // D: SKU principal
+        '', // E: Número de Integração
+        '', // F: Nome da Variação 1
+        '', // G: Opção para Variação 1
+        '', // H: Imagem por Variação
+        '', // I: Nome da Variação 2
+        '', // J: Opção para Variação 2
+        String(p.price || 0), // K: Preço
+        '10', // L: Estoque
+        '', // M: SKU da Variação
+        '', // N: Template Tabela Medidas
+        '', // O: Imagem de Tamanhos
+        '', // P: GTIN (EAN)
+        '', // Q: IDs de compatibilidade
+        allImages[0] || '', // R: Imagem de capa
+        allImages[1] || '', // S: Imagem do produto 1
+        allImages[2] || '', // T: Imagem do produto 2
+        allImages[3] || '', // U: Imagem do produto 3
+        allImages[4] || '', // V: Imagem do produto 4
+        allImages[5] || '', // W: Imagem do produto 5
+        allImages[6] || '', // X: Imagem do produto 6
+        allImages[7] || '', // Y: Imagem do produto 7
+        allImages[8] || '', // Z: Imagem do produto 8
+        String(p.weight || 0.3), // AA: Peso
+        String(p.length || 30), // AB: Comprimento
+        String(p.width || 20), // AC: Largura
+        String(p.height || 5), // AD: Altura
       ];
       return cols.join('\t');
     });
