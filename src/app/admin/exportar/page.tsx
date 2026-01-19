@@ -26,6 +26,8 @@ export default function ExportarPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [showTextArea, setShowTextArea] = useState(false);
+  const [exportText, setExportText] = useState('');
 
   useEffect(() => {
     loadProducts();
