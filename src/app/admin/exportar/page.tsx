@@ -1,14 +1,71 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
-import { Download, FileSpreadsheet, Loader2, CheckCircle, ArrowLeft } from 'lucide-react';
+import { Download, FileSpreadsheet, Loader2, CheckCircle, ArrowLeft, Copy, Eye, Table } from 'lucide-react';
 import Link from 'next/link';
+
+interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  image_url: string;
+  images: string[];
+  sizes: string[];
+  colors: string[];
+  weight: number;
+  height: number;
+  width: number;
+  length: number;
+}
 
 export default function ExportarPage() {
   const [loading, setLoading] = useState(false);
   const [exported, setExported] = useState(false);
   const [productCount, setProductCount] = useState(0);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [showTable, setShowTable] = useState(false);
+  const [copiedCell, setCopiedCell] = useState<string | null>(null);
+
+  useEffect(() => {
+    loadProducts();
+  }, []);
+
+  async function loadProducts() {
+    const { data, error } = await supabase.from('products').select('*');
+    if (!error && data) {
+      setProducts(data);
+      setProductCount(data.length);
+    }
+  }
+
+  function copyToClipboard(text: string, cellId: string) {
+    navigator.clipboard.writeText(text);
+    setCopiedCell(cellId);
+    setTimeout(() => setCopiedCell(null), 1500);
+  }
+
+  function formatDescription(desc: string): string {
+    const clean = (desc || '').replace(/\n/g, ' ').trim();
+    if (clean.length >= 100) return clean;
+    return clean + ' - Produto de alta qualidade. Confira as fotos e detalhes. Enviamos para todo Brasil com segurança.';
+  }
+
+  function getCategoryName(cat: string): string {
+    const mapping: Record<string, string> = {
+      'blusas': 'Blusas',
+      'vestidos': 'Vestidos',
+      'calcas': 'Calças',
+      'shorts': 'Shorts',
+      'saias': 'Saias',
+      'conjuntos': 'Conjuntos',
+      'moda-praia': 'Moda Praia',
+      'acessorios': 'Acessórios',
+    };
+    return mapping[cat] || cat || 'Roupas Femininas';
+  }
 
   async function exportToCSV() {
     setLoading(true);
@@ -65,121 +122,11 @@ export default function ExportarPage() {
       ].join('\n');
 
       const BOM = '\uFEFF';
-      const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const fileName = `produtos_tinaplus_${new Date().toISOString().split('T')[0]}.csv`;
       
-      // Tenta abrir em nova aba para contornar bloqueio de iframe
       window.parent.postMessage({ 
         type: "OPEN_EXTERNAL_URL", 
         data: { url: `data:text/csv;charset=utf-8,${encodeURIComponent(BOM + csvContent)}` } 
       }, "*");
-      
-      // Fallback: tenta download direto também
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = fileName;
-      link.target = '_blank';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
-      
-      setExported(true);
-    } catch (error) {
-      console.error('Erro ao exportar:', error);
-      alert('Erro ao exportar produtos');
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function exportToShopeeFormat() {
-    setLoading(true);
-    setExported(false);
-    
-    try {
-      const { data: products, error } = await supabase
-        .from('products')
-        .select('*');
-
-      if (error) throw error;
-      if (!products || products.length === 0) {
-        alert('Nenhum produto encontrado para exportar');
-        return;
-      }
-
-      setProductCount(products.length);
-
-      const headers = [
-        'ps_category',
-        'ps_product_name',
-        'ps_product_description',
-        'ps_sku_name',
-        'ps_price',
-        'ps_stock',
-        'ps_item_weight',
-        'ps_height',
-        'ps_width',
-        'ps_length',
-        'ps_main_image',
-        'ps_image_2',
-        'ps_image_3',
-        'ps_image_4',
-        'ps_image_5',
-        'ps_brand'
-      ];
-
-      const rows = products.map(product => {
-        const images = Array.isArray(product.images) ? product.images : [];
-        return [
-          product.category || 'Moda Feminina',
-          product.name || '',
-          (product.description || '').replace(/\n/g, ' ').replace(/"/g, '""'),
-          product.name || '',
-          product.price || '',
-          '10',
-          (parseFloat(product.weight || '0.3') * 1000).toString(),
-          product.height || '2',
-          product.width || '20',
-          product.length || '30',
-          product.image_url || '',
-          images[0] || '',
-          images[1] || '',
-          images[2] || '',
-          images[3] || '',
-          'Tina Plus Fashion'
-        ];
-      });
-
-      const csvContent = [
-        headers.join(';'),
-        ...rows.map(row => row.map(cell => `"${cell}"`).join(';'))
-      ].join('\n');
-
-      const BOM = '\uFEFF';
-      const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const fileName = `shopee_produtos_${new Date().toISOString().split('T')[0]}.csv`;
-      
-      // Tenta abrir em nova aba para contornar bloqueio de iframe
-      const downloadUrl = url;
-      window.parent.postMessage({ 
-        type: "OPEN_EXTERNAL_URL", 
-        data: { url: `data:text/csv;charset=utf-8,${encodeURIComponent(BOM + csvContent)}` } 
-      }, "*");
-      
-      // Fallback: tenta download direto também
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = fileName;
-      link.target = '_blank';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
       
       setExported(true);
     } catch (error) {
