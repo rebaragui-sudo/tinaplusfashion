@@ -117,7 +117,7 @@ const ProductCard = ({ product }: { product: Product }) => {
           </span>
         </div>
         
-        <p className="text-[11px] text-[#71717a]">ou 10x de {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price / 10)}</p>
+        <p className="text-[11px] text-[#71717a]">ou até 12x no cartão</p>
 
         <div className="flex flex-wrap gap-1 mt-3">
           {(product.sizes || []).map((size, idx) => (

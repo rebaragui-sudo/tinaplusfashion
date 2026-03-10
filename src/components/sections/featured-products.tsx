@@ -145,7 +145,7 @@ export default function FeaturedProductsGrid() {
                 </div>
                 
                 <p className="text-[11px] text-muted-foreground mt-1">
-                  ou 10x de {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price / 10)} sem juros
+                  ou até 12x no cartão
                 </p>
 
                   {/* Size Chips */}
