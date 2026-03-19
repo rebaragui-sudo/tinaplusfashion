@@ -52,6 +52,7 @@ export default function AdminPage() {
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [colorInput, setColorInput] = useState('#000000');
   const [colorNameInput, setColorNameInput] = useState('');
+  const [colorMode, setColorMode] = useState<'cor' | 'estampa'>('cor');
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -184,12 +185,14 @@ export default function AdminPage() {
 
   const addColor = () => {
     if (!colorNameInput.trim()) {
-      toast.error('Por favor, dê um nome para a cor');
+      toast.error('Por favor, dê um nome para a ' + (colorMode === 'estampa' ? 'estampa' : 'cor'));
       return;
     }
-    const colorEntry = `${colorNameInput.trim()}:${colorInput}`;
+    const colorEntry = colorMode === 'estampa'
+      ? `${colorNameInput.trim()}:estampa`
+      : `${colorNameInput.trim()}:${colorInput}`;
     if (formData.colors.includes(colorEntry)) {
-      toast.error('Esta cor já foi adicionada');
+      toast.error('Já adicionado');
       return;
     }
     setFormData(prev => ({
@@ -509,30 +512,48 @@ export default function AdminPage() {
                 <label className="text-sm font-medium text-gray-700">Cores do Produto</label>
                 <div className="space-y-3">
                   <div className="flex flex-col gap-2">
+                    <div className="flex gap-1 p-1 bg-gray-100 rounded-lg w-fit">
+                      <button
+                        type="button"
+                        onClick={() => setColorMode('cor')}
+                        className={`px-3 py-1 rounded-md text-xs font-bold transition-all ${colorMode === 'cor' ? 'bg-white shadow text-[#800020]' : 'text-gray-500 hover:text-gray-700'}`}
+                      >
+                        Cor
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setColorMode('estampa')}
+                        className={`px-3 py-1 rounded-md text-xs font-bold transition-all ${colorMode === 'estampa' ? 'bg-white shadow text-[#800020]' : 'text-gray-500 hover:text-gray-700'}`}
+                      >
+                        Estampa
+                      </button>
+                    </div>
                     <div className="flex gap-2">
                       <input
                         type="text"
                         className="flex-grow p-2 border rounded-md focus:ring-2 focus:ring-[#800020] outline-none text-sm"
                         value={colorNameInput}
                         onChange={(e) => setColorNameInput(e.target.value)}
-                        placeholder="Nome da cor (ex: Azul Marinho)"
+                        placeholder={colorMode === 'estampa' ? 'Nome da estampa (ex: Floral, Xadrez)' : 'Nome da cor (ex: Azul Marinho)'}
                       />
-                      <div className="flex items-center gap-1 border rounded-md p-1 bg-white">
-                        <input
-                          type="color"
-                          className="w-8 h-8 p-0 border-0 cursor-pointer rounded overflow-hidden"
-                          value={colorInput}
-                          onChange={(e) => setColorInput(e.target.value)}
-                        />
-                        <button
-                          type="button"
-                          onClick={openEyeDropper}
-                          title="Usar conta-gotas"
-                          className="p-1 hover:bg-gray-100 rounded transition-colors text-gray-600"
-                        >
-                          <Pipette size={18} />
-                        </button>
-                      </div>
+                      {colorMode === 'cor' && (
+                        <div className="flex items-center gap-1 border rounded-md p-1 bg-white">
+                          <input
+                            type="color"
+                            className="w-8 h-8 p-0 border-0 cursor-pointer rounded overflow-hidden"
+                            value={colorInput}
+                            onChange={(e) => setColorInput(e.target.value)}
+                          />
+                          <button
+                            type="button"
+                            onClick={openEyeDropper}
+                            title="Usar conta-gotas"
+                            className="p-1 hover:bg-gray-100 rounded transition-colors text-gray-600"
+                          >
+                            <Pipette size={18} />
+                          </button>
+                        </div>
+                      )}
                       <button
                         type="button"
                         onClick={addColor}
@@ -547,11 +568,18 @@ export default function AdminPage() {
                     <div className="flex flex-wrap gap-2 p-3 bg-gray-50 rounded-lg border border-dashed">
                       {formData.colors.map((color, idx) => (
                         <div key={idx} className="group relative flex items-center gap-2 bg-white px-2 py-1 rounded-full border shadow-sm">
-                          <div 
-                            className="w-4 h-4 rounded-full border shadow-sm"
-                            style={{ backgroundColor: getColorValue(color) }}
-                          />
+                          {getColorValue(color) === 'estampa' ? (
+                            <div className="w-4 h-4 rounded-full border shadow-sm bg-gradient-to-br from-pink-300 via-yellow-200 to-blue-300 flex items-center justify-center text-[8px]">🎨</div>
+                          ) : (
+                            <div
+                              className="w-4 h-4 rounded-full border shadow-sm"
+                              style={{ backgroundColor: getColorValue(color) }}
+                            />
+                          )}
                           <span className="text-xs font-medium text-gray-700">{getColorName(color)}</span>
+                          {getColorValue(color) === 'estampa' && (
+                            <span className="text-[9px] text-gray-400 italic">estampa</span>
+                          )}
                           <button
                             type="button"
                             onClick={() => removeColor(color)}
@@ -678,11 +706,15 @@ export default function AdminPage() {
                       {formData.colors.map(color => (
                         formData.sizes.map(size => (
                           <div key={`${color}-${size}`} className="flex items-center gap-3 bg-white p-2 rounded-lg border shadow-sm">
-                            <div 
-                              className="w-6 h-6 rounded-full border shrink-0"
-                              style={{ backgroundColor: getColorValue(color) }}
-                              title={getColorName(color)}
-                            />
+                            {getColorValue(color) === 'estampa' ? (
+                              <div className="w-6 h-6 rounded-full border shrink-0 bg-gradient-to-br from-pink-300 via-yellow-200 to-blue-300 flex items-center justify-center text-[10px]">🎨</div>
+                            ) : (
+                              <div
+                                className="w-6 h-6 rounded-full border shrink-0"
+                                style={{ backgroundColor: getColorValue(color) }}
+                                title={getColorName(color)}
+                              />
+                            )}
                             <div className="flex-grow">
                               <span className="text-[10px] font-bold text-gray-400 block uppercase leading-none mb-1">
                                 {getColorName(color)} - {size}
@@ -823,12 +855,16 @@ export default function AdminPage() {
                           <td className="px-6 py-4 text-center">
                             <div className="flex flex-wrap gap-1 justify-center min-w-[60px]">
                               {(product.colors || []).map((color, idx) => (
-                                <div 
-                                  key={idx}
-                                  className="w-4 h-4 rounded-full border border-gray-200 shadow-sm"
-                                  style={{ backgroundColor: getColorValue(color) }}
-                                  title={getColorName(color)}
-                                />
+                                getColorValue(color) === 'estampa' ? (
+                                  <div key={idx} className="w-4 h-4 rounded-full border border-gray-200 shadow-sm bg-gradient-to-br from-pink-300 via-yellow-200 to-blue-300" title={getColorName(color)} />
+                                ) : (
+                                  <div
+                                    key={idx}
+                                    className="w-4 h-4 rounded-full border border-gray-200 shadow-sm"
+                                    style={{ backgroundColor: getColorValue(color) }}
+                                    title={getColorName(color)}
+                                  />
+                                )
                               ))}
                               {(!product.colors || product.colors.length === 0) && (
                                 <span className="text-[10px] text-gray-400">n/a</span>

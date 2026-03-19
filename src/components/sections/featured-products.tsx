@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowRight, ShoppingBag, Eye, Heart, Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
-import { getColorValue } from '@/lib/colors';
+import { getColorValue, getColorName } from '@/lib/colors';
 
 interface Product {
   id: string;
@@ -120,11 +120,15 @@ export default function FeaturedProductsGrid() {
                   {/* Color dots */}
                   <div className="flex gap-1">
                     {(product.colors || []).slice(0, 3).map((color, idx) => (
-                        <div 
+                      getColorValue(color) === 'estampa' ? (
+                        <div key={idx} className="w-2.5 h-2.5 rounded-full border border-gray-200 bg-gradient-to-br from-pink-300 via-yellow-200 to-blue-300" title={getColorName(color)} />
+                      ) : (
+                        <div
                           key={idx}
                           className="w-2.5 h-2.5 rounded-full border border-gray-200"
                           style={{ backgroundColor: getColorValue(color) }}
                         />
+                      )
                     ))}
                     {(product.colors?.length || 0) > 3 && (
                       <span className="text-[8px] text-muted-foreground">+{product.colors.length - 3}</span>

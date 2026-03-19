@@ -261,10 +261,14 @@ export default function ProductPage() {
                           <tr key={color} className="border-b last:border-0">
                             <td className="p-4 border-r">
                               <div className="flex flex-col items-center gap-2">
-                                <div 
-                                  className="w-10 h-10 rounded-full border shadow-inner"
-                                  style={{ backgroundColor: getColorValue(color) }}
-                                />
+                                {getColorValue(color) === 'estampa' ? (
+                                  <div className="w-10 h-10 rounded-full border shadow-inner bg-gradient-to-br from-pink-300 via-yellow-200 to-blue-300 flex items-center justify-center text-sm">🎨</div>
+                                ) : (
+                                  <div
+                                    className="w-10 h-10 rounded-full border shadow-inner"
+                                    style={{ backgroundColor: getColorValue(color) }}
+                                  />
+                                )}
                                 <span className="text-[10px] font-medium text-center leading-tight uppercase">
                                   {getColorName(color)}
                                 </span>

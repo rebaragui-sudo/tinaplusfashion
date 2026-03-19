@@ -46,3 +46,9 @@ export const getColorValue = (color: string) => {
   const entry = Object.entries(COLOR_MAP).find(([_, name]) => name.toLowerCase() === color.toLowerCase());
   return entry ? entry[0] : color;
 };
+
+export const isEstampa = (color: string) => {
+  if (!color) return false;
+  if (color.includes(':')) return color.split(':')[1] === 'estampa';
+  return false;
+};
