@@ -852,12 +852,10 @@ export default function AdminPage() {
                 <thead className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
                   <tr>
                     <th className="px-6 py-4 font-semibold">Produto</th>
-                      <th className="px-6 py-4 font-semibold">Tamanhos</th>
-                      <th className="px-6 py-4 font-semibold text-center">Cores</th>
+                    <th className="px-6 py-4 font-semibold text-center">Cores</th>
                     <th className="px-6 py-4 font-semibold">Categoria</th>
                     <th className="px-6 py-4 font-semibold">Preço</th>
-                    <th className="px-6 py-4 font-semibold">Status</th>
-                    <th className="px-6 py-4 font-semibold text-right">Ações</th>
+                    <th className="px-6 py-4 font-semibold sticky right-0 bg-gray-50 text-right">Ações</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
@@ -887,15 +885,6 @@ export default function AdminPage() {
                             </div>
                             </div>
                           </td>
-                          <td className="px-6 py-4">
-                            <div className="flex flex-wrap gap-1 max-w-[150px]">
-                              {(product.sizes || []).map((size, idx) => (
-                                <span key={idx} className="text-[10px] px-1.5 py-0.5 bg-gray-100 rounded text-gray-600 font-bold">
-                                  {size}
-                                </span>
-                              ))}
-                            </div>
-                          </td>
                           <td className="px-6 py-4 text-center">
                             <div className="flex flex-wrap gap-1 justify-center min-w-[60px]">
                               {(product.colors || []).map((color, idx) => (
@@ -923,21 +912,7 @@ export default function AdminPage() {
                       <td className="px-6 py-4 font-bold text-[#800020]">
                         {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
                       </td>
-                      <td className="px-6 py-4">
-                        <div className="flex gap-1">
-                          {product.is_featured && (
-                            <span className="px-2 py-0.5 bg-yellow-100 text-yellow-800 text-[10px] rounded-full font-bold">
-                              DESTAQUE
-                            </span>
-                          )}
-                          {product.is_new_arrival && (
-                            <span className="px-2 py-0.5 bg-blue-100 text-blue-800 text-[10px] rounded-full font-bold">
-                              NOVIDADE
-                            </span>
-                          )}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 text-right">
+                      <td className="px-6 py-4 text-right sticky right-0 bg-white">
                         <div className="flex justify-end gap-2">
                           <button
                             onClick={() => handleEdit(product)}
