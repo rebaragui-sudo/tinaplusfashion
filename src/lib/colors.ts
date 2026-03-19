@@ -52,3 +52,10 @@ export const isEstampa = (color: string) => {
   if (color.includes(':')) return color.split(':')[1] === 'estampa';
   return false;
 };
+
+export const getEstampaImage = (color: string): string | null => {
+  if (!color) return null;
+  const parts = color.split(':');
+  if (parts[1] === 'estampa' && parts[2]) return parts.slice(2).join(':');
+  return null;
+};

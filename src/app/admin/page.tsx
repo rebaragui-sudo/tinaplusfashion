@@ -26,7 +26,7 @@ import {
 
 import { toast } from 'sonner';
 import Link from 'next/link';
-import { getColorName, getColorValue } from '@/lib/colors';
+import { getColorName, getColorValue, getEstampaImage } from '@/lib/colors';
 
 interface Product {
   id: string;
@@ -53,6 +53,8 @@ export default function AdminPage() {
   const [colorInput, setColorInput] = useState('#000000');
   const [colorNameInput, setColorNameInput] = useState('');
   const [colorMode, setColorMode] = useState<'cor' | 'estampa'>('cor');
+  const [estampaImageUrl, setEstampaImageUrl] = useState('');
+  const [uploadingEstampa, setUploadingEstampa] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -189,7 +191,7 @@ export default function AdminPage() {
       return;
     }
     const colorEntry = colorMode === 'estampa'
-      ? `${colorNameInput.trim()}:estampa`
+      ? `${colorNameInput.trim()}:estampa${estampaImageUrl ? ':' + estampaImageUrl : ''}`
       : `${colorNameInput.trim()}:${colorInput}`;
     if (formData.colors.includes(colorEntry)) {
       toast.error('Já adicionado');
@@ -200,6 +202,27 @@ export default function AdminPage() {
       colors: [...prev.colors, colorEntry]
     }));
     setColorNameInput('');
+    setEstampaImageUrl('');
+  };
+
+  const uploadEstampaImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingEstampa(true);
+    try {
+      const fileExt = file.name.split('.').pop();
+      const filePath = `product-images/estampa-${Math.random()}.${fileExt}`;
+      const { error: uploadError } = await supabase.storage.from('products').upload(filePath, file);
+      if (uploadError) throw uploadError;
+      const { data } = supabase.storage.from('products').getPublicUrl(filePath);
+      setEstampaImageUrl(data.publicUrl);
+      toast.success('Imagem da estampa carregada!');
+    } catch (error: any) {
+      toast.error('Erro no upload: ' + error.message);
+    } finally {
+      setUploadingEstampa(false);
+      e.target.value = '';
+    }
   };
 
   const removeColor = (color: string) => {
@@ -554,6 +577,19 @@ export default function AdminPage() {
                           </button>
                         </div>
                       )}
+                      {colorMode === 'estampa' && (
+                        <label className="cursor-pointer flex items-center gap-1 border rounded-md p-1 bg-white hover:bg-gray-50 transition-colors" title="Upload da estampa">
+                          {uploadingEstampa ? (
+                            <Loader2 size={18} className="animate-spin text-gray-400" />
+                          ) : estampaImageUrl ? (
+                            <img src={estampaImageUrl} className="w-8 h-8 object-cover rounded" />
+                          ) : (
+                            <ImageIcon size={18} className="text-gray-400" />
+                          )}
+                          <span className="text-xs text-gray-500 pr-1">{estampaImageUrl ? 'Trocar' : 'Foto'}</span>
+                          <input type="file" accept="image/*" className="hidden" onChange={uploadEstampaImage} />
+                        </label>
+                      )}
                       <button
                         type="button"
                         onClick={addColor}
@@ -569,7 +605,11 @@ export default function AdminPage() {
                       {formData.colors.map((color, idx) => (
                         <div key={idx} className="group relative flex items-center gap-2 bg-white px-2 py-1 rounded-full border shadow-sm">
                           {getColorValue(color) === 'estampa' ? (
-                            <div className="w-4 h-4 rounded-full border shadow-sm bg-gradient-to-br from-pink-300 via-yellow-200 to-blue-300 flex items-center justify-center text-[8px]">🎨</div>
+                            getEstampaImage(color) ? (
+                              <img src={getEstampaImage(color)!} className="w-5 h-5 rounded-full border shadow-sm object-cover" />
+                            ) : (
+                              <div className="w-4 h-4 rounded-full border shadow-sm bg-gradient-to-br from-pink-300 via-yellow-200 to-blue-300 flex items-center justify-center text-[8px]">🎨</div>
+                            )
                           ) : (
                             <div
                               className="w-4 h-4 rounded-full border shadow-sm"
@@ -707,7 +747,11 @@ export default function AdminPage() {
                         formData.sizes.map(size => (
                           <div key={`${color}-${size}`} className="flex items-center gap-3 bg-white p-2 rounded-lg border shadow-sm">
                             {getColorValue(color) === 'estampa' ? (
-                              <div className="w-6 h-6 rounded-full border shrink-0 bg-gradient-to-br from-pink-300 via-yellow-200 to-blue-300 flex items-center justify-center text-[10px]">🎨</div>
+                              getEstampaImage(color) ? (
+                                <img src={getEstampaImage(color)!} className="w-6 h-6 rounded-full border shrink-0 object-cover" title={getColorName(color)} />
+                              ) : (
+                                <div className="w-6 h-6 rounded-full border shrink-0 bg-gradient-to-br from-pink-300 via-yellow-200 to-blue-300 flex items-center justify-center text-[10px]">🎨</div>
+                              )
                             ) : (
                               <div
                                 className="w-6 h-6 rounded-full border shrink-0"
@@ -856,7 +900,11 @@ export default function AdminPage() {
                             <div className="flex flex-wrap gap-1 justify-center min-w-[60px]">
                               {(product.colors || []).map((color, idx) => (
                                 getColorValue(color) === 'estampa' ? (
-                                  <div key={idx} className="w-4 h-4 rounded-full border border-gray-200 shadow-sm bg-gradient-to-br from-pink-300 via-yellow-200 to-blue-300" title={getColorName(color)} />
+                                  getEstampaImage(color) ? (
+                                    <img key={idx} src={getEstampaImage(color)!} className="w-4 h-4 rounded-full border border-gray-200 shadow-sm object-cover" title={getColorName(color)} />
+                                  ) : (
+                                    <div key={idx} className="w-4 h-4 rounded-full border border-gray-200 shadow-sm bg-gradient-to-br from-pink-300 via-yellow-200 to-blue-300" title={getColorName(color)} />
+                                  )
                                 ) : (
                                   <div
                                     key={idx}

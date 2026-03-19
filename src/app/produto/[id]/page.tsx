@@ -22,7 +22,7 @@ import {
   Minus
 } from 'lucide-react';
 import { toast } from 'sonner';
-import { getColorName, getColorValue } from '@/lib/colors';
+import { getColorName, getColorValue, getEstampaImage } from '@/lib/colors';
 
 interface Variant {
   id: string;
@@ -262,7 +262,11 @@ export default function ProductPage() {
                             <td className="p-4 border-r">
                               <div className="flex flex-col items-center gap-2">
                                 {getColorValue(color) === 'estampa' ? (
-                                  <div className="w-10 h-10 rounded-full border shadow-inner bg-gradient-to-br from-pink-300 via-yellow-200 to-blue-300 flex items-center justify-center text-sm">🎨</div>
+                                  getEstampaImage(color) ? (
+                                    <img src={getEstampaImage(color)!} className="w-10 h-10 rounded-full border shadow-inner object-cover" />
+                                  ) : (
+                                    <div className="w-10 h-10 rounded-full border shadow-inner bg-gradient-to-br from-pink-300 via-yellow-200 to-blue-300 flex items-center justify-center text-sm">🎨</div>
+                                  )
                                 ) : (
                                   <div
                                     className="w-10 h-10 rounded-full border shadow-inner"
