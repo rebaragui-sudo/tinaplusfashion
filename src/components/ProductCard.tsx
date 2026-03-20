@@ -5,6 +5,7 @@ import React from 'react';
 import { ShoppingBag, Eye, Heart } from 'lucide-react';
 import { useCart } from '@/hooks/use-cart';
 import { useRouter } from 'next/navigation';
+import { getProductCombo } from '@/lib/combos';
 
 interface Product {
   id: string;
@@ -65,6 +66,11 @@ export default function ProductCard({ product }: ProductCardProps) {
               Oferta
             </span>
           )}
+          {(() => { const combo = getProductCombo(product.id); return combo ? (
+            <span className="bg-[#800020] text-white text-[10px] font-bold px-2 py-1 rounded-sm uppercase">
+              {combo.quantity} por R${combo.price}
+            </span>
+          ) : null; })()}
         </div>
 
         {/* Wishlist Button */}

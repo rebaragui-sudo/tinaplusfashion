@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { useCart } from '@/hooks/use-cart';
 import { getColorValue, getColorName, getEstampaImage } from '@/lib/colors';
+import { getProductCombo } from '@/lib/combos';
 
 interface Product {
   id: string;
@@ -49,6 +50,11 @@ const ProductCard = ({ product }: { product: Product }) => {
               Novidade
             </span>
           )}
+          {(() => { const combo = getProductCombo(product.id); return combo ? (
+            <span className="bg-[#800020] text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
+              {combo.quantity} por R${combo.price}
+            </span>
+          ) : null; })()}
         </div>
 
         <button 

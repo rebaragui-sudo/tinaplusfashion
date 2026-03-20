@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { ArrowRight, ShoppingBag, Eye, Heart, Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { getColorValue, getColorName, getEstampaImage } from '@/lib/colors';
+import { getProductCombo } from '@/lib/combos';
 
 interface Product {
   id: string;
@@ -88,9 +89,11 @@ export default function FeaturedProductsGrid() {
                       Novidade
                     </span>
                   )}
-                  <span className="bg-[#800020] text-white text-[10px] font-bold uppercase px-2 py-1 rounded-sm">
-                    Oferta
-                  </span>
+                  {(() => { const combo = getProductCombo(product.id); return combo ? (
+                    <span className="bg-[#800020] text-white text-[10px] font-bold px-2 py-1 rounded-sm uppercase">
+                      {combo.quantity} por R${combo.price}
+                    </span>
+                  ) : null; })()}
                 </div>
 
                 {/* Wishlist Button */}
