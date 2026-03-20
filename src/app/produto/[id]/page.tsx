@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { getColorName, getColorValue, getEstampaImage } from '@/lib/colors';
+import { getProductCombo } from '@/lib/combos';
 
 interface Variant {
   id: string;
@@ -50,12 +51,18 @@ interface Product {
 
 export default function ProductPage() {
   const { id } = useParams();
-  const { addItem } = useCart();
+  const { addItem, addCombo } = useCart();
   const [product, setProduct] = useState<Product | null>(null);
   const [variants, setVariants] = useState<Variant[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantities, setQuantities] = useState<Record<string, number>>({});
+
+  // Combo state
+  const [comboMode, setComboMode] = useState(false);
+  const [comboSelections, setComboSelections] = useState<{color: string; size: string}[]>([]);
+  const [comboColor, setComboColor] = useState('');
+  const [comboSize, setComboSize] = useState('');
 
   useEffect(() => {
     async function fetchProductAndVariants() {
@@ -78,6 +85,8 @@ export default function ProductPage() {
 
         setProduct(productRes.data);
         setVariants(variantsRes.data || []);
+        if (productRes.data?.colors?.[0]) setComboColor(productRes.data.colors[0]);
+        if (productRes.data?.sizes?.[0]) setComboSize(productRes.data.sizes[0]);
       } catch (error: any) {
         console.error('Error fetching product:', error);
         toast.error('Erro ao carregar produto');
@@ -123,6 +132,44 @@ export default function ProductPage() {
 
     setQuantities({});
     toast.success('Produtos adicionados ao carrinho');
+  };
+
+  const handleAddComboItem = () => {
+    if (!comboColor || !comboSize) {
+      toast.error('Selecione cor e tamanho');
+      return;
+    }
+    const combo = product ? getProductCombo(product.id) : null;
+    if (!combo) return;
+    if (comboSelections.length >= combo.quantity) {
+      toast.error(`Máximo de ${combo.quantity} peças no combo`);
+      return;
+    }
+    setComboSelections(prev => [...prev, { color: comboColor, size: comboSize }]);
+  };
+
+  const handleFinishCombo = () => {
+    if (!product) return;
+    const combo = getProductCombo(product.id);
+    if (!combo) return;
+    if (comboSelections.length !== combo.quantity) {
+      toast.error(`Selecione ${combo.quantity} peças para o combo`);
+      return;
+    }
+    addCombo({
+      name: `Combo ${combo.quantity} ${product.name}`,
+      price: combo.price,
+      subItems: comboSelections.map(s => ({
+        id: product.id,
+        name: product.name,
+        image_url: product.image_url,
+        color: s.color,
+        size: s.size,
+      }))
+    });
+    setComboSelections([]);
+    setComboMode(false);
+    toast.success('Combo adicionado ao carrinho!');
   };
 
   if (loading) {
@@ -240,6 +287,118 @@ export default function ProductPage() {
                   </span>
                 </div>
               </div>
+
+                  {/* Combo Banner */}
+                  {product && getProductCombo(product.id) && (() => {
+                    const combo = getProductCombo(product.id)!;
+                    return (
+                      <div className="mb-6 rounded-xl border-2 border-[#800020] overflow-hidden">
+                        <div className="bg-[#800020] px-4 py-2 flex items-center justify-between">
+                          <span className="text-white font-bold text-sm uppercase tracking-wide">
+                            🔥 Oferta Combo: {combo.quantity} peças por R${combo.price}
+                          </span>
+                          <span className="text-white/80 text-xs line-through">
+                            R${product.price * combo.quantity}
+                          </span>
+                        </div>
+                        <div className="bg-red-50 px-4 py-3">
+                          {!comboMode ? (
+                            <button
+                              onClick={() => setComboMode(true)}
+                              className="w-full py-2 bg-[#800020] text-white font-bold rounded-lg text-sm hover:bg-[#600018] transition-colors"
+                            >
+                              Montar meu combo
+                            </button>
+                          ) : (
+                            <div className="space-y-3">
+                              {/* Seleções já feitas */}
+                              {comboSelections.length > 0 && (
+                                <div className="flex flex-wrap gap-2">
+                                  {comboSelections.map((s, i) => (
+                                    <div key={i} className="flex items-center gap-1 bg-white border border-[#800020] rounded-full px-3 py-1 text-xs font-bold text-[#800020]">
+                                      {getColorValue(s.color) === 'estampa'
+                                        ? getEstampaImage(s.color)
+                                          ? <img src={getEstampaImage(s.color)!} className="w-3.5 h-3.5 rounded-full object-cover" />
+                                          : <span>🎨</span>
+                                        : <div className="w-3 h-3 rounded-full border" style={{ backgroundColor: getColorValue(s.color) }} />
+                                      }
+                                      {getColorName(s.color)} / {s.size}
+                                      <button onClick={() => setComboSelections(prev => prev.filter((_, idx) => idx !== i))} className="ml-1 text-gray-400 hover:text-red-600">✕</button>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+
+                              {/* Progresso */}
+                              <div className="flex items-center gap-2">
+                                {Array.from({ length: combo.quantity }).map((_, i) => (
+                                  <div key={i} className={`flex-1 h-2 rounded-full ${i < comboSelections.length ? 'bg-[#800020]' : 'bg-gray-200'}`} />
+                                ))}
+                                <span className="text-xs font-bold text-[#800020]">{comboSelections.length}/{combo.quantity}</span>
+                              </div>
+
+                              {/* Seletor cor + tamanho */}
+                              {comboSelections.length < combo.quantity && (
+                                <div className="flex gap-2 items-end flex-wrap">
+                                  <div>
+                                    <p className="text-[10px] font-bold text-gray-500 mb-1 uppercase">Cor</p>
+                                    <div className="flex gap-1.5 flex-wrap">
+                                      {(product.colors || []).map(c => (
+                                        <button
+                                          key={c}
+                                          onClick={() => setComboColor(c)}
+                                          className={`w-7 h-7 rounded-full border-2 transition-all ${comboColor === c ? 'border-[#800020] scale-110' : 'border-gray-200'}`}
+                                          title={getColorName(c)}
+                                        >
+                                          {getColorValue(c) === 'estampa'
+                                            ? getEstampaImage(c)
+                                              ? <img src={getEstampaImage(c)!} className="w-full h-full rounded-full object-cover" />
+                                              : <span className="text-xs">🎨</span>
+                                            : <div className="w-full h-full rounded-full" style={{ backgroundColor: getColorValue(c) }} />
+                                          }
+                                        </button>
+                                      ))}
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <p className="text-[10px] font-bold text-gray-500 mb-1 uppercase">Tamanho</p>
+                                    <div className="flex gap-1.5 flex-wrap">
+                                      {(product.sizes || []).map(s => (
+                                        <button
+                                          key={s}
+                                          onClick={() => setComboSize(s)}
+                                          className={`px-2.5 py-1 text-xs font-bold rounded border transition-all ${comboSize === s ? 'bg-[#800020] text-white border-[#800020]' : 'border-gray-300 text-gray-600 hover:border-[#800020]'}`}
+                                        >
+                                          {s}
+                                        </button>
+                                      ))}
+                                    </div>
+                                  </div>
+                                  <button
+                                    onClick={handleAddComboItem}
+                                    className="px-4 py-2 bg-[#800020] text-white text-xs font-bold rounded-lg hover:bg-[#600018] transition-colors"
+                                  >
+                                    + Adicionar peça
+                                  </button>
+                                </div>
+                              )}
+
+                              {comboSelections.length === combo.quantity && (
+                                <button
+                                  onClick={handleFinishCombo}
+                                  className="w-full py-2.5 bg-[#800020] text-white font-bold rounded-lg text-sm hover:bg-[#600018] transition-colors"
+                                >
+                                  ✓ Adicionar combo ao carrinho — R${combo.price}
+                                </button>
+                              )}
+
+                              <button onClick={() => { setComboMode(false); setComboSelections([]); }} className="text-xs text-gray-400 hover:text-gray-600 underline">cancelar</button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })()}
 
                   {/* Variants Grid Table */}
                   <div className="mb-8 overflow-x-auto border rounded-lg">
