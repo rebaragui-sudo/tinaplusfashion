@@ -59,73 +59,56 @@ export default function HeroSlider() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
 
+  const totalPairs = Math.ceil(slides.length / 2);
+
   const nextSlide = useCallback(() => {
     if (isAnimating) return;
     setIsAnimating(true);
-    setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
+    setCurrentSlide((prev) => (prev === totalPairs - 1 ? 0 : prev + 1));
     setTimeout(() => setIsAnimating(false), 1000);
-  }, [isAnimating]);
+  }, [isAnimating, totalPairs]);
 
   const prevSlide = useCallback(() => {
     if (isAnimating) return;
     setIsAnimating(true);
-    setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+    setCurrentSlide((prev) => (prev === 0 ? totalPairs - 1 : prev - 1));
     setTimeout(() => setIsAnimating(false), 1000);
-  }, [isAnimating]);
+  }, [isAnimating, totalPairs]);
 
   useEffect(() => {
     const timer = setInterval(nextSlide, 6000);
     return () => clearInterval(timer);
   }, [nextSlide]);
 
+  // Agrupa de 2 em 2
+  const pairs = [];
+  for (let i = 0; i < slides.length; i += 2) {
+    pairs.push([slides[i], slides[i + 1]].filter(Boolean));
+  }
+
   return (
     <section className="relative h-[60vh] md:h-[80vh] w-full overflow-hidden bg-[#fcfaf8]">
       {/* Slides */}
-      {slides.map((slide, index) => (
+      {pairs.map((pair, index) => (
         <div
-          key={slide.id}
+          key={index}
           className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
             index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
           }`}
         >
-          {/* Overlay Gradient */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent z-10"></div>
-          
-          {/* Main Image */}
-          <div className="relative w-full h-full">
-            <Image
-              src={slide.image}
-              alt={slide.title}
-              fill
-              priority={index === 0}
-              className="object-contain object-center"
-              sizes="100vw"
-            />
-          </div>
-
-          {/* Text Content Overlay */}
-          <div className="absolute inset-0 z-20 flex items-center">
-            <div className="container mx-auto px-4 md:px-16 lg:px-24">
-              <div 
-                className={`max-w-xl transition-all duration-700 transform ${
-                  index === currentSlide ? "translate-y-0 opacity-100 ease-out" : "translate-y-8 opacity-0"
-                }`}
-              >
-                <h2 className="font-display text-4xl md:text-5xl lg:text-7xl font-bold text-white mb-4 drop-shadow-sm tracking-tight">
-                  {slide.title}
-                </h2>
-                <p className="text-lg md:text-xl lg:text-2xl text-white/95 mb-8 font-normal max-w-lg">
-                  {slide.description}
-                </p>
-                <a
-                  href={slide.link}
-                  className="inline-flex items-center justify-center gap-3 bg-[#800020] text-white px-8 md:px-10 py-3.5 md:py-4 rounded-md font-medium text-lg transition-transform hover:scale-105 active:scale-95 shadow-lg group"
-                >
-                  {slide.cta}
-                  <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-                </a>
+          <div className="flex w-full h-full">
+            {pair.map((slide) => (
+              <div key={slide.id} className="relative flex-1 h-full">
+                <Image
+                  src={slide.image}
+                  alt={slide.title}
+                  fill
+                  priority={index === 0}
+                  className="object-contain object-center"
+                  sizes="50vw"
+                />
               </div>
-            </div>
+            ))}
           </div>
         </div>
       ))}
@@ -148,7 +131,7 @@ export default function HeroSlider() {
 
       {/* Navigation Dots */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex items-center gap-3">
-        {slides.map((_, index) => (
+        {pairs.map((_, index) => (
           <button
             key={index}
             onClick={() => {
@@ -159,8 +142,8 @@ export default function HeroSlider() {
               }
             }}
             className={`transition-all duration-500 rounded-full h-2.5 ${
-              index === currentSlide 
-                ? "w-8 bg-white" 
+              index === currentSlide
+                ? "w-8 bg-white"
                 : "w-2.5 bg-white/50 hover:bg-white/80"
             }`}
             aria-label={`Ir para slide ${index + 1}`}
