@@ -98,7 +98,7 @@ export default function HeroSlider() {
               alt={slide.title}
               fill
               priority={index === 0}
-              className="object-cover object-center"
+              className="object-contain object-center"
               sizes="100vw"
             />
           </div>
