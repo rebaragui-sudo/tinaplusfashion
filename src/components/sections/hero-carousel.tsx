@@ -14,32 +14,32 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 const slides = [
   {
     id: 1,
-    url: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/IMG-20251023-WA0130-resized-1767802553558.jpg",
+    url: "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-1-1774030700198.jpg",
     alt: "Tina Plus Fashion Banner 1",
   },
   {
     id: 2,
-    url: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/IMG-20251020-WA0665-resized-1767802608825.jpg",
+    url: "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-2-1774030700690.jpg",
     alt: "Tina Plus Fashion Banner 2",
   },
   {
     id: 3,
-    url: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/IMG-20251020-WA0616-resized-1767802630019.jpg",
+    url: "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-3-1774030701032.jpg",
     alt: "Tina Plus Fashion Banner 3",
   },
   {
     id: 4,
-    url: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/IMG-20251015-WA0224-resized-1767802656607.jpg",
+    url: "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-4-1774030701338.jpg",
     alt: "Tina Plus Fashion Banner 4",
   },
   {
     id: 5,
-    url: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/IMG-20251010-WA0190-resized-1767802716610.jpg",
+    url: "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-5-1774030701577.jpg",
     alt: "Tina Plus Fashion Banner 5",
   },
   {
     id: 6,
-    url: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/ea02e2c1-3719-4f3c-b449-729e57b40008/IMG-20250915-WA0470-resized-1767802776978.jpg",
+    url: "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-6-1774030701944.jpg",
     alt: "Tina Plus Fashion Banner 6",
   },
 ];
