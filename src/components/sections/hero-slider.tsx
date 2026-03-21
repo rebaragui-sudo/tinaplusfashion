@@ -16,8 +16,9 @@ const slideGroups = [
     "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-7-1774092.jpg",
   ],
   [
-    "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-5-1774030701577.jpg",
-    "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-6-1774030701944.jpg",
+    "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-s3-1-1774092521429.jpg",
+    "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-s3-2-1774092521774.jpg",
+    "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-s3-3-1774092521933.jpg",
   ],
 ];
 
