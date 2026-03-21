@@ -66,7 +66,7 @@ export default function HeroSlider() {
                   alt={`Banner ${index + 1} foto ${i + 1}`}
                   fill
                   priority={index === 0}
-                  className="object-contain object-center"
+                  className="object-cover object-top"
                   sizes={`${Math.round(100 / group.length)}vw`}
                 />
               </div>
