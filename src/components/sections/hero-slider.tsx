@@ -13,11 +13,11 @@ const slideGroups = [
   [
     "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-3-1774030701032.jpg",
     "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-4-1774030701338.jpg",
+    "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-7-1774092.jpg",
   ],
   [
     "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-5-1774030701577.jpg",
     "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-6-1774030701944.jpg",
-    "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-7-1774092.jpg",
   ],
 ];
 
