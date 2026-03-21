@@ -27,6 +27,11 @@ const slideGroups = [
     "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-s4-3-1774095291613.png",
     "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-s4-4-1774095291784.png",
   ],
+  [
+    "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-s5-1-1774095789731.jpg",
+    "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-s5-2-1774095790272.jpg",
+    "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-s5-3-1774095790635.jpg",
+  ],
 ];
 
 export default function HeroSlider() {
