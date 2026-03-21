@@ -4,92 +4,52 @@ import React, { useState, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import Image from "next/image";
 
-const slides = [
-  {
-    id: 1,
-    image: "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-1-1774030700198.jpg",
-    title: "",
-    description: "",
-    cta: "Ver coleção",
-    link: "/",
-  },
-  {
-    id: 2,
-    image: "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-2-1774030700690.jpg",
-    title: "",
-    description: "",
-    cta: "Ver coleção",
-    link: "/",
-  },
-  {
-    id: 3,
-    image: "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-3-1774030701032.jpg",
-    title: "",
-    description: "",
-    cta: "Ver coleção",
-    link: "/",
-  },
-  {
-    id: 4,
-    image: "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-4-1774030701338.jpg",
-    title: "",
-    description: "",
-    cta: "Ver coleção",
-    link: "/",
-  },
-  {
-    id: 5,
-    image: "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-5-1774030701577.jpg",
-    title: "",
-    description: "",
-    cta: "Ver coleção",
-    link: "/",
-  },
-  {
-    id: 6,
-    image: "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-6-1774030701944.jpg",
-    title: "",
-    description: "",
-    cta: "Ver coleção",
-    link: "/",
-  },
+// Grupos de imagens — cada grupo aparece junto no banner
+const slideGroups = [
+  [
+    "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-1-1774030700198.jpg",
+    "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-2-1774030700690.jpg",
+    "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-7-1774092.jpg",
+  ],
+  [
+    "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-3-1774030701032.jpg",
+    "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-4-1774030701338.jpg",
+  ],
+  [
+    "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-5-1774030701577.jpg",
+    "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-6-1774030701944.jpg",
+  ],
 ];
 
 export default function HeroSlider() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  const totalPairs = Math.ceil(slides.length / 2);
+  const total = slideGroups.length;
 
   const nextSlide = useCallback(() => {
     if (isAnimating) return;
     setIsAnimating(true);
-    setCurrentSlide((prev) => (prev === totalPairs - 1 ? 0 : prev + 1));
+    setCurrentSlide((prev) => (prev === total - 1 ? 0 : prev + 1));
     setTimeout(() => setIsAnimating(false), 1000);
-  }, [isAnimating, totalPairs]);
+  }, [isAnimating, total]);
 
   const prevSlide = useCallback(() => {
     if (isAnimating) return;
     setIsAnimating(true);
-    setCurrentSlide((prev) => (prev === 0 ? totalPairs - 1 : prev - 1));
+    setCurrentSlide((prev) => (prev === 0 ? total - 1 : prev - 1));
     setTimeout(() => setIsAnimating(false), 1000);
-  }, [isAnimating, totalPairs]);
+  }, [isAnimating, total]);
 
   useEffect(() => {
     const timer = setInterval(nextSlide, 6000);
     return () => clearInterval(timer);
   }, [nextSlide]);
 
-  // Agrupa de 2 em 2
-  const pairs = [];
-  for (let i = 0; i < slides.length; i += 2) {
-    pairs.push([slides[i], slides[i + 1]].filter(Boolean));
-  }
-
   return (
     <section className="relative h-[60vh] md:h-[80vh] w-full overflow-hidden bg-[#fcfaf8]">
       {/* Slides */}
-      {pairs.map((pair, index) => (
+      {slideGroups.map((group, index) => (
         <div
           key={index}
           className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
@@ -97,15 +57,15 @@ export default function HeroSlider() {
           }`}
         >
           <div className="flex w-full h-full">
-            {pair.map((slide) => (
-              <div key={slide.id} className="relative flex-1 h-full">
+            {group.map((url, i) => (
+              <div key={i} className="relative flex-1 h-full">
                 <Image
-                  src={slide.image}
-                  alt={slide.title}
+                  src={url}
+                  alt={`Banner ${index + 1} foto ${i + 1}`}
                   fill
                   priority={index === 0}
                   className="object-contain object-center"
-                  sizes="50vw"
+                  sizes={`${Math.round(100 / group.length)}vw`}
                 />
               </div>
             ))}
@@ -130,8 +90,8 @@ export default function HeroSlider() {
       </button>
 
       {/* Navigation Dots */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex items-center gap-3">
-        {pairs.map((_, index) => (
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 flex items-center gap-3">
+        {slideGroups.map((_, index) => (
           <button
             key={index}
             onClick={() => {
@@ -143,8 +103,8 @@ export default function HeroSlider() {
             }}
             className={`transition-all duration-500 rounded-full h-2.5 ${
               index === currentSlide
-                ? "w-8 bg-white"
-                : "w-2.5 bg-white/50 hover:bg-white/80"
+                ? "w-8 bg-[#800020]"
+                : "w-2.5 bg-gray-400 hover:bg-gray-600"
             }`}
             aria-label={`Ir para slide ${index + 1}`}
           />
