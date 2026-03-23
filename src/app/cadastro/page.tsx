@@ -46,12 +46,19 @@ function RegisterForm() {
     }
 
     if (data.user) {
+      // Confirma e-mail automaticamente (sem precisar clicar no link)
+      await fetch('/api/auth/confirm', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: data.user.id }),
+      });
+
       // Create profile
       const { error: profileError } = await supabase
         .from('profiles')
         .insert([
-          { 
-            id: data.user.id, 
+          {
+            id: data.user.id,
             full_name: fullName,
             phone: phone
           }
@@ -60,6 +67,9 @@ function RegisterForm() {
       if (profileError) {
         console.error('Error creating profile:', profileError);
       }
+
+      // Faz login direto após cadastro
+      await supabase.auth.signInWithPassword({ email, password });
 
       if (redirect === 'checkout') {
         router.push('/?checkout=true');
