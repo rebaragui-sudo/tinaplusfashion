@@ -374,7 +374,9 @@ export default function AdminOrdersPage() {
                     <div className="space-y-4 pt-4 border-t">
                       <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Produtos</label>
                       <div className="space-y-3">
-                        {selectedOrder.items.map((item, idx) => (
+                        {selectedOrder.items
+                          .filter((item: any) => !item.cartId?.includes('no-size-no-color'))
+                          .map((item, idx) => (
                           <div key={idx} className="flex gap-3 items-start">
                             <div className="w-12 h-16 bg-gray-100 rounded overflow-hidden border flex-shrink-0">
                               <img src={item.image_url} alt="" className="w-full h-full object-cover" />
@@ -385,19 +387,27 @@ export default function AdminOrdersPage() {
                                 <div className="mt-1 space-y-1">
                                   {item.subItems.map((sub: any, subIdx: number) => (
                                     <div key={subIdx} className="flex items-center gap-2">
-                                      <span className="text-[10px] bg-gray-100 px-1.5 py-0.5 rounded font-bold text-gray-600">{sub.size}</span>
-                                      <div className="w-3.5 h-3.5 rounded-full border border-gray-200 flex-shrink-0" style={{ backgroundColor: getColorValue(sub.color) }} />
-                                      <span className="text-[10px] font-bold text-gray-500 uppercase">{getColorName(sub.color)}</span>
+                                      {sub.size && <span className="text-[10px] bg-gray-100 px-1.5 py-0.5 rounded font-bold text-gray-600">{sub.size}</span>}
+                                      {sub.color && (
+                                        <>
+                                          <div className="w-3.5 h-3.5 rounded-full border border-gray-200 flex-shrink-0" style={{ backgroundColor: getColorValue(sub.color) }} />
+                                          <span className="text-[10px] font-bold text-gray-500 uppercase">{getColorName(sub.color)}</span>
+                                        </>
+                                      )}
                                     </div>
                                   ))}
                                 </div>
-                              ) : (
+                              ) : (item.size || item.color) ? (
                                 <div className="flex items-center gap-2 mt-1">
-                                  <span className="text-[10px] bg-gray-100 px-1.5 py-0.5 rounded font-bold text-gray-600">{item.size}</span>
-                                  <div className="w-3.5 h-3.5 rounded-full border border-gray-200" style={{ backgroundColor: getColorValue(item.color) }} />
-                                  <span className="text-[10px] font-bold text-gray-500 uppercase">{getColorName(item.color)}</span>
+                                  {item.size && <span className="text-[10px] bg-gray-100 px-1.5 py-0.5 rounded font-bold text-gray-600">{item.size}</span>}
+                                  {item.color && (
+                                    <>
+                                      <div className="w-3.5 h-3.5 rounded-full border border-gray-200" style={{ backgroundColor: getColorValue(item.color) }} />
+                                      <span className="text-[10px] font-bold text-gray-500 uppercase">{getColorName(item.color)}</span>
+                                    </>
+                                  )}
                                 </div>
-                              )}
+                              ) : null}
                               <p className="text-[10px] text-gray-500 mt-1 font-medium">{item.quantity}x • {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.price)}</p>
                             </div>
                           </div>
