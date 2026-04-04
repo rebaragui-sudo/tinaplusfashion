@@ -51,6 +51,7 @@ function ComboSelectionContent() {
   const categorySlug = params.category as string;
   const quantityRequired = parseInt(searchParams.get('q') || '3');
   const totalPrice = parseFloat(searchParams.get('p') || '100');
+  const allowedIds = searchParams.get('ids')?.split(',') || [];
   
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -68,12 +69,15 @@ function ComboSelectionContent() {
       setLoading(true);
       try {
         let query = supabase.from('products').select('*');
-        
-        // Match category (handling common variations)
-        let categoryFilter = categorySlug;
-        if (categorySlug === 'calcas') categoryFilter = 'calça';
-        
-        query = query.ilike('category', `%${categoryFilter}%`);
+
+        if (allowedIds.length > 0) {
+          query = query.in('id', allowedIds);
+        } else {
+          // Match category (handling common variations)
+          let categoryFilter = categorySlug;
+          if (categorySlug === 'calcas') categoryFilter = 'calça';
+          query = query.ilike('category', `%${categoryFilter}%`);
+        }
 
         const { data, error } = await query;
         if (error) throw error;

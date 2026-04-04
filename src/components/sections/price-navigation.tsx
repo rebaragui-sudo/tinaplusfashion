@@ -13,7 +13,7 @@ const PriceNavigation = () => {
     {
       title: "3 Teds",
       price: "100",
-      href: "/combo/casacos?q=3&p=100",
+      href: "/combo/casacos?q=3&p=100&ids=0added14-1886-47bd-bf38-f007a2af10db",
       image: "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/0.5774713522445866.png",
       alt: "3 Teds"
     },
