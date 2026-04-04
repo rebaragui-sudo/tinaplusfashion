@@ -138,8 +138,9 @@ function ComboSelectionContent() {
       return;
     }
 
+    const categoryLabel = categorySlug === 'casacos' ? 'Teds' : categorySlug.charAt(0).toUpperCase() + categorySlug.slice(1);
     addCombo({
-      name: `Combo ${quantityRequired} ${categorySlug.charAt(0).toUpperCase() + categorySlug.slice(1)}`,
+      name: `Combo ${quantityRequired} ${categoryLabel}`,
       price: totalPrice,
       subItems: selectedItems.map(item => ({
         id: item.id,

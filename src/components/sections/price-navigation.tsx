@@ -11,11 +11,11 @@ const PriceNavigation = () => {
       alt: "7 Regatas"
     },
     {
-      title: "3 Bermudas",
+      title: "3 Teds",
       price: "100",
-      href: "/combo/bermudas?q=3&p=100",
-      image: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/ea02e2c1-3719-4f3c-b449-729e57b40008-hubpmg-com-br/assets/images/bermuda-bege-1-DL2gWBgs-5.png",
-      alt: "3 Bermudas"
+      href: "/combo/casacos?q=3&p=100",
+      image: "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/0.5774713522445866.png",
+      alt: "3 Teds"
     },
 
     {
