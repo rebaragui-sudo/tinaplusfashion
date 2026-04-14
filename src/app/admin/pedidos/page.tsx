@@ -59,6 +59,11 @@ export default function AdminOrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [filter, setFilter] = useState<'todos' | 'pagos'>('todos');
+
+  const filteredOrders = filter === 'pagos'
+    ? orders.filter(o => o.status !== 'pending')
+    : orders;
 
   useEffect(() => {
     const auth = localStorage.getItem('isAdmin');
@@ -207,8 +212,22 @@ export default function AdminOrdersPage() {
           {/* Orders List */}
           <div className="lg:col-span-2 space-y-4">
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-              <div className="p-4 border-b bg-gray-50/50">
+              <div className="p-4 border-b bg-gray-50/50 flex items-center justify-between">
                 <h2 className="font-semibold text-gray-900">Pedidos Recentes</h2>
+                <div className="flex rounded-lg overflow-hidden border border-gray-200 text-xs font-bold">
+                  <button
+                    onClick={() => setFilter('todos')}
+                    className={`px-3 py-1.5 transition-colors ${filter === 'todos' ? 'bg-[#800020] text-white' : 'bg-white text-gray-500 hover:bg-gray-50'}`}
+                  >
+                    Todos ({orders.length})
+                  </button>
+                  <button
+                    onClick={() => setFilter('pagos')}
+                    className={`px-3 py-1.5 transition-colors border-l border-gray-200 ${filter === 'pagos' ? 'bg-[#800020] text-white' : 'bg-white text-gray-500 hover:bg-gray-50'}`}
+                  >
+                    Pagos ({orders.filter(o => o.status !== 'pending').length})
+                  </button>
+                </div>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-left">
@@ -230,7 +249,7 @@ export default function AdminOrdersPage() {
                           <p className="text-sm text-gray-500">Carregando pedidos...</p>
                         </td>
                       </tr>
-                    ) : orders.length === 0 ? (
+                    ) : filteredOrders.length === 0 ? (
                       <tr>
                         <td colSpan={6} className="px-6 py-12 text-center">
                           <ShoppingBag size={48} className="mx-auto text-gray-200 mb-2" />
@@ -238,7 +257,7 @@ export default function AdminOrdersPage() {
                         </td>
                       </tr>
                     ) : (
-                      orders.map((order) => (
+                      filteredOrders.map((order) => (
                         <tr 
                           key={order.id} 
                           className={`hover:bg-gray-50 transition-colors cursor-pointer ${selectedOrder?.id === order.id ? 'bg-gray-50' : ''}`}
