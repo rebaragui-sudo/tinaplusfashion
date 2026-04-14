@@ -124,7 +124,6 @@ export default function AdminOrdersPage() {
       const { data, error } = await supabase
         .from('orders')
         .select('*')
-        .neq('status', 'pending')
         .order('created_at', { ascending: false });
 
       if (error) throw error;
