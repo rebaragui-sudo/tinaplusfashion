@@ -19,10 +19,7 @@ export async function POST(req: Request) {
     // Atualiza o status do pedido para 'pago' (ou 'paid' dependendo da convenção do seu banco)
     const { error } = await supabase
       .from('orders')
-      .update({ 
-        status: 'pago',
-        updated_at: new Date().toISOString()
-      })
+      .update({ status: 'pago' })
       .eq('id', order_nsu);
 
     if (error) {
