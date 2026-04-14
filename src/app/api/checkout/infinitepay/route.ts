@@ -50,7 +50,7 @@ export async function POST(req: Request) {
         complement: customer.complemento || '',
       } : undefined,
       redirect_url: redirectUrl,
-      webhook_url: redirectUrl.split('/pedidos')[0] + '/api/webhooks/infinitepay',
+      webhook_url: 'https://www.tinaplusfashion.com.br/api/webhooks/infinitepay',
     };
 
     console.log('Enviando payload para InfinitePay:', JSON.stringify(payload, null, 2));
