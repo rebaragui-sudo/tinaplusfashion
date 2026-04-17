@@ -33,13 +33,12 @@ export default function MyAccountPage() {
   const router = useRouter();
 
   useEffect(() => {
-    if (!authLoading && !user) {
+    if (authLoading) return;
+    if (!user) {
       router.push('/login');
+      return;
     }
-
-    if (user) {
-      fetchData();
-    }
+    fetchData();
   }, [user, authLoading]);
 
   async function fetchData() {
@@ -85,13 +84,15 @@ export default function MyAccountPage() {
     router.push('/');
   };
 
-  if (authLoading || (loading && !profile)) {
+  if (authLoading || loading) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-[#b8860b]" />
       </div>
     );
   }
+
+  if (!user) return null;
 
   return (
     <div className="flex min-h-screen flex-col bg-[#fcfaf8]">
@@ -154,13 +155,15 @@ export default function MyAccountPage() {
                         </div>
                         <div className="flex flex-wrap items-center gap-2">
                           <Badge variant={
-                            order.status === 'completed' ? 'success' : 
-                            order.status === 'processing' ? 'secondary' : 
+                            order.status === 'pago' || order.status === 'completed' ? 'default' :
+                            order.status === 'processing' ? 'secondary' :
                             'outline'
-                          } className="capitalize">
-                            {order.status === 'processing' ? 'Em processamento' : 
-                             order.status === 'completed' ? 'Entregue' : 
-                             order.status === 'shipped' ? 'Enviado' : order.status}
+                          } className={`capitalize ${order.status === 'pago' || order.status === 'completed' ? 'bg-green-600' : ''}`}>
+                            {order.status === 'processing' ? 'Em processamento' :
+                             order.status === 'completed' ? 'Entregue' :
+                             order.status === 'shipped' ? 'Enviado' :
+                             order.status === 'pago' ? 'Pago' :
+                             order.status === 'pending' ? 'Aguardando pagamento' : order.status}
                           </Badge>
                           <p className="font-bold text-[#b8860b]">
                             {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(order.total_price)}
