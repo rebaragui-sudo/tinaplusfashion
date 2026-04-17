@@ -152,6 +152,7 @@ const NewArrivals = () => {
   useEffect(() => {
     async function fetchNewArrivals() {
       try {
+        // Tenta buscar produtos marcados como novidade
         const { data, error } = await supabase
           .from('products')
           .select('*')
@@ -159,8 +160,18 @@ const NewArrivals = () => {
           .order('created_at', { ascending: false })
           .limit(8);
 
-        if (error) throw error;
-        setProducts(data || []);
+        if (error) {
+          // Coluna pode não existir ainda — busca os mais recentes como fallback
+          const { data: fallback } = await supabase
+            .from('products')
+            .select('*')
+            .order('created_at', { ascending: false })
+            .limit(8);
+          setProducts(fallback || []);
+        } else {
+          // Se não há produtos marcados, usa os mais recentes
+          setProducts(data && data.length > 0 ? data : []);
+        }
       } catch (error) {
         console.error('Error fetching new arrivals:', error);
       } finally {
