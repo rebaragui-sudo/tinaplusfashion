@@ -1,34 +1,64 @@
 import { NextResponse } from 'next/server';
 import { createServerClient } from '@/lib/supabase-server';
 
+// Status da InfinitePay que indicam pagamento aprovado
+const PAID_STATUSES = ['paid', 'approved', 'captured', 'succeeded', 'complete', 'completed'];
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    console.log('InfinitePay Webhook received:', body);
+    console.log('InfinitePay Webhook received:', JSON.stringify(body, null, 2));
 
-    // The order_nsu is our orderId (UUID)
-    const { order_nsu, transaction_nsu, invoice_slug, amount, paid_amount } = body;
+    // A InfinitePay pode enviar o orderId em diferentes campos
+    const orderId = body.order_nsu || body.order_id || body.external_id || body.reference_id;
+    const status = body.status || body.payment_status || body.transaction_status;
 
-    if (!order_nsu) {
-      console.error('Webhook error: order_nsu missing');
-      return NextResponse.json({ error: 'order_nsu not found' }, { status: 400 });
+    if (!orderId) {
+      console.error('Webhook error: orderId missing. Body:', body);
+      // Retornar 200 para não causar reenvios desnecessários
+      return NextResponse.json({ error: 'orderId not found', body }, { status: 200 });
+    }
+
+    console.log(`Webhook: orderId=${orderId}, status=${status}`);
+
+    // Só atualiza para pago se o status for de aprovação
+    const isPaid = !status || PAID_STATUSES.includes(String(status).toLowerCase());
+
+    if (!isPaid) {
+      console.log(`Webhook: status '${status}' não é de pagamento aprovado. Ignorando atualização.`);
+      return NextResponse.json({ success: true, message: 'Status not a payment confirmation' }, { status: 200 });
     }
 
     const supabase = createServerClient();
 
-    // Atualiza o status do pedido para 'pago' (ou 'paid' dependendo da convenção do seu banco)
-    const { error } = await supabase
+    // Tenta atualizar pelo ID direto
+    const { data: existingOrder, error: fetchError } = await supabase
+      .from('orders')
+      .select('id, status')
+      .eq('id', orderId)
+      .single();
+
+    if (fetchError || !existingOrder) {
+      console.error(`Webhook: pedido ${orderId} não encontrado. Erro:`, fetchError);
+      return NextResponse.json({ error: 'Order not found', orderId }, { status: 200 });
+    }
+
+    if (existingOrder.status === 'pago') {
+      console.log(`Webhook: pedido ${orderId} já está pago.`);
+      return NextResponse.json({ success: true, message: 'Order already paid' }, { status: 200 });
+    }
+
+    const { error: updateError } = await supabase
       .from('orders')
       .update({ status: 'pago' })
-      .eq('id', order_nsu);
+      .eq('id', orderId);
 
-    if (error) {
-      console.error('Error updating order status in database:', error);
-      // Retornamos 400 para que a InfinitePay tente enviar o webhook novamente depois
+    if (updateError) {
+      console.error('Webhook: erro ao atualizar pedido no banco:', updateError);
       return NextResponse.json({ error: 'Internal error updating order' }, { status: 400 });
     }
 
-    console.log(`Order ${order_nsu} updated to paid via webhook.`);
+    console.log(`Webhook: pedido ${orderId} atualizado para 'pago' com sucesso.`);
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error: any) {
     console.error('Webhook processing error:', error);
