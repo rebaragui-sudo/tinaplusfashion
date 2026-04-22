@@ -74,7 +74,7 @@ export default function AdminPage() {
     activeProducts: 0
   });
 
-  const availableSizes = ['P', 'M', 'G', 'GG', 'G1', 'G2', 'G3', 'G4'];
+  const availableSizes = ['P', 'M', 'G', 'GG', 'G1', 'G2', 'G3', 'G4', 'G5'];
 
   useEffect(() => {
     const auth = localStorage.getItem('isAdmin');
