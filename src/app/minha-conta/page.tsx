@@ -343,28 +343,31 @@ export default function MyAccountPage() {
 
           <TabsContent value="perfil">
             <Card>
-              <CardHeader className="flex flex-row items-center justify-between">
-                <div>
-                  <CardTitle>Meus Dados Pessoais</CardTitle>
-                  <CardDescription>Gerencie suas informações de contato.</CardDescription>
-                </div>
-                {!isEditing ? (
-                  <Button variant="outline" size="sm" onClick={() => setIsEditing(true)} className="gap-2">
-                    <Pencil className="h-4 w-4" /> Editar
-                  </Button>
-                ) : (
-                  <div className="flex gap-2">
-                    <Button variant="outline" size="sm" onClick={() => { setIsEditing(false); setEditForm({ full_name: profile?.full_name || '', phone: profile?.phone || '', cpf: profile?.cpf || '', address_cep: profile?.address?.zipcode || '', address_street: profile?.address?.street || '', address_number: profile?.address?.number || '', address_complement: profile?.address?.complement || '', address_neighborhood: profile?.address?.neighborhood || '', address_city: profile?.address?.city || '', address_state: profile?.address?.state || '' }); }} className="gap-2">
-                      <X className="h-4 w-4" /> Cancelar
-                    </Button>
-                    <Button size="sm" onClick={handleSaveProfile} disabled={isSaving} className="bg-[#121812] text-white gap-2">
-                      {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />} Salvar
-                    </Button>
+              <CardHeader>
+                <div className="flex flex-row items-center justify-between">
+                  <div>
+                    <CardTitle>Meus Dados Pessoais</CardTitle>
+                    <CardDescription>Gerencie suas informações de contato.</CardDescription>
                   </div>
-                )}
+                  {!isEditing ? (
+                    <Button variant="outline" size="sm" onClick={() => setIsEditing(true)} className="gap-2">
+                      <Pencil className="h-4 w-4" /> Editar
+                    </Button>
+                  ) : (
+                    <div className="flex gap-2">
+                      <Button variant="outline" size="sm" onClick={() => { setIsEditing(false); setEditForm({ full_name: profile?.full_name || '', phone: profile?.phone || '', cpf: profile?.cpf || '', address_cep: profile?.address?.zipcode || '', address_street: profile?.address?.street || '', address_number: profile?.address?.number || '', address_complement: profile?.address?.complement || '', address_neighborhood: profile?.address?.neighborhood || '', address_city: profile?.address?.city || '', address_state: profile?.address?.state || '' }); }} className="gap-2">
+                        <X className="h-4 w-4" /> Cancelar
+                      </Button>
+                      <Button size="sm" onClick={handleSaveProfile} disabled={isSaving} className="bg-[#121812] text-white gap-2">
+                        {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />} Salvar
+                      </Button>
+                    </div>
+                  )}
+                </div>
               </CardHeader>
               <CardContent className="space-y-6">
                 {isEditing ? (
+                  <div className="space-y-6">
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="space-y-1">
                       <Label className="text-xs text-gray-500 uppercase font-bold">Nome Completo</Label>
@@ -419,6 +422,7 @@ export default function MyAccountPage() {
                         <Input value={editForm.address_state} onChange={(e) => setEditForm({ ...editForm, address_state: e.target.value })} placeholder="SP" maxLength={2} />
                       </div>
                     </div>
+                  </div>
                   </div>
                 ) : (
                   <div className="grid sm:grid-cols-2 gap-6">
