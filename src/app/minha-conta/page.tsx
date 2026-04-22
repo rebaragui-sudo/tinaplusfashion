@@ -29,6 +29,7 @@ import Link from 'next/link';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
+import { getColorName, getColorValue } from '@/lib/colors';
 
 export default function MyAccountPage() {
   const { user, loading: authLoading } = useAuth();
@@ -179,83 +180,101 @@ export default function MyAccountPage() {
                 </CardContent>
               </Card>
             ) : (
-              <div className="grid gap-4">
-                {orders.map((order) => (
+              <div className="grid gap-6">
+                {orders.map((order) => {
+                  const subtotal = order.items?.reduce((acc: number, item: any) => acc + (item.price || 0) * (item.quantity || 1), 0) || 0;
+                  const frete = order.shipping_price || 0;
+                  const total = order.total_price || subtotal + frete;
+                  return (
                   <Card key={order.id} className="overflow-hidden hover:shadow-md transition-shadow">
                     <div className="p-4 sm:p-6">
-                      <div className="flex flex-col sm:flex-row justify-between gap-4 mb-4">
-                        <div className="space-y-1">
-                          <p className="text-xs font-medium text-gray-500 uppercase">Pedido #{order.id.slice(0, 8)}</p>
+                      {/* Cabeçalho do pedido */}
+                      <div className="flex flex-col sm:flex-row justify-between gap-3 mb-4">
+                        <div>
+                          <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Pedido #{order.id.slice(0, 8).toUpperCase()}</p>
                           <p className="text-sm text-gray-500">{new Date(order.created_at).toLocaleDateString('pt-BR')}</p>
                         </div>
-                        <div className="flex flex-wrap items-center gap-2">
-                          <Badge variant={
-                            order.status === 'pago' || order.status === 'completed' ? 'default' :
-                            order.status === 'processing' ? 'secondary' :
-                            'outline'
-                          } className={`capitalize ${order.status === 'pago' || order.status === 'completed' ? 'bg-green-600' : ''}`}>
-                            {order.status === 'processing' ? 'Em processamento' :
-                             order.status === 'completed' ? 'Entregue' :
-                             order.status === 'shipped' ? 'Enviado' :
-                             order.status === 'pago' ? 'Pago' :
-                             order.status === 'pending' ? 'Aguardando pagamento' : order.status}
-                          </Badge>
-                          <p className="font-bold text-[#b8860b]">
-                            {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(order.total_price)}
-                          </p>
-                        </div>
+                        <Badge variant={order.status === 'pago' || order.status === 'completed' ? 'default' : 'outline'}
+                          className={`self-start capitalize ${order.status === 'pago' || order.status === 'completed' ? 'bg-green-600' : ''}`}>
+                          {order.status === 'processing' ? 'Em processamento' :
+                           order.status === 'completed' ? 'Entregue' :
+                           order.status === 'shipped' ? 'Enviado' :
+                           order.status === 'pago' ? 'Pago' :
+                           order.status === 'pending' ? 'Aguardando pagamento' : order.status}
+                        </Badge>
                       </div>
 
+                      {/* Lista de produtos */}
                       <div className="border-t pt-4">
-                        <h4 className="text-sm font-semibold mb-3">Itens do Pedido</h4>
-                        <div className="space-y-3">
+                        <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Produtos</p>
+                        <div className="space-y-4">
                           {order.items?.map((item: any, idx: number) => (
-                            <div key={idx} className="flex items-center gap-4">
-                              <div className="h-12 w-12 rounded bg-gray-100 flex-shrink-0">
-                                {item.image_url ? (
-                                  <img src={item.image_url} alt={item.name} className="h-full w-full object-cover rounded" />
-                                ) : (
-                                  <Package className="h-full w-full p-2 text-gray-400" />
-                                )}
+                            <div key={idx} className="flex gap-3">
+                              <div className="h-16 w-16 rounded-md bg-gray-100 flex-shrink-0 overflow-hidden">
+                                {item.image_url
+                                  ? <img src={item.image_url} alt={item.name} className="h-full w-full object-cover" />
+                                  : <Package className="h-full w-full p-3 text-gray-400" />}
                               </div>
-                              <div className="flex-grow">
-                                <p className="text-sm font-medium line-clamp-1">{item.name}</p>
-                                <p className="text-xs text-gray-500">
-                                  Qtd: {item.quantity}
-                                  {item.size ? ` | Tam: ${item.size}` : ''}
-                                  {item.color ? ` | Cor: ${item.color}` : ''}
+                              <div className="flex-grow min-w-0">
+                                <p className="text-sm font-semibold text-gray-900 line-clamp-1">{item.name}</p>
+                                <div className="flex items-center gap-2 mt-1 flex-wrap">
+                                  {item.size && (
+                                    <span className="text-xs bg-gray-100 text-gray-700 font-bold px-2 py-0.5 rounded">{item.size}</span>
+                                  )}
+                                  {item.color && (
+                                    <span className="flex items-center gap-1">
+                                      <span className="w-3 h-3 rounded-full border border-gray-200 inline-block" style={{ backgroundColor: getColorValue(item.color) }} />
+                                      <span className="text-xs font-bold text-gray-600 uppercase">{getColorName(item.color)}</span>
+                                    </span>
+                                  )}
+                                </div>
+                                <p className="text-xs text-gray-500 mt-1">
+                                  {item.quantity}x • {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.price || 0)}
                                 </p>
-                                {item.price > 0 && (
-                                  <p className="text-xs font-semibold text-[#b8860b] mt-0.5">
-                                    {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.price)} / peça
-                                  </p>
-                                )}
                               </div>
                             </div>
                           ))}
                         </div>
                       </div>
 
+                      {/* Totais */}
+                      <div className="border-t mt-4 pt-4 space-y-2">
+                        <div className="flex justify-between text-sm text-gray-500">
+                          <span>Subtotal</span>
+                          <span>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(subtotal)}</span>
+                        </div>
+                        {frete > 0 && (
+                          <div className="flex justify-between text-sm text-gray-500">
+                            <span>Frete</span>
+                            <span>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(frete)}</span>
+                          </div>
+                        )}
+                        <div className="flex justify-between font-bold text-base border-t pt-2">
+                          <span>Total do Pedido</span>
+                          <span className="text-[#b8860b]">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(total)}</span>
+                        </div>
+                      </div>
+
+                      {/* Rastreio */}
                       {order.tracking_number && (
-                        <div className="mt-4 p-4 bg-gray-50 rounded-lg flex flex-col sm:flex-row sm:items-center justify-between gap-4 border border-blue-100">
-                          <div className="flex items-center gap-3">
-                            <Truck className="h-5 w-5 text-blue-600" />
+                        <div className="mt-4 p-3 bg-blue-50 rounded-lg flex flex-col sm:flex-row sm:items-center justify-between gap-3 border border-blue-100">
+                          <div className="flex items-center gap-2">
+                            <Truck className="h-4 w-4 text-blue-600 shrink-0" />
                             <div>
                               <p className="text-xs text-blue-600 font-bold uppercase tracking-wider">Código de Rastreio</p>
                               <p className="text-sm font-mono font-bold text-gray-700">{order.tracking_number}</p>
                             </div>
                           </div>
-                          <Button size="sm" variant="outline" asChild className="border-blue-200 text-blue-600 hover:bg-blue-50">
+                          <Button size="sm" variant="outline" asChild className="border-blue-200 text-blue-600 hover:bg-blue-50 shrink-0">
                             <a href={`https://www.linkcorreios.com.br/${order.tracking_number}`} target="_blank" rel="noopener noreferrer">
-                              Rastrear Pedido
-                              <ExternalLink className="ml-2 h-3 w-3" />
+                              Rastrear <ExternalLink className="ml-1 h-3 w-3" />
                             </a>
                           </Button>
                         </div>
                       )}
                     </div>
                   </Card>
-                ))}
+                )})}
               </div>
             )}
           </TabsContent>
