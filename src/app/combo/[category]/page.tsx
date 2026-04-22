@@ -92,7 +92,7 @@ function ComboSelectionContent() {
     if (categorySlug) {
       fetchProducts();
     }
-  }, [categorySlug]);
+  }, [categorySlug, searchParams]);
 
   const openSelectionModal = (product: Product) => {
     if (selectedItems.length >= quantityRequired) {
