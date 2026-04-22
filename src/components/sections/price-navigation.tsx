@@ -21,7 +21,7 @@ const PriceNavigation = () => {
     {
       title: "3 Calças Pantalonas",
       price: "100",
-      href: "/combo/calcas?q=3&p=100",
+      href: "/combo/calcas?q=3&p=100&ids=87a601ca-e37c-4bc3-bf12-2149b220951f",
         image: "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/0.8368277688404352.jpg",
       alt: "3 Calças Pantalonas"
     }];
