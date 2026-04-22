@@ -41,6 +41,13 @@ export default function MyAccountPage() {
     full_name: '',
     phone: '',
     cpf: '',
+    address_cep: '',
+    address_street: '',
+    address_number: '',
+    address_complement: '',
+    address_neighborhood: '',
+    address_city: '',
+    address_state: '',
   });
   const [wishlist, setWishlist] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -70,6 +77,13 @@ export default function MyAccountPage() {
         full_name: profileData?.full_name || '',
         phone: profileData?.phone || '',
         cpf: profileData?.cpf || '',
+        address_cep: profileData?.address?.zipcode || '',
+        address_street: profileData?.address?.street || '',
+        address_number: profileData?.address?.number || '',
+        address_complement: profileData?.address?.complement || '',
+        address_neighborhood: profileData?.address?.neighborhood || '',
+        address_city: profileData?.address?.city || '',
+        address_state: profileData?.address?.state || '',
       });
 
       // Fetch orders
@@ -101,11 +115,20 @@ export default function MyAccountPage() {
   const handleSaveProfile = async () => {
     setIsSaving(true);
     try {
+      const address = {
+        zipcode: editForm.address_cep,
+        street: editForm.address_street,
+        number: editForm.address_number,
+        complement: editForm.address_complement,
+        neighborhood: editForm.address_neighborhood,
+        city: editForm.address_city,
+        state: editForm.address_state,
+      };
       const { error } = await supabase
         .from('profiles')
-        .upsert({ id: user?.id, ...editForm });
+        .upsert({ id: user?.id, full_name: editForm.full_name, phone: editForm.phone, cpf: editForm.cpf, address });
       if (error) throw error;
-      setProfile((prev: any) => ({ ...prev, ...editForm }));
+      setProfile((prev: any) => ({ ...prev, full_name: editForm.full_name, phone: editForm.phone, cpf: editForm.cpf, address }));
       setIsEditing(false);
       toast.success('Dados atualizados com sucesso!');
     } catch (e) {
@@ -331,7 +354,7 @@ export default function MyAccountPage() {
                   </Button>
                 ) : (
                   <div className="flex gap-2">
-                    <Button variant="outline" size="sm" onClick={() => { setIsEditing(false); setEditForm({ full_name: profile?.full_name || '', phone: profile?.phone || '', cpf: profile?.cpf || '' }); }} className="gap-2">
+                    <Button variant="outline" size="sm" onClick={() => { setIsEditing(false); setEditForm({ full_name: profile?.full_name || '', phone: profile?.phone || '', cpf: profile?.cpf || '', address_cep: profile?.address?.zipcode || '', address_street: profile?.address?.street || '', address_number: profile?.address?.number || '', address_complement: profile?.address?.complement || '', address_neighborhood: profile?.address?.neighborhood || '', address_city: profile?.address?.city || '', address_state: profile?.address?.state || '' }); }} className="gap-2">
                       <X className="h-4 w-4" /> Cancelar
                     </Button>
                     <Button size="sm" onClick={handleSaveProfile} disabled={isSaving} className="bg-[#121812] text-white gap-2">
@@ -358,6 +381,43 @@ export default function MyAccountPage() {
                     <div className="space-y-1">
                       <Label className="text-xs text-gray-500 uppercase font-bold">CPF</Label>
                       <Input value={editForm.cpf} onChange={(e) => setEditForm({ ...editForm, cpf: e.target.value })} placeholder="000.000.000-00" />
+                    </div>
+                  </div>
+
+                  <div className="border-t pt-4">
+                    <div className="flex items-center gap-2 mb-3">
+                      <MapPin className="h-4 w-4 text-gray-400" />
+                      <h4 className="text-sm font-bold uppercase tracking-wider">Endereço de Entrega</h4>
+                    </div>
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      <div className="space-y-1">
+                        <Label className="text-xs text-gray-500 uppercase font-bold">CEP</Label>
+                        <Input value={editForm.address_cep} onChange={(e) => setEditForm({ ...editForm, address_cep: e.target.value })} placeholder="00000-000" />
+                      </div>
+                      <div className="space-y-1 sm:col-span-2">
+                        <Label className="text-xs text-gray-500 uppercase font-bold">Rua / Endereço</Label>
+                        <Input value={editForm.address_street} onChange={(e) => setEditForm({ ...editForm, address_street: e.target.value })} placeholder="Rua, Avenida..." />
+                      </div>
+                      <div className="space-y-1">
+                        <Label className="text-xs text-gray-500 uppercase font-bold">Número</Label>
+                        <Input value={editForm.address_number} onChange={(e) => setEditForm({ ...editForm, address_number: e.target.value })} placeholder="123" />
+                      </div>
+                      <div className="space-y-1">
+                        <Label className="text-xs text-gray-500 uppercase font-bold">Complemento</Label>
+                        <Input value={editForm.address_complement} onChange={(e) => setEditForm({ ...editForm, address_complement: e.target.value })} placeholder="Apto, Bloco..." />
+                      </div>
+                      <div className="space-y-1">
+                        <Label className="text-xs text-gray-500 uppercase font-bold">Bairro</Label>
+                        <Input value={editForm.address_neighborhood} onChange={(e) => setEditForm({ ...editForm, address_neighborhood: e.target.value })} placeholder="Bairro" />
+                      </div>
+                      <div className="space-y-1">
+                        <Label className="text-xs text-gray-500 uppercase font-bold">Cidade</Label>
+                        <Input value={editForm.address_city} onChange={(e) => setEditForm({ ...editForm, address_city: e.target.value })} placeholder="Cidade" />
+                      </div>
+                      <div className="space-y-1">
+                        <Label className="text-xs text-gray-500 uppercase font-bold">Estado (UF)</Label>
+                        <Input value={editForm.address_state} onChange={(e) => setEditForm({ ...editForm, address_state: e.target.value })} placeholder="SP" maxLength={2} />
+                      </div>
                     </div>
                   </div>
                 ) : (
