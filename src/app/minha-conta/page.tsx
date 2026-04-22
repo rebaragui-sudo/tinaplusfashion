@@ -185,7 +185,16 @@ export default function MyAccountPage() {
                               </div>
                               <div className="flex-grow">
                                 <p className="text-sm font-medium line-clamp-1">{item.name}</p>
-                                <p className="text-xs text-gray-500">Qtd: {item.quantity} | {item.size || 'Tamanho Único'}</p>
+                                <p className="text-xs text-gray-500">
+                                  Qtd: {item.quantity}
+                                  {item.size ? ` | Tam: ${item.size}` : ''}
+                                  {item.color ? ` | Cor: ${item.color}` : ''}
+                                </p>
+                                {item.price > 0 && (
+                                  <p className="text-xs font-semibold text-[#b8860b] mt-0.5">
+                                    {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.price)} / peça
+                                  </p>
+                                )}
                               </div>
                             </div>
                           ))}
