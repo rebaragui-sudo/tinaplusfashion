@@ -11,23 +11,36 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { 
-  Package, 
-  Heart, 
-  User, 
-  LogOut, 
-  ShoppingBag, 
-  Truck, 
-  MapPin, 
+  Package,
+  Heart,
+  User,
+  LogOut,
+  ShoppingBag,
+  Truck,
+  MapPin,
   ExternalLink,
   Loader2,
-  ChevronRight
+  ChevronRight,
+  Pencil,
+  X,
+  Check
 } from 'lucide-react';
 import Link from 'next/link';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { toast } from 'sonner';
 
 export default function MyAccountPage() {
   const { user, loading: authLoading } = useAuth();
   const [profile, setProfile] = useState<any>(null);
   const [orders, setOrders] = useState<any[]>([]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [editForm, setEditForm] = useState({
+    full_name: '',
+    phone: '',
+    cpf: '',
+  });
   const [wishlist, setWishlist] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -52,6 +65,11 @@ export default function MyAccountPage() {
         .single();
       
       setProfile(profileData);
+      setEditForm({
+        full_name: profileData?.full_name || '',
+        phone: profileData?.phone || '',
+        cpf: profileData?.cpf || '',
+      });
 
       // Fetch orders
       const { data: ordersData } = await supabase
@@ -78,6 +96,23 @@ export default function MyAccountPage() {
       setLoading(false);
     }
   }
+
+  const handleSaveProfile = async () => {
+    setIsSaving(true);
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .upsert({ id: user?.id, ...editForm });
+      if (error) throw error;
+      setProfile((prev: any) => ({ ...prev, ...editForm }));
+      setIsEditing(false);
+      toast.success('Dados atualizados com sucesso!');
+    } catch (e) {
+      toast.error('Erro ao salvar. Tente novamente.');
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -266,29 +301,66 @@ export default function MyAccountPage() {
 
           <TabsContent value="perfil">
             <Card>
-              <CardHeader>
-                <CardTitle>Meus Dados Pessoais</CardTitle>
-                <CardDescription>Gerencie suas informações de contato e endereço.</CardDescription>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <div>
+                  <CardTitle>Meus Dados Pessoais</CardTitle>
+                  <CardDescription>Gerencie suas informações de contato.</CardDescription>
+                </div>
+                {!isEditing ? (
+                  <Button variant="outline" size="sm" onClick={() => setIsEditing(true)} className="gap-2">
+                    <Pencil className="h-4 w-4" /> Editar
+                  </Button>
+                ) : (
+                  <div className="flex gap-2">
+                    <Button variant="outline" size="sm" onClick={() => { setIsEditing(false); setEditForm({ full_name: profile?.full_name || '', phone: profile?.phone || '', cpf: profile?.cpf || '' }); }} className="gap-2">
+                      <X className="h-4 w-4" /> Cancelar
+                    </Button>
+                    <Button size="sm" onClick={handleSaveProfile} disabled={isSaving} className="bg-[#121812] text-white gap-2">
+                      {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />} Salvar
+                    </Button>
+                  </div>
+                )}
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="grid sm:grid-cols-2 gap-6">
-                  <div className="space-y-1">
-                    <p className="text-xs text-gray-500 uppercase font-bold">Nome Completo</p>
-                    <p className="text-sm font-medium">{profile?.full_name || 'Não informado'}</p>
+                {isEditing ? (
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <Label className="text-xs text-gray-500 uppercase font-bold">Nome Completo</Label>
+                      <Input value={editForm.full_name} onChange={(e) => setEditForm({ ...editForm, full_name: e.target.value })} placeholder="Seu nome completo" />
+                    </div>
+                    <div className="space-y-1">
+                      <Label className="text-xs text-gray-500 uppercase font-bold">E-mail</Label>
+                      <Input value={user?.email || ''} disabled className="bg-gray-50 text-gray-400" />
+                    </div>
+                    <div className="space-y-1">
+                      <Label className="text-xs text-gray-500 uppercase font-bold">Telefone</Label>
+                      <Input value={editForm.phone} onChange={(e) => setEditForm({ ...editForm, phone: e.target.value })} placeholder="(00) 00000-0000" />
+                    </div>
+                    <div className="space-y-1">
+                      <Label className="text-xs text-gray-500 uppercase font-bold">CPF</Label>
+                      <Input value={editForm.cpf} onChange={(e) => setEditForm({ ...editForm, cpf: e.target.value })} placeholder="000.000.000-00" />
+                    </div>
                   </div>
-                  <div className="space-y-1">
-                    <p className="text-xs text-gray-500 uppercase font-bold">E-mail</p>
-                    <p className="text-sm font-medium">{user?.email}</p>
+                ) : (
+                  <div className="grid sm:grid-cols-2 gap-6">
+                    <div className="space-y-1">
+                      <p className="text-xs text-gray-500 uppercase font-bold">Nome Completo</p>
+                      <p className="text-sm font-medium">{profile?.full_name || 'Não informado'}</p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-xs text-gray-500 uppercase font-bold">E-mail</p>
+                      <p className="text-sm font-medium">{user?.email}</p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-xs text-gray-500 uppercase font-bold">Telefone</p>
+                      <p className="text-sm font-medium">{profile?.phone || 'Não informado'}</p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-xs text-gray-500 uppercase font-bold">CPF</p>
+                      <p className="text-sm font-medium">{profile?.cpf || 'Não informado'}</p>
+                    </div>
                   </div>
-                  <div className="space-y-1">
-                    <p className="text-xs text-gray-500 uppercase font-bold">Telefone</p>
-                    <p className="text-sm font-medium">{profile?.phone || 'Não informado'}</p>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-xs text-gray-500 uppercase font-bold">CPF</p>
-                    <p className="text-sm font-medium">{profile?.cpf || 'Não informado'}</p>
-                  </div>
-                </div>
+                )}
 
                 <div className="border-t pt-6">
                   <div className="flex items-center gap-2 mb-4">
