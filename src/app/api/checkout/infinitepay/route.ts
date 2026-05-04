@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { orderId, items, customer, totalPrice, redirectUrl } = body;
+    const { orderId, items, customer, totalPrice, redirectUrl, shippingMethod } = body;
 
     const infiniteTag = process.env.INFINITEPAY_TAG;
 
@@ -39,13 +39,13 @@ export async function POST(req: Request) {
       order_nsu: orderId,
       customer: {
         name: customer.nome,
-        email: customer.email || 'cliente@exemplo.com',
-        phone_number: customer.celular.replace(/\D/g, ''),
+        email: customer.email || `cliente+${orderId?.slice(0,8) || 'loja'}@tinaplusfashion.com.br`,
+        phone_number: (customer.celular || '').replace(/\D/g, ''),
       },
-      address: body.shippingMethod !== 'onibus' ? {
+      address: shippingMethod !== 'onibus' && customer.cep ? {
         cep: customer.cep.replace(/\D/g, ''),
         street: customer.endereco,
-        neighborhood: customer.bairro,
+        neighborhood: customer.bairro || '',
         number: customer.numero,
         complement: customer.complemento || '',
       } : undefined,

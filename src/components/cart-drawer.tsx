@@ -220,6 +220,7 @@ const CartDrawer = () => {
           customer: shippingData,
           totalPrice: totalPrice,
           shippingPrice: shippingPrice,
+          shippingMethod: shippingMethod,
           redirectUrl: `${window.location.origin}/pedidos?orderId=${orderData.id}`
         }),
       });
@@ -227,7 +228,8 @@ const CartDrawer = () => {
       const paymentData = await response.json();
 
       if (!response.ok) {
-        throw new Error(paymentData.error || 'Erro ao gerar link de pagamento');
+        const detail = paymentData.details ? JSON.stringify(paymentData.details) : '';
+        throw new Error((paymentData.error || 'Erro ao gerar link de pagamento') + (detail ? `: ${detail}` : ''));
       }
       
       toast.success('Pedido recebido! Redirecionando para o pagamento...');
