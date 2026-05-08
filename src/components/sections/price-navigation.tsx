@@ -22,8 +22,15 @@ const PriceNavigation = () => {
       title: "3 Calças Pantalonas",
       price: "100",
       href: "/combo/calcas?q=3&p=100&ids=87a601ca-e37c-4bc3-bf12-2149b220951f",
-        image: "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/0.8368277688404352.jpg",
+      image: "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/0.8368277688404352.jpg",
       alt: "3 Calças Pantalonas"
+    },
+    {
+      title: "5 Básicas Gola Alta",
+      price: "100",
+      href: "/combo/blusas?q=5&p=100&ids=0064dfad-ef8c-4684-ba26-4eaa1cf5f8b7",
+      image: "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/0.8013121433189971.png",
+      alt: "5 Básicas Gola Alta"
     }];
 
 
@@ -35,7 +42,7 @@ const PriceNavigation = () => {
 
         </h2>
         
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl mx-auto">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-5xl mx-auto">
           {priceCards.map((card, index) =>
           <a
             key={index}
