@@ -50,7 +50,7 @@ export async function POST(req: Request) {
         complement: customer.complemento || '',
       } : undefined,
       redirect_url: redirectUrl,
-      webhook_url: 'https://www.tinaplusfashion.com.br/api/webhooks/infinitepay',
+      webhook_url: 'https://tinaplusfashion.com.br/api/webhooks/infinitepay',
     };
 
     console.log('Enviando payload para InfinitePay:', JSON.stringify(payload, null, 2));
@@ -64,6 +64,7 @@ export async function POST(req: Request) {
     });
 
     const data = await response.json();
+    console.log('Resposta InfinitePay:', JSON.stringify(data, null, 2));
 
     if (!response.ok) {
       console.error('InfinitePay API Error:', data);
@@ -73,7 +74,17 @@ export async function POST(req: Request) {
       );
     }
 
-    return NextResponse.json(data);
+    // InfinitePay pode retornar a URL em campos diferentes
+    const checkoutUrl = data.url || data.checkout_url || data.link || data.payment_link || data.checkout_link;
+    if (!checkoutUrl) {
+      console.error('InfinitePay não retornou URL de checkout:', data);
+      return NextResponse.json(
+        { error: 'InfinitePay não retornou link de pagamento', details: data },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json({ ...data, url: checkoutUrl });
   } catch (error: any) {
     console.error('InfinitePay Checkout Error:', error);
     return NextResponse.json(
