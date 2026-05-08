@@ -55,7 +55,7 @@ export async function POST(req: Request) {
 
     console.log('Enviando payload para InfinitePay:', JSON.stringify(payload, null, 2));
 
-    const response = await fetch('https://api.infinitepay.io/invoices/public/checkout/links', {
+    const response = await fetch('https://api.checkout.infinitepay.io/links', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
