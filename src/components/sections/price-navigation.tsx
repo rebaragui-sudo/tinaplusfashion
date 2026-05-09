@@ -27,7 +27,7 @@ const PriceNavigation = () => {
       title: "5 Básicas Gola Alta",
       price: "100",
       href: "/combo/blusas?q=5&p=100&ids=0064dfad-ef8c-4684-ba26-4eaa1cf5f8b7",
-      image: "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/0.8013121433189971.png",
+      image: "/gola-alta-combo.jpeg",
       alt: "5 Básicas Gola Alta"
     }];
 
