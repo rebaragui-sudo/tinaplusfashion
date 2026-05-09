@@ -1,5 +1,4 @@
 import React from 'react';
-import Image from 'next/image';
 
 const PriceNavigation = () => {
     const priceCards = [
@@ -17,7 +16,6 @@ const PriceNavigation = () => {
       image: "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/0.5774713522445866.png",
       alt: "3 Teds"
     },
-
     {
       title: "3 Calças Pantalonas",
       price: "100",
@@ -33,15 +31,12 @@ const PriceNavigation = () => {
       alt: "5 Básicas Gola Alta"
     }];
 
-
-
   return (
     <section className="py-12 bg-[#f5f3f1]/30">
       <div className="container mx-auto px-4">
         <h2 className="text-center text-[24px] md:text-[32px] font-bold mb-8 text-[#000000] font-serif !whitespace-pre-line">Promoções
-
         </h2>
-        
+
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-5xl mx-auto">
           {priceCards.map((card, index) =>
           <a
@@ -49,14 +44,11 @@ const PriceNavigation = () => {
             href={card.href}
             className="group relative aspect-[3/4] overflow-hidden bg-[#f5f3f1] block">
 
-              <Image
-              src={card.image}
-              alt={card.alt}
-              fill
-              sizes="(max-width: 768px) 50vw, 25vw"
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <img
+                src={card.image}
+                alt={card.alt}
+                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
 
-              
               {/* Overlay Content */}
               <div className="absolute inset-0 flex flex-col items-start justify-end p-4 md:p-6 bg-gradient-to-t from-white/40 via-transparent to-transparent">
                 <span className="text-[#000000] text-sm md:text-base font-medium font-sans">
