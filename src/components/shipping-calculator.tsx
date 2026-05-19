@@ -52,10 +52,10 @@ export default function ShippingCalculator({ product }: ShippingCalculatorProps)
         body: JSON.stringify({
           to: cleanCep,
           package: {
-            weight: product.weight || 0.5,
-            height: product.height || 10,
-            width: product.width || 15,
-            length: product.length || 20,
+            weight: product.weight || 0.9,
+            height: product.height || 8,
+            width: product.width || 29,
+            length: product.length || 36,
           }
         }),
       });
