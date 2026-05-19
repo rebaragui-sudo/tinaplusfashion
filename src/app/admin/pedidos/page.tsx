@@ -394,7 +394,6 @@ export default function AdminOrdersPage() {
                       <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Produtos</label>
                       <div className="space-y-3">
                         {selectedOrder.items
-                          .filter((item: any) => !item.cartId?.includes('no-size-no-color'))
                           .map((item, idx) => (
                           <div key={idx} className="flex gap-3 items-start">
                             <div className="w-12 h-16 bg-gray-100 rounded overflow-hidden border flex-shrink-0">
