@@ -35,10 +35,10 @@ export async function POST(request: Request) {
         },
         services: "1,2,17,31",
         package: {
-          weight: pkg.weight || 0.5,
-          height: pkg.height || 10,
-          width: pkg.width || 15,
-          length: pkg.length || 20,
+          weight: pkg.weight || 0.9,
+          height: pkg.height || 8,
+          width: pkg.width || 29,
+          length: pkg.length || 36,
         },
       };
 
