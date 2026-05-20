@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
-import Image from "next/image";
 
 // Grupos de imagens — cada grupo aparece junto no banner
 const slideGroups = [
@@ -72,13 +71,10 @@ export default function HeroSlider() {
           <div className="flex w-full h-full">
             {group.map((url, i) => (
               <div key={i} className="relative flex-1 h-full">
-                <Image
+                <img
                   src={url}
                   alt={`Banner ${index + 1} foto ${i + 1}`}
-                  fill
-                  priority={index === 0}
-                  className="object-cover object-top"
-                  sizes={`${Math.round(100 / group.length)}vw`}
+                  className="absolute inset-0 w-full h-full object-cover object-top"
                 />
               </div>
             ))}
