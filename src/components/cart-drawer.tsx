@@ -130,9 +130,10 @@ const CartDrawer = () => {
     setIsCalculating(true);
     
     try {
-      const totalWeight = items.reduce((sum, item) => sum + (0.3 * (item.quantity || 1)), 0);
-      const totalHeight = items.reduce((sum, item) => sum + (2 * (item.quantity || 1)), 0);
-      
+      const totalQtd = items.reduce((sum, item) => sum + (item.quantity || 1), 0);
+      const totalWeight = 0.9 * totalQtd;
+      const totalHeight = 8 * totalQtd;
+
       const response = await fetch('/api/shipping/calculate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -140,9 +141,9 @@ const CartDrawer = () => {
           to: cep,
           package: {
             weight: totalWeight,
-            height: Math.max(10, totalHeight),
-            width: 20,
-            length: 30,
+            height: totalHeight,
+            width: 29,
+            length: 36,
           }
         }),
       });
