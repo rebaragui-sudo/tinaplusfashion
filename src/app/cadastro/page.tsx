@@ -25,8 +25,15 @@ function RegisterForm() {
   const searchParams = useSearchParams();
   const redirect = searchParams.get('redirect');
 
-  const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleRegister = async () => {
+    if (!fullName || !email || !password) {
+      setError('Preencha nome, e-mail e senha.');
+      return;
+    }
+    if (password.length < 6) {
+      setError('A senha deve ter no mínimo 6 caracteres.');
+      return;
+    }
     setLoading(true);
     setError(null);
 
@@ -113,7 +120,6 @@ function RegisterForm() {
           <CardTitle className="text-2xl font-bold text-[#121812]">Criar Conta</CardTitle>
           <CardDescription>Preencha os dados abaixo para se cadastrar</CardDescription>
         </CardHeader>
-        <form onSubmit={handleRegister}>
           <CardContent className="space-y-4">
             {error && (
               <Alert variant="destructive">
@@ -124,14 +130,14 @@ function RegisterForm() {
               <Label htmlFor="fullName">Nome Completo</Label>
               <div className="relative">
                 <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                <Input id="fullName" placeholder="Seu nome" className="pl-10" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
+                <Input id="fullName" placeholder="Seu nome" className="pl-10" value={fullName} onChange={(e) => setFullName(e.target.value)} />
               </div>
             </div>
             <div className="space-y-2">
               <Label htmlFor="email">E-mail</Label>
               <div className="relative">
                 <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                <Input id="email" type="email" placeholder="seu@email.com" className="pl-10" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                <Input id="email" type="email" placeholder="seu@email.com" className="pl-10" value={email} onChange={(e) => setEmail(e.target.value)} />
               </div>
             </div>
             <div className="space-y-2">
@@ -145,12 +151,12 @@ function RegisterForm() {
               <Label htmlFor="password">Senha</Label>
               <div className="relative">
                 <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                <Input id="password" type="password" placeholder="Mínimo 6 caracteres" className="pl-10" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} />
+                <Input id="password" type="password" placeholder="Mínimo 6 caracteres" className="pl-10" value={password} onChange={(e) => setPassword(e.target.value)} minLength={6} />
               </div>
             </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
-            <Button type="submit" className="w-full bg-[#121812] hover:bg-[#121812]/90 text-white" disabled={loading}>
+            <Button type="button" onClick={handleRegister} className="w-full bg-[#121812] hover:bg-[#121812]/90 text-white" disabled={loading}>
               {loading ? (<><Loader2 className="mr-2 h-4 w-4 animate-spin" />Criando conta...</>) : 'Cadastrar'}
             </Button>
             <div className="text-center text-sm">
@@ -158,7 +164,6 @@ function RegisterForm() {
               <Link href="/login" className="text-[#b8860b] font-medium hover:underline">Entrar</Link>
             </div>
           </CardFooter>
-        </form>
       </Card>
     </div>
   );
