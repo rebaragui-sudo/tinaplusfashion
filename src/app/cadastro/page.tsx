@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { User, Lock, Mail, Loader2, ArrowLeft, Phone } from 'lucide-react';
+import { User, Lock, Mail, Loader2, ArrowLeft, Phone, CheckCircle } from 'lucide-react';
 import Header from '@/components/sections/header';
 import Footer from '@/components/sections/footer';
 
@@ -19,6 +19,7 @@ function RegisterForm() {
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -60,8 +61,12 @@ function RegisterForm() {
 
         const { error: loginError } = await supabase.auth.signInWithPassword({ email, password });
 
+        setSuccess(true);
+
+        await new Promise(res => setTimeout(res, 2000));
+
         if (loginError) {
-          setError('Conta criada! Tente fazer login.');
+          router.push('/login');
           return;
         }
 
@@ -77,6 +82,25 @@ function RegisterForm() {
       setLoading(false);
     }
   };
+
+  if (success) {
+    return (
+      <div className="w-full max-w-md">
+        <Card className="border-none shadow-xl">
+          <CardContent className="flex flex-col items-center justify-center py-12 space-y-4">
+            <div className="rounded-full bg-green-100 p-4">
+              <CheckCircle className="h-12 w-12 text-green-600" />
+            </div>
+            <h2 className="text-2xl font-bold text-[#121812]">Cadastro concluído!</h2>
+            <p className="text-muted-foreground text-center text-sm">
+              Sua conta foi criada com sucesso.<br />Redirecionando...
+            </p>
+            <Loader2 className="h-5 w-5 animate-spin text-[#800020]" />
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-md space-y-4">
