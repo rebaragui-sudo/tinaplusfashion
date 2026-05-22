@@ -14,13 +14,16 @@ import Header from '@/components/sections/header';
 import Footer from '@/components/sections/footer';
 
 function LoginForm() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirect = searchParams.get('redirect');
+  const cadastroOk = searchParams.get('cadastro') === 'ok';
+  const emailParam = searchParams.get('email') || '';
+
+  const [email, setEmail] = useState(emailParam);
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,6 +57,11 @@ function LoginForm() {
           <CardDescription>Acesse sua conta para continuar</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
+          {cadastroOk && (
+            <Alert className="border-green-200 bg-green-50 text-green-800">
+              <AlertDescription>Conta criada com sucesso! Faça login para continuar.</AlertDescription>
+            </Alert>
+          )}
           {error && (
             <Alert variant="destructive">
               <AlertDescription>{error}</AlertDescription>

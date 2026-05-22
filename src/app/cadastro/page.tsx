@@ -27,20 +27,53 @@ function RegisterForm() {
 
     setLoading(true);
     try {
-      const { data, error: err } = await supabase.auth.signUp({ email, password, options: { data: { full_name: fullName } } });
-      if (err) { setError(err.message); return; }
-      if (!data.user) { setError('Não foi possível criar a conta. Tente novamente.'); return; }
+      // 1. Cria o usuário
+      const { data, error: signUpError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: { data: { full_name: fullName } }
+      });
 
-      // Tenta confirmar e-mail automaticamente
-      await fetch('/api/auth/confirm', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ userId: data.user.id }) }).catch(() => {});
+      if (signUpError) {
+        if (signUpError.message.toLowerCase().includes('already registered') || signUpError.message.toLowerCase().includes('already exists')) {
+          setError('Este e-mail já está cadastrado. Tente fazer login.');
+        } else {
+          setError(signUpError.message);
+        }
+        return;
+      }
 
-      // Salva perfil
-      await supabase.from('profiles').insert([{ id: data.user.id, full_name: fullName, phone }]).catch(() => {});
+      if (!data.user) {
+        setError('Não foi possível criar a conta. Tente novamente.');
+        return;
+      }
 
-      // Faz login
-      await supabase.auth.signInWithPassword({ email, password }).catch(() => {});
+      // 2. Confirma o e-mail via API server-side (aguarda a resposta)
+      const confirmRes = await fetch('/api/auth/confirm', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: data.user.id })
+      });
 
-      // Mostra tela de sucesso
+      if (!confirmRes.ok) {
+        // Mesmo se falhar a confirmação, tenta continuar — o signInWithPassword vai indicar se precisa confirmar
+        console.warn('Confirm falhou, tentando login mesmo assim');
+      }
+
+      // 3. Salva perfil (não bloqueia o fluxo se falhar)
+      await supabase.from('profiles').upsert([{ id: data.user.id, full_name: fullName, phone }]).catch(() => {});
+
+      // 4. Faz login com as credenciais
+      const { error: loginError } = await supabase.auth.signInWithPassword({ email, password });
+
+      if (loginError) {
+        // Cadastro foi criado com sucesso mas o login automático falhou
+        // Redireciona para login com mensagem de sucesso
+        router.push(`/login?cadastro=ok&email=${encodeURIComponent(email)}`);
+        return;
+      }
+
+      // 5. Sucesso total — mostra tela e redireciona
       setSuccess(true);
       setTimeout(() => {
         router.push(redirect === 'checkout' ? '/?checkout=true' : '/minha-conta');
