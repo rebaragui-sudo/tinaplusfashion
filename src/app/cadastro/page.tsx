@@ -27,53 +27,34 @@ function RegisterForm() {
 
     setLoading(true);
     try {
-      // 1. Cria o usuário
-      const { data, error: signUpError } = await supabase.auth.signUp({
-        email,
-        password,
-        options: { data: { full_name: fullName } }
+      // 1. Cria o usuário via API server-side (já confirma o e-mail automaticamente, sem enviar e-mail)
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, fullName, phone })
       });
 
-      if (signUpError) {
-        if (signUpError.message.toLowerCase().includes('already registered') || signUpError.message.toLowerCase().includes('already exists')) {
+      const result = await res.json();
+
+      if (!res.ok) {
+        if (res.status === 409) {
           setError('Este e-mail já está cadastrado. Tente fazer login.');
         } else {
-          setError(signUpError.message);
+          setError(result.error || 'Erro ao criar conta. Tente novamente.');
         }
         return;
       }
 
-      if (!data.user) {
-        setError('Não foi possível criar a conta. Tente novamente.');
-        return;
-      }
-
-      // 2. Confirma o e-mail via API server-side (aguarda a resposta)
-      const confirmRes = await fetch('/api/auth/confirm', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: data.user.id })
-      });
-
-      if (!confirmRes.ok) {
-        // Mesmo se falhar a confirmação, tenta continuar — o signInWithPassword vai indicar se precisa confirmar
-        console.warn('Confirm falhou, tentando login mesmo assim');
-      }
-
-      // 3. Salva perfil (não bloqueia o fluxo se falhar)
-      await supabase.from('profiles').upsert([{ id: data.user.id, full_name: fullName, phone }]).catch(() => {});
-
-      // 4. Faz login com as credenciais
+      // 2. Faz login automaticamente
       const { error: loginError } = await supabase.auth.signInWithPassword({ email, password });
 
       if (loginError) {
-        // Cadastro foi criado com sucesso mas o login automático falhou
-        // Redireciona para login com mensagem de sucesso
+        // Conta criada mas login falhou — manda para login com mensagem
         router.push(`/login?cadastro=ok&email=${encodeURIComponent(email)}`);
         return;
       }
 
-      // 5. Sucesso total — mostra tela e redireciona
+      // 3. Sucesso — mostra tela e redireciona
       setSuccess(true);
       setTimeout(() => {
         router.push(redirect === 'checkout' ? '/?checkout=true' : '/minha-conta');
