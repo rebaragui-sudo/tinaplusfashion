@@ -54,6 +54,20 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     try {
       const savedCart = localStorage.getItem('tina-plus-cart');
+      const savedTimestamp = localStorage.getItem('tina-plus-cart-timestamp');
+
+      // Limpa carrinho se ficou mais de 24h sem atualização
+      if (savedTimestamp) {
+        const lastUpdate = parseInt(savedTimestamp, 10);
+        const horasSemAtualizar = (Date.now() - lastUpdate) / (1000 * 60 * 60);
+        if (horasSemAtualizar > 24) {
+          localStorage.removeItem('tina-plus-cart');
+          localStorage.removeItem('tina-plus-cart-timestamp');
+          setIsLoaded(true);
+          return;
+        }
+      }
+
       if (savedCart) {
         const parsed = JSON.parse(savedCart);
         
@@ -104,6 +118,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (isLoaded) {
       localStorage.setItem('tina-plus-cart', JSON.stringify(items));
+      localStorage.setItem('tina-plus-cart-timestamp', Date.now().toString());
     }
   }, [items, isLoaded]);
 
