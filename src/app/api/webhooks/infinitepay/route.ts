@@ -22,7 +22,7 @@ export async function POST(req: Request) {
     console.log(`Webhook: orderId=${orderId}, status=${status}`);
 
     // Só atualiza para pago se o status for de aprovação
-    const isPaid = !status || PAID_STATUSES.includes(String(status).toLowerCase());
+    const isPaid = status && PAID_STATUSES.includes(String(status).toLowerCase());
 
     if (!isPaid) {
       console.log(`Webhook: status '${status}' não é de pagamento aprovado. Ignorando atualização.`);

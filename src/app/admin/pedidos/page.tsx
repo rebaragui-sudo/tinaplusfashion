@@ -356,7 +356,7 @@ export default function AdminOrdersPage() {
                       <div className="flex flex-col">
                         <span className="text-xs text-gray-500 font-medium">WhatsApp / Celular</span>
                         <a 
-                          href={`https://wa.me/${selectedOrder.shipping_data?.celular.replace(/\D/g, '')}`}
+                          href={`https://wa.me/${selectedOrder.shipping_data?.celular?.replace(/\D/g, '')}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-sm font-bold text-[#800020] hover:underline flex items-center gap-1"
