@@ -64,6 +64,9 @@ export default function ProductPage() {
   const [comboColor, setComboColor] = useState('');
   const [comboSize, setComboSize] = useState('');
 
+  // Tabela de medidas
+  const [showSizeTable, setShowSizeTable] = useState(false);
+
   useEffect(() => {
     async function fetchProductAndVariants() {
       try {
@@ -399,6 +402,59 @@ export default function ProductPage() {
                       </div>
                     );
                   })()}
+
+                  {/* Link tabela de medidas */}
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-semibold text-gray-700 uppercase tracking-wide">Selecione o tamanho</span>
+                    <button
+                      onClick={() => setShowSizeTable(true)}
+                      className="flex items-center gap-1 text-xs text-[#800020] hover:underline font-medium"
+                    >
+                      <Ruler size={13} />
+                      Tabela de medidas
+                    </button>
+                  </div>
+
+                  {/* Modal tabela de medidas */}
+                  {showSizeTable && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => setShowSizeTable(false)}>
+                      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6" onClick={e => e.stopPropagation()}>
+                        <div className="flex items-center justify-between mb-4">
+                          <div className="flex items-center gap-2">
+                            <Ruler size={18} className="text-[#800020]" />
+                            <h2 className="text-base font-bold text-gray-900 uppercase tracking-wide">Tabela de Medidas</h2>
+                          </div>
+                          <button onClick={() => setShowSizeTable(false)} className="text-gray-400 hover:text-gray-700 text-xl font-bold leading-none">✕</button>
+                        </div>
+                        <p className="text-xs text-gray-500 mb-4">Medidas em centímetros (cm)</p>
+                        <table className="w-full text-sm border-collapse">
+                          <thead>
+                            <tr className="bg-[#800020] text-white">
+                              <th className="py-2 px-3 text-left font-bold rounded-tl-lg">Número</th>
+                              <th className="py-2 px-3 text-center font-bold">Busto</th>
+                              <th className="py-2 px-3 text-center font-bold">Cintura</th>
+                              <th className="py-2 px-3 text-center font-bold rounded-tr-lg">Quadril</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {[
+                              { no: 'G1', busto: 116, cintura: 98, quadril: 124 },
+                              { no: 'G2', busto: 122, cintura: 106, quadril: 130 },
+                              { no: 'G3', busto: 124, cintura: 110, quadril: 132 },
+                            ].map((row, i) => (
+                              <tr key={row.no} className={i % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
+                                <td className="py-2 px-3 font-bold text-[#800020]">{row.no}</td>
+                                <td className="py-2 px-3 text-center text-gray-700">{row.busto}</td>
+                                <td className="py-2 px-3 text-center text-gray-700">{row.cintura}</td>
+                                <td className="py-2 px-3 text-center text-gray-700">{row.quadril}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                        <p className="text-[10px] text-gray-400 mt-3 text-center">Clique fora para fechar</p>
+                      </div>
+                    </div>
+                  )}
 
                   {/* Variants Grid Table */}
                   <div className="mb-8 overflow-x-auto border rounded-lg">
