@@ -1,37 +1,33 @@
 import { NextResponse } from 'next/server';
 import { createServerClient } from '@/lib/supabase-server';
 
-// Status da InfinitePay que indicam pagamento aprovado
-const PAID_STATUSES = ['paid', 'approved', 'captured', 'succeeded', 'complete', 'completed'];
-
 export async function POST(req: Request) {
   try {
     const body = await req.json();
     console.log('InfinitePay Webhook received:', JSON.stringify(body, null, 2));
 
-    // A InfinitePay pode enviar o orderId em diferentes campos
+    // O webhook da InfinitePay dispara SOMENTE quando o pagamento é confirmado.
+    // Ele não envia campo "status" — a presença do webhook já indica pagamento aprovado.
+    // O order_nsu é o ID do pedido que enviamos na criação do link.
     const orderId = body.order_nsu || body.order_id || body.external_id || body.reference_id;
+
+    // Se tiver campo status, verificamos se é negativo para ignorar
     const status = body.status || body.payment_status || body.transaction_status;
+    const REJECTED_STATUSES = ['failed', 'rejected', 'cancelled', 'canceled', 'expired', 'refunded', 'chargeback'];
+    if (status && REJECTED_STATUSES.includes(String(status).toLowerCase())) {
+      console.log(`Webhook: status '${status}' indica pagamento não aprovado. Ignorando.`);
+      return NextResponse.json({ success: true, message: 'Payment not approved' }, { status: 200 });
+    }
 
     if (!orderId) {
-      console.error('Webhook error: orderId missing. Body:', body);
-      // Retornar 200 para não causar reenvios desnecessários
+      console.error('Webhook error: orderId (order_nsu) ausente. Body:', JSON.stringify(body));
       return NextResponse.json({ error: 'orderId not found', body }, { status: 200 });
     }
 
-    console.log(`Webhook: orderId=${orderId}, status=${status}`);
-
-    // Só atualiza para pago se o status for de aprovação
-    const isPaid = status && PAID_STATUSES.includes(String(status).toLowerCase());
-
-    if (!isPaid) {
-      console.log(`Webhook: status '${status}' não é de pagamento aprovado. Ignorando atualização.`);
-      return NextResponse.json({ success: true, message: 'Status not a payment confirmation' }, { status: 200 });
-    }
+    console.log(`Webhook: atualizando pedido ${orderId} para pago`);
 
     const supabase = createServerClient();
 
-    // Tenta atualizar pelo ID direto
     const { data: existingOrder, error: fetchError } = await supabase
       .from('orders')
       .select('id, status')
