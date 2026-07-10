@@ -28,6 +28,8 @@ interface OrderItem {
   color: string;
   size: string;
   image_url: string;
+  isCombo?: boolean;
+  subItems?: { size?: string; color?: string; quantity?: number }[];
 }
 
 interface ShippingData {

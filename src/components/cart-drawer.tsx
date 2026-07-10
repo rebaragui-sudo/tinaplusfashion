@@ -230,7 +230,7 @@ const CartDrawer = () => {
 
       if (!response.ok) {
         // Marca o pedido como falho para não ficar preso em 'pending'
-        await supabase.from('orders').update({ status: 'failed' }).eq('id', orderData.id).catch(() => {});
+        try { await supabase.from('orders').update({ status: 'failed' }).eq('id', orderData.id); } catch(e) {}
         const detail = paymentData.details ? JSON.stringify(paymentData.details) : '';
         throw new Error((paymentData.error || 'Erro ao gerar link de pagamento') + (detail ? `: ${detail}` : ''));
       }
