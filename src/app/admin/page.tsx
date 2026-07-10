@@ -205,17 +205,22 @@ export default function AdminPage() {
     setEstampaImageUrl('');
   };
 
+  const uploadToLocal = async (file: File): Promise<string> => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const res = await fetch('/api/upload', { method: 'POST', body: formData });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Falha no upload');
+    return data.url;
+  };
+
   const uploadEstampaImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     setUploadingEstampa(true);
     try {
-      const fileExt = file.name.split('.').pop();
-      const filePath = `product-images/estampa-${Math.random()}.${fileExt}`;
-      const { error: uploadError } = await supabase.storage.from('products').upload(filePath, file);
-      if (uploadError) throw uploadError;
-      const { data } = supabase.storage.from('products').getPublicUrl(filePath);
-      setEstampaImageUrl(data.publicUrl);
+      const url = await uploadToLocal(file);
+      setEstampaImageUrl(url);
       toast.success('Imagem da estampa carregada!');
     } catch (error: any) {
       toast.error('Erro no upload: ' + error.message);
@@ -241,22 +246,8 @@ export default function AdminPage() {
       const newUrls: string[] = [];
 
       for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${Math.random()}.${fileExt}`;
-        const filePath = `product-images/${fileName}`;
-
-        const { error: uploadError } = await supabase.storage
-          .from('products')
-          .upload(filePath, file);
-
-        if (uploadError) throw uploadError;
-
-        const { data } = supabase.storage
-          .from('products')
-          .getPublicUrl(filePath);
-        
-        newUrls.push(data.publicUrl);
+        const url = await uploadToLocal(files[i]);
+        newUrls.push(url);
       }
 
       if (isGallery) {
