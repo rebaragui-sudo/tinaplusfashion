@@ -3,33 +3,23 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 
-// Grupos de imagens — cada grupo aparece junto no banner
+// Banner temporário em gradiente até o usuário enviar as fotos
+// As imagens originais foram perdidas quando o Supabase antigo foi deletado
 const slideGroups = [
   [
-    "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-1-1774030700198.jpg",
-    "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-2-1774030700690.jpg",
-    "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-s1-3-1774092634046.jpg",
+    null, null, null,
   ],
   [
-    "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-3-1774030701032.jpg",
-    "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-4-1774030701338.jpg",
-    "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-7-1774092.jpg",
+    null, null, null,
   ],
   [
-    "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-s3-1-1774092521429.jpg",
-    "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-s3-2-1774092521774.jpg",
-    "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-s3-3-1774092521933.jpg",
+    null, null, null,
   ],
   [
-    "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-s4-1-1774095290879.png",
-    "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-s4-2-1774095291464.png",
-    "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-s4-3-1774095291613.png",
-    "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-s4-4-1774095291784.png",
+    null, null, null, null,
   ],
   [
-    "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-s5-1-1774095789731.jpg",
-    "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-s5-2-1774095790272.jpg",
-    "https://cqegvercchpziccatyiz.supabase.co/storage/v1/object/public/products/product-images/banner-s5-3-1774095790635.jpg",
+    null, null, null,
   ],
 ];
 
@@ -71,11 +61,20 @@ export default function HeroSlider() {
           <div className="flex w-full h-full">
             {group.map((url, i) => (
               <div key={i} className="relative flex-1 h-full">
-                <img
-                  src={url}
-                  alt={`Banner ${index + 1} foto ${i + 1}`}
-                  className="absolute inset-0 w-full h-full object-cover object-top"
-                />
+                {url ? (
+                  <img
+                    src={url}
+                    alt={`Banner ${index + 1} foto ${i + 1}`}
+                    className="absolute inset-0 w-full h-full object-cover object-top"
+                  />
+                ) : (
+                  <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-[#800020] via-[#a00028] to-[#4a0012] flex items-center justify-center">
+                    <div className="text-center p-6">
+                      <p className="text-white/90 text-lg md:text-2xl font-light tracking-wide">Tina Plus Fashion</p>
+                      <p className="text-white/50 text-xs md:text-sm mt-2">Moda Plus Size</p>
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
           </div>
