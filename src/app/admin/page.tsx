@@ -89,15 +89,13 @@ export default function AdminPage() {
 
   async function fetchStats() {
     try {
-      const { data: orders } = await supabase.from('orders').select('total_amount, status');
-      const { count: productCount } = await supabase.from('products').select('*', { count: 'exact', head: true });
-      
-      if (orders) {
-        const total = orders.reduce((acc, order) => acc + (order.total_amount || 0), 0);
+      const res = await fetch('/api/admin/stats?password=tina2025');
+      const data = await res.json();
+      if (res.ok) {
         setStats({
-          totalOrders: orders.length,
-          totalRevenue: total,
-          activeProducts: productCount || 0
+          totalOrders: data.totalOrders,
+          totalRevenue: data.totalRevenue,
+          activeProducts: data.activeProducts,
         });
       }
     } catch (error) {
@@ -156,13 +154,10 @@ export default function AdminPage() {
   async function fetchProducts() {
     try {
       setLoading(true);
-      const { data, error } = await supabase
-        .from('products')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-      setProducts(data || []);
+      const res = await fetch('/api/admin/products?password=tina2025');
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Erro ao carregar');
+      setProducts(data.products || []);
     } catch (error: any) {
       toast.error('Erro ao carregar produtos: ' + error.message);
     } finally {
@@ -275,59 +270,40 @@ export default function AdminPage() {
     e.preventDefault();
     try {
       setLoading(true);
-      let productId: string;
-      const productData = {
-        ...formData,
-        price: parseFloat(formData.price),
+
+      const payload: any = {
+        password: 'tina2025',
+        name: formData.name,
+        description: formData.description,
+        price: formData.price,
+        image_url: formData.image_url,
+        images: formData.images,
+        category: formData.category,
+        is_featured: formData.is_featured,
+        is_new_arrival: formData.is_new_arrival,
+        colors: formData.colors,
+        sizes: formData.sizes,
+        stockMap: { ...variantStock },
       };
 
       if (isEditing) {
-        const { error } = await supabase
-          .from('products')
-          .update(productData)
-          .eq('id', isEditing);
-        if (error) throw error;
-        productId = isEditing;
-        toast.success('Produto atualizado!');
-      } else {
-        const { data, error } = await supabase
-          .from('products')
-          .insert([productData])
-          .select()
-          .single();
-        if (error) throw error;
-        productId = data.id;
-        toast.success('Produto criado!');
+        payload.id = isEditing;
       }
 
-      // Update Variants Stock
-      // 1. Delete old variants
-      await supabase
-        .from('product_variants')
-        .delete()
-        .eq('product_id', productId);
+      const endpoint = isEditing ? '/api/admin/update-product' : '/api/admin/add-product';
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
 
-      // 2. Insert current variants
-      const variantsToInsert = [];
-      for (const color of formData.colors) {
-        for (const size of formData.sizes) {
-          const stock = parseInt(variantStock[`${color}|${size}`] || '0');
-          variantsToInsert.push({
-            product_id: productId,
-            color,
-            size,
-            stock
-          });
-        }
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Erro ao salvar produto');
       }
 
-      if (variantsToInsert.length > 0) {
-        const { error: variantError } = await supabase
-          .from('product_variants')
-          .insert(variantsToInsert);
-        if (variantError) throw variantError;
-      }
-
+      toast.success(isEditing ? 'Produto atualizado!' : 'Produto criado!');
       setFormData({
         name: '',
         description: '',
@@ -352,11 +328,13 @@ export default function AdminPage() {
 
   async function handleDelete(id: string) {
     try {
-      const { error } = await supabase
-        .from('products')
-        .delete()
-        .eq('id', id);
-      if (error) throw error;
+      const res = await fetch('/api/admin/delete-product', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: 'tina2025', id }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Erro ao excluir');
       toast.success('Produto excluído!');
       setDeleteConfirm(null);
       fetchProducts();
@@ -381,18 +359,19 @@ export default function AdminPage() {
     });
 
     // Fetch variants stock
-    const { data: variants } = await supabase
-      .from('product_variants')
-      .select('*')
-      .eq('product_id', product.id);
-
-    if (variants) {
-      const stock: Record<string, string> = {};
-      variants.forEach(v => {
-        stock[`${v.color}|${v.size}`] = v.stock.toString();
-      });
-      setVariantStock(stock);
-    } else {
+    try {
+      const res = await fetch(`/api/admin/get-variants?productId=${product.id}&password=tina2025`);
+      const data = await res.json();
+      if (res.ok && data.variants) {
+        const stock: Record<string, string> = {};
+        data.variants.forEach((v: any) => {
+          stock[`${v.color}|${v.size}`] = v.stock.toString();
+        });
+        setVariantStock(stock);
+      } else {
+        setVariantStock({});
+      }
+    } catch {
       setVariantStock({});
     }
 

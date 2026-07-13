@@ -3,10 +3,14 @@ import { createClient } from '@supabase/supabase-js';
 
 export async function POST(request: Request) {
   try {
-    const { password, ...productData } = await request.json();
+    const { password, id, ...productData } = await request.json();
 
     if (password !== 'tina2025') {
       return NextResponse.json({ error: 'Senha inválida' }, { status: 401 });
+    }
+
+    if (!id) {
+      return NextResponse.json({ error: 'ID do produto é obrigatório' }, { status: 400 });
     }
 
     const supabase = createClient(
@@ -14,34 +18,40 @@ export async function POST(request: Request) {
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
     );
 
-    // Insert product
-    const { data, error } = await supabase
+    const updateData = {
+      name: productData.name,
+      description: productData.description || '',
+      price: parseFloat(productData.price),
+      image_url: productData.image_url || '',
+      images: productData.images || [],
+      category: productData.category || '',
+      is_featured: productData.is_featured || false,
+      is_new_arrival: productData.is_new_arrival || false,
+      colors: productData.colors || [],
+      sizes: productData.sizes || ['P', 'M', 'G', 'GG'],
+    };
+
+    const { error } = await supabase
       .from('products')
-      .insert([{
-        name: productData.name,
-        description: productData.description || '',
-        price: parseFloat(productData.price),
-        image_url: productData.image_url || '',
-        images: productData.images || [],
-        category: productData.category || '',
-        is_featured: productData.is_featured || false,
-        is_new_arrival: productData.is_new_arrival || false,
-        colors: productData.colors || [],
-        sizes: productData.sizes || ['P', 'M', 'G', 'GG'],
-      }])
-      .select()
-      .single();
+      .update(updateData)
+      .eq('id', id);
 
     if (error) throw error;
 
-    // Create variants with stock
+    // Delete old variants
+    await supabase
+      .from('product_variants')
+      .delete()
+      .eq('product_id', id);
+
+    // Insert current variants
     if (productData.colors && productData.sizes) {
       const variants = [];
       for (const color of productData.colors) {
         for (const size of productData.sizes) {
           const stock = parseInt(productData.stockMap?.[`${color}|${size}`] || '5');
           variants.push({
-            product_id: data.id,
+            product_id: id,
             color,
             size,
             stock,
@@ -56,7 +66,7 @@ export async function POST(request: Request) {
       }
     }
 
-    return NextResponse.json({ success: true, product: data });
+    return NextResponse.json({ success: true });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
