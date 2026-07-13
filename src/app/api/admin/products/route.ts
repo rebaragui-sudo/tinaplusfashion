@@ -10,7 +10,17 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'Senha inválida' }, { status: 401 });
     }
 
-    const { rows } = await query('SELECT * FROM products ORDER BY created_at DESC');
+    let rows;
+    try {
+      const result = await query('SELECT * FROM products ORDER BY created_at DESC');
+      rows = result.rows;
+    } catch (dbError: any) {
+      console.error('DB query error:', dbError.message, dbError.code, dbError.stack);
+      return NextResponse.json({
+        error: 'DB_ERROR: ' + dbError.message,
+        code: dbError.code || 'UNKNOWN',
+      }, { status: 500 });
+    }
 
     return NextResponse.json({ products: rows });
   } catch (error: any) {
