@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { query } from '@/lib/db';
+import { supabase } from '@/lib/db';
 
 export async function POST(request: Request) {
   try {
@@ -13,10 +13,12 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'ID do produto é obrigatório' }, { status: 400 });
     }
 
-    // Delete variants first (cascade should handle this, but be explicit)
-    await query('DELETE FROM product_variants WHERE product_id = $1', [id]);
+    // Delete variants first
+    await supabase.from('product_variants').delete().eq('product_id', id);
+
     // Delete product
-    await query('DELETE FROM products WHERE id = $1', [id]);
+    const { error } = await supabase.from('products').delete().eq('id', id);
+    if (error) throw error;
 
     return NextResponse.json({ success: true });
   } catch (error: any) {
