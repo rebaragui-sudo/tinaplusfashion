@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { createClient } from '@supabase/supabase-js';
 
 export default function AddDuplaFace() {
   const [status, setStatus] = useState('Preparando...');
@@ -10,17 +9,14 @@ export default function AddDuplaFace() {
     async function add() {
       setStatus('Cadastrando produto...');
       try {
-        const supabase = createClient(
-          'https://tbicapdftjjcdxjnhbfi.supabase.co',
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRiaWNhcGRmdGpqY2R4am5iaGZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MTYzNjgsImV4cCI6MjA5OTE5MjM2OH0.tJamv6Gb2L2kSfR73gr714Q-15TXnfhbQg9LzizIEGw'
-        );
-
-        const { data, error } = await supabase
-          .from('products')
-          .insert([{
+        const res = await fetch('/api/admin/add-product', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            password: 'tina2025',
             name: 'DUPLA FACE ANIMAL PRINT',
             description: 'Dupla face um lado animal print outro lado liso',
-            price: 95.00,
+            price: '95.00',
             image_url: '/dupla-face-animal-print.jpeg',
             images: [],
             category: 'Blusas',
@@ -28,37 +24,17 @@ export default function AddDuplaFace() {
             is_new_arrival: true,
             colors: ['Animal Print:estampa:/dupla-face-animal-print.jpeg'],
             sizes: ['P', 'M', 'G', 'GG'],
-          }])
-          .select()
-          .single();
+          }),
+        });
 
-        if (error) {
-          setStatus('Erro: ' + error.message);
+        const data = await res.json();
+
+        if (!res.ok) {
+          setStatus('Erro: ' + (data.error || 'Falha ao cadastrar'));
           return;
         }
 
-        // Create variants
-        const variants = [];
-        for (const color of data.colors) {
-          for (const size of data.sizes) {
-            variants.push({
-              product_id: data.id,
-              color,
-              size,
-              stock: 5,
-            });
-          }
-        }
-
-        const { error: vError } = await supabase
-          .from('product_variants')
-          .insert(variants);
-
-        if (vError) {
-          setStatus('Variants error: ' + vError.message);
-        } else {
-          setStatus('Produto cadastrado com sucesso!');
-        }
+        setStatus('Produto cadastrado com sucesso!');
       } catch (err: any) {
         setStatus('Erro: ' + err.message);
       }
