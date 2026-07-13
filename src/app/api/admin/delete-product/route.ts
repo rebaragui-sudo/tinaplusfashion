@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { query } from '@/lib/db';
 
 export async function POST(request: Request) {
   try {
@@ -13,27 +13,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'ID do produto é obrigatório' }, { status: 400 });
     }
 
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
-
-    // Delete variants first
-    await supabase
-      .from('product_variants')
-      .delete()
-      .eq('product_id', id);
-
+    // Delete variants first (cascade should handle this, but be explicit)
+    await query('DELETE FROM product_variants WHERE product_id = $1', [id]);
     // Delete product
-    const { error } = await supabase
-      .from('products')
-      .delete()
-      .eq('id', id);
-
-    if (error) throw error;
+    await query('DELETE FROM products WHERE id = $1', [id]);
 
     return NextResponse.json({ success: true });
   } catch (error: any) {
+    console.error('Delete product error:', error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

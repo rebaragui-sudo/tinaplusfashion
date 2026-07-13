@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { query } from '@/lib/db';
 
 export async function GET(request: Request) {
   try {
@@ -10,22 +10,18 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'Senha inválida' }, { status: 401 });
     }
 
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
+    const { rows: orders } = await query('SELECT total_amount, status FROM orders');
+    const { rows: countResult } = await query('SELECT COUNT(*) as count FROM products');
 
-    const { data: orders } = await supabase.from('orders').select('total_amount, status');
-    const { count: productCount } = await supabase.from('products').select('*', { count: 'exact', head: true });
-
-    const total = orders ? orders.reduce((acc, order) => acc + (order.total_amount || 0), 0) : 0;
+    const total = orders.reduce((acc, order) => acc + (parseFloat(order.total_amount) || 0), 0);
 
     return NextResponse.json({
-      totalOrders: orders?.length || 0,
+      totalOrders: orders.length,
       totalRevenue: total,
-      activeProducts: productCount || 0,
+      activeProducts: parseInt(countResult[0]?.count || '0'),
     });
   } catch (error: any) {
+    console.error('Stats error:', error.message);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

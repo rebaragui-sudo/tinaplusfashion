@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { query } from '@/lib/db';
 
 export async function GET(request: Request) {
   try {
@@ -10,20 +10,11 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'Senha inválida' }, { status: 401 });
     }
 
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
+    const { rows } = await query('SELECT * FROM products ORDER BY created_at DESC');
 
-    const { data, error } = await supabase
-      .from('products')
-      .select('*')
-      .order('created_at', { ascending: false });
-
-    if (error) throw error;
-
-    return NextResponse.json({ products: data || [] });
+    return NextResponse.json({ products: rows });
   } catch (error: any) {
+    console.error('Products list error:', error.message);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

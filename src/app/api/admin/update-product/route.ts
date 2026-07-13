@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { query } from '@/lib/db';
 
 export async function POST(request: Request) {
   try {
@@ -13,61 +13,43 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'ID do produto é obrigatório' }, { status: 400 });
     }
 
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    await query(
+      `UPDATE products SET name=$1, description=$2, price=$3, image_url=$4, images=$5, category=$6, is_featured=$7, is_new_arrival=$8, colors=$9, sizes=$10
+       WHERE id=$11`,
+      [
+        productData.name,
+        productData.description || '',
+        parseFloat(productData.price),
+        productData.image_url || '',
+        JSON.stringify(productData.images || []),
+        productData.category || '',
+        productData.is_featured || false,
+        productData.is_new_arrival || false,
+        JSON.stringify(productData.colors || []),
+        JSON.stringify(productData.sizes || ['P', 'M', 'G', 'GG']),
+        id,
+      ]
     );
 
-    const updateData = {
-      name: productData.name,
-      description: productData.description || '',
-      price: parseFloat(productData.price),
-      image_url: productData.image_url || '',
-      images: productData.images || [],
-      category: productData.category || '',
-      is_featured: productData.is_featured || false,
-      is_new_arrival: productData.is_new_arrival || false,
-      colors: productData.colors || [],
-      sizes: productData.sizes || ['P', 'M', 'G', 'GG'],
-    };
-
-    const { error } = await supabase
-      .from('products')
-      .update(updateData)
-      .eq('id', id);
-
-    if (error) throw error;
-
     // Delete old variants
-    await supabase
-      .from('product_variants')
-      .delete()
-      .eq('product_id', id);
+    await query('DELETE FROM product_variants WHERE product_id = $1', [id]);
 
     // Insert current variants
     if (productData.colors && productData.sizes) {
-      const variants = [];
       for (const color of productData.colors) {
         for (const size of productData.sizes) {
           const stock = parseInt(productData.stockMap?.[`${color}|${size}`] || '5');
-          variants.push({
-            product_id: id,
-            color,
-            size,
-            stock,
-          });
+          await query(
+            `INSERT INTO product_variants (product_id, color, size, stock) VALUES ($1, $2, $3, $4)`,
+            [id, color, size, stock]
+          );
         }
-      }
-      if (variants.length > 0) {
-        const { error: vError } = await supabase
-          .from('product_variants')
-          .insert(variants);
-        if (vError) throw vError;
       }
     }
 
     return NextResponse.json({ success: true });
   } catch (error: any) {
+    console.error('Update product error:', error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

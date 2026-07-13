@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { query } from '@/lib/db';
 
 export async function GET(request: Request) {
   try {
@@ -15,20 +15,11 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'productId é obrigatório' }, { status: 400 });
     }
 
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
+    const { rows } = await query('SELECT * FROM product_variants WHERE product_id = $1', [productId]);
 
-    const { data, error } = await supabase
-      .from('product_variants')
-      .select('*')
-      .eq('product_id', productId);
-
-    if (error) throw error;
-
-    return NextResponse.json({ variants: data || [] });
+    return NextResponse.json({ variants: rows });
   } catch (error: any) {
+    console.error('Get variants error:', error.message);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
