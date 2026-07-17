@@ -5,7 +5,9 @@ import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 
 const slideGroups = [
   [
-    null, null, null,
+    '/banners/slide1-img1.jpeg',
+    '/banners/slide1-img2.jpeg',
+    '/banners/slide1-img3.jpeg',
   ],
   [
     null, null, null,
