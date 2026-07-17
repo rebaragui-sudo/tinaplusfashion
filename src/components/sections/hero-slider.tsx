@@ -23,6 +23,8 @@ const slideGroups = [
     '/banners/vinho-completo.jpeg',
     '/banners/preto-completo.jpeg',
     '/banners/azul-completo.jpeg',
+    '/banners/quarto-5.jpeg',
+    '/banners/quarto-6.jpeg',
   ],
   [
     null, null, null,
