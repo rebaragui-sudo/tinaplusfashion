@@ -3,18 +3,32 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 
-const bannerImages = [
-  '/banners/banner-verde-1.jpeg',
-  '/banners/banner-vinho-1.jpeg',
-  '/banners/banner-preto-1.jpeg',
-  '/banners/banner-azul-1.jpeg',
+const slideGroups = [
+  [
+    null, null, null,
+  ],
+  [
+    null, null, null,
+  ],
+  [
+    null, null, null,
+  ],
+  [
+    '/banners/banner-verde-1.jpeg',
+    '/banners/banner-vinho-1.jpeg',
+    '/banners/banner-preto-1.jpeg',
+    '/banners/banner-azul-1.jpeg',
+  ],
+  [
+    null, null, null,
+  ],
 ];
 
 export default function HeroSlider() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  const total = bannerImages.length;
+  const total = slideGroups.length;
 
   const nextSlide = useCallback(() => {
     if (isAnimating) return;
@@ -38,19 +52,32 @@ export default function HeroSlider() {
   return (
     <section className="relative h-[60vh] md:h-[80vh] w-full overflow-hidden bg-[#fcfaf8]">
       {/* Slides */}
-      {bannerImages.map((url, index) => (
+      {slideGroups.map((group, index) => (
         <div
           key={index}
           className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
             index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
           }`}
         >
-          <div className="relative w-full h-full">
-            <img
-              src={url}
-              alt={`Banner ${index + 1}`}
-              className="absolute inset-0 w-full h-full object-cover object-top"
-            />
+          <div className="flex w-full h-full">
+            {group.map((url, i) => (
+              <div key={i} className="relative flex-1 h-full">
+                {url ? (
+                  <img
+                    src={url}
+                    alt={`Banner ${index + 1} foto ${i + 1}`}
+                    className="absolute inset-0 w-full h-full object-cover object-top"
+                  />
+                ) : (
+                  <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-[#800020] via-[#a00028] to-[#4a0012] flex items-center justify-center">
+                    <div className="text-center p-6">
+                      <p className="text-white/90 text-lg md:text-2xl font-light tracking-wide">Tina Plus Fashion</p>
+                      <p className="text-white/50 text-xs md:text-sm mt-2">Moda Plus Size</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       ))}
@@ -73,7 +100,7 @@ export default function HeroSlider() {
 
       {/* Navigation Dots */}
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 flex items-center gap-3">
-        {bannerImages.map((_, index) => (
+        {slideGroups.map((_, index) => (
           <button
             key={index}
             onClick={() => {
