@@ -23,7 +23,8 @@ const slideGroups = [
     '/banners/quarto-6.jpeg',
   ],
   [
-    null, null, null,
+    '/banners/quinto-1.jpeg',
+    '/banners/quinto-2.jpeg',
   ],
 ];
 
