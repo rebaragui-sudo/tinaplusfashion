@@ -5,28 +5,28 @@ import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 
 const slideGroups = [
   [
-    '/banners/slide1-img1.jpeg',
-    '/banners/slide1-img2.jpeg',
-    '/banners/slide1-img3.jpeg',
+    '/banners/slide1-img1.jpeg?v=1',
+    '/banners/slide1-img2.jpeg?v=1',
+    '/banners/slide1-img3.jpeg?v=1',
   ],
   [
-    '/banners/slide2-img1.jpeg',
-    '/banners/slide2-img2.jpeg',
-    '/banners/slide2-img3.jpeg',
+    '/banners/slide2-img1.jpeg?v=1',
+    '/banners/slide2-img2.jpeg?v=1',
+    '/banners/slide2-img3.jpeg?v=1',
   ],
   [
-    '/banners/terceiro-1-v2.jpeg',
-    '/banners/terceiro-2-v2.jpeg',
-    '/banners/terceiro-3-v2.jpeg',
+    '/banners/terceiro-1-v2.jpeg?v=1',
+    '/banners/terceiro-2-v2.jpeg?v=1',
+    '/banners/terceiro-3-v2.jpeg?v=1',
   ],
   [
-    '/banners/quarto-5.jpeg',
-    '/banners/quarto-6.jpeg',
+    '/banners/quarto-5.jpeg?v=1',
+    '/banners/quarto-6.jpeg?v=1',
   ],
   [
-    '/banners/quinto-1-v2.jpeg',
-    '/banners/quinto-2-v2.jpeg',
-    '/banners/quinto-3-v2.jpeg',
+    '/banners/quinto-1-v2.jpeg?v=1',
+    '/banners/quinto-2-v2.jpeg?v=1',
+    '/banners/quinto-3-v2.jpeg?v=1',
   ],
 ];
 
