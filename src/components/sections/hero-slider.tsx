@@ -14,10 +14,10 @@ const slideGroups = [
     null, null, null,
   ],
   [
-    '/banners/banner-verde-1.jpeg',
-    '/banners/banner-vinho-1.jpeg',
-    '/banners/banner-preto-1.jpeg',
-    '/banners/banner-azul-1.jpeg',
+    '/banners/verde-1.jpeg',
+    '/banners/vinho-1.jpeg',
+    '/banners/preto-1.jpeg',
+    '/banners/azul-1.jpeg',
   ],
   [
     null, null, null,
