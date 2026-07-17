@@ -15,9 +15,9 @@ const slideGroups = [
     '/banners/slide2-img3.jpeg',
   ],
   [
-    '/banners/a-1.jpeg',
-    '/banners/b-1.jpeg',
-    '/banners/c-1.jpeg',
+    '/banners/terceiro-1.jpeg',
+    '/banners/terceiro-2.jpeg',
+    null,
   ],
   [
     '/banners/verde-completo.jpeg',
@@ -73,7 +73,7 @@ export default function HeroSlider() {
                     src={url}
                     alt={`Banner ${index + 1} foto ${i + 1}`}
                     className={`absolute inset-0 w-full h-full ${
-                      index === 3 ? "object-contain" : index === 2 ? "object-cover object-center scale-80 origin-center" : "object-cover object-top"
+                      index === 3 || index === 2 ? "object-contain" : "object-cover object-top"
                     }`}
                   />
                 ) : (
