@@ -73,7 +73,7 @@ export default function HeroSlider() {
                     src={url}
                     alt={`Banner ${index + 1} foto ${i + 1}`}
                     className={`absolute inset-0 w-full h-full ${
-                      index === 3 ? "object-contain" : index === 2 ? "object-cover object-center" : "object-cover object-top"
+                      index === 3 ? "object-contain" : index === 2 ? "object-cover object-center scale-80 origin-center" : "object-cover object-top"
                     }`}
                   />
                 ) : (
