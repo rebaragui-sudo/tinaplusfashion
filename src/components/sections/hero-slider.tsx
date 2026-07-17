@@ -17,7 +17,7 @@ const slideGroups = [
   [
     '/banners/terceiro-1.jpeg',
     '/banners/terceiro-2.jpeg',
-    null,
+    '/banners/terceiro-3.jpeg',
   ],
   [
     '/banners/verde-completo.jpeg',
