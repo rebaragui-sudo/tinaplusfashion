@@ -18,10 +18,10 @@ const slideGroups = [
     null, null, null,
   ],
   [
-    '/banners/verde-1.jpeg',
-    '/banners/vinho-1.jpeg',
-    '/banners/preto-1.jpeg',
-    '/banners/azul-1.jpeg',
+    '/banners/verde-completo.jpeg',
+    '/banners/vinho-completo.jpeg',
+    '/banners/preto-completo.jpeg',
+    '/banners/azul-completo.jpeg',
   ],
   [
     null, null, null,
@@ -70,7 +70,9 @@ export default function HeroSlider() {
                   <img
                     src={url}
                     alt={`Banner ${index + 1} foto ${i + 1}`}
-                    className="absolute inset-0 w-full h-full object-cover object-top"
+                    className={`absolute inset-0 w-full h-full ${
+                      index === 3 ? "object-contain" : "object-cover object-top"
+                    }`}
                   />
                 ) : (
                   <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-[#800020] via-[#a00028] to-[#4a0012] flex items-center justify-center">
